@@ -22,7 +22,6 @@ class siteController {
       next(err);
     }
   };
-
   getAboutUs = (req, res, next) => {
     try {
       res.render("about-us");
