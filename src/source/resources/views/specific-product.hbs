@@ -13,7 +13,12 @@
           action="/product/specific-product/{{product._id}}/report?_method=PUT"
         >
           <i class="fa-solid fa-ellipsis"></i>
-          <button>Report</button>
+          {{!-- <button>Report</button> --}}
+          {{#if (isEqual product.status 'Reported')}}
+                  <button disabled>Reported</button>
+          {{else}}
+              <button>Report</button>
+          {{/if}}
           <div class="view-shop">
             <a href="../../account/page/{{product.idAccount}}">View Shop</a>
           </div>
@@ -122,7 +127,12 @@
               action="/evaluate/specific-product/{{this._id}}/report?_method=PUT"
             >
               <i class="fa-solid fa-ellipsis"></i>
-              <button>Report</button>
+              {{!-- <button>Report</button> --}}
+              {{#if (isEqual this.status 'reported')}}
+                  <button disabled>Reported</button>
+              {{else}}
+                  <button>Report</button>
+              {{/if}}
             </form>
 
             <div class="information d-flex align-items-center">

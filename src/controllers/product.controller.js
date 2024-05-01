@@ -588,6 +588,17 @@ class productController {
       res.locals.evaluates = mutipleMongooseToObject(evaluates);
 
       res.render("specific-product", {
+        helpers: {
+          isEqual(c1, c2) {
+            return c1 == c2;
+          },
+          convertMoney: (str) => {
+            return Number(str).toLocaleString("it-IT", {
+              style: "currency",
+              currency: "VND",
+            });
+          },
+        },
         stock: product.stock,
         formatCurrency: formatCurrency,
       });
