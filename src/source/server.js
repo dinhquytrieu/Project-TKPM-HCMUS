@@ -6,7 +6,7 @@ database.connect();
 const port = process.env.PORT || 3000;
 
 // Use 'server.listen' instead of 'app.listen'
-server.listen(port, () => {
+app.listen(port, () => {
     console.log(`App is running on port ${port} ...`);
-    initIo(server);  // Initialize Socket.IO with the server
+    // initIo(server);  // Initialize Socket.IO with the server
 });
