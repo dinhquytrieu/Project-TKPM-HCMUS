@@ -14,7 +14,9 @@ const passport = require("../middleware/passport");
 const redisStore = require("connect-redis").default;
 const { createClient } = require("redis");
 const redisClient = createClient({
-  url: "redis://127.0.0.1:6379",
+  url: "redis://redis-16889.c299.asia-northeast1-1.gce.redns.redis-cloud.com:16889",
+  username: 'default',
+  password: 'qexkipbn3hm1Ef12PSfuOaFUU2cirJyy'
 });
 
 redisClient.connect().catch(console.error);
