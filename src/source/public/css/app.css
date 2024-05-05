@@ -2311,7 +2311,7 @@ section article.skills {
   .admin .admin-sidebar {
     font-weight: 700;
     padding: 2rem 2rem;
-    background: #e7e7e7;
+    background-image: url("/img/bg2.png");
     min-height: 100vh; }
     .admin .admin-sidebar .nav {
       align-items: center; }
@@ -2406,18 +2406,27 @@ section article.skills {
     height: 5rem;
     width: 5rem; }
   .admin .product-item {
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
     padding-left: 2rem;
     padding-right: 2rem; }
     .admin .product-item .product-img {
-      height: 100%;
-      object-fit: contain; }
+      height: 150px;
+      width: 130px;
+      object-fit: cover;
+      border-radius: 20px;
+      margin-right: 10px; }
     .admin .product-item .box {
-      border: 2px solid #000; }
+      padding: 1rem;
+      border-radius: 20px;
+      background-image: url("/img/bg_delivery_box.png");
+      box-shadow: 0 0.5em 0.5em -0.4em #064174; }
     .admin .product-item .dropdown-item {
       color: #000;
       font-family: Inter;
       font-size: 1.4rem; }
+  .admin .list-inline-item-content {
+    margin-top: 5px;
+    font-size: 13px; }
 
 :root {
   --grey: #f6f6f6;
