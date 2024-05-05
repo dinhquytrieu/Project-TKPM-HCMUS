@@ -1563,23 +1563,37 @@ section article.skills {
     margin-right: 0.75rem;
     background-color: #fff; }
     .all-product .sort-section .dropdown {
-      background-color: #fff; }
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0.5em 0.5em -0.4em #27567c; }
       .all-product .sort-section .dropdown button,
       .all-product .sort-section .dropdown ul li {
         height: 4rem;
         width: 20rem;
         font-size: 1.6rem; }
+    .all-product .sort-section .dropdown-toggle {
+      border-radius: 10px;
+      background-color: #044985;
+      border: 1px solid transparent;
+      box-shadow: 0 0.5em 0.5em -0.4em #d3ebff; }
+    .all-product .sort-section .dropdown-toggle:hover {
+      background-color: white;
+      border: 1px solid #0e5895;
+      box-shadow: 0 0.5em 0.5em -0.4em #0e5895;
+      color: #0e5895; }
   .all-product .filter-vs-product {
     position: relative;
     padding-top: 2.5rem; }
     .all-product .filter-vs-product .filter-section {
-      background-color: #d9edf7; }
+      background-color: #d9edf7;
+      border-radius: 20px; }
       .all-product .filter-vs-product .filter-section .search-bar {
+        margin: 10px;
         position: relative; }
         .all-product .filter-vs-product .filter-section .search-bar .search-input {
           height: 3.4rem;
           width: 100%;
-          border-radius: 2rem;
+          border-radius: 10px;
           background-color: #fff;
           color: #31383e; }
           .all-product .filter-vs-product .filter-section .search-bar .search-input::placeholder {
@@ -1615,22 +1629,40 @@ section article.skills {
         .all-product .filter-vs-product .filter-section .price-filter .filter-btn:hover {
           background-color: #337ab7; }
       .all-product .filter-vs-product .filter-section .filter-type-list {
+        padding-left: 10px;
+        padding-right: 10px;
         height: 100%; }
         .all-product .filter-vs-product .filter-section .filter-type-list .list-title {
           font-size: 2rem;
           font-weight: 700;
           text-transform: uppercase; }
-        .all-product .filter-vs-product .filter-section .filter-type-list .list-title + hr {
-          width: 42%; }
         .all-product .filter-vs-product .filter-section .filter-type-list .type-item {
-          font-size: 1.6rem; }
+          background-color: white;
+          border: 1px solid #044985;
+          border-radius: 10px;
+          padding: 7px 10px;
+          margin-top: 20px; }
           .all-product .filter-vs-product .filter-section .filter-type-list .type-item a {
             display: inline-block; }
           .all-product .filter-vs-product .filter-section .filter-type-list .type-item a .type-name {
-            color: #31383e;
+            color: #044985;
+            font-weight: 700;
             text-transform: capitalize; }
           .all-product .filter-vs-product .filter-section .filter-type-list .type-item .number {
-            color: #31383e; }
+            color: #044985; }
+        .all-product .filter-vs-product .filter-section .filter-type-list .type-item:hover {
+          transition: transform 1s ease;
+          /* Add smooth transition */
+          background-color: #044985;
+          border: 1px solid #044985; }
+          .all-product .filter-vs-product .filter-section .filter-type-list .type-item:hover a {
+            display: inline-block; }
+          .all-product .filter-vs-product .filter-section .filter-type-list .type-item:hover a .type-name {
+            color: white;
+            font-weight: 700;
+            text-transform: capitalize; }
+          .all-product .filter-vs-product .filter-section .filter-type-list .type-item:hover .number {
+            color: white; }
     .all-product .filter-vs-product .product-section {
       height: 100%; }
       .all-product .filter-vs-product .product-section .trend {
@@ -1664,13 +1696,14 @@ section article.skills {
             margin-top: 3rem;
             font-size: 1.6rem; }
         .all-product .filter-vs-product .product-section .trend .trend-card {
-          margin: 0;
-          border-radius: 0;
-          border: 1px solid #31383e;
-          margin-bottom: 1rem; }
+          border-radius: 10px;
+          border: none;
+          background-color: #dfebf5;
+          padding: 0 0;
+          box-shadow: 0 0.5em 0.5em -0.4em #064174; }
         .all-product .filter-vs-product .product-section .trend .trend-card-img {
           background-color: #fff;
-          height: 24.3rem; }
+          height: 18rem; }
           .all-product .filter-vs-product .product-section .trend .trend-card-img .trend-prod-img {
             float: left;
             height: 100%;
@@ -1689,11 +1722,29 @@ section article.skills {
           color: #000;
           font-weight: 700; }
         .all-product .filter-vs-product .product-section .trend .trend-card-btn {
+          border: 1px solid transparent;
           text-transform: uppercase;
-          border-radius: 0;
-          background: #31383e;
+          border-radius: 10px;
+          margin: 10px;
+          padding: 10px;
+          text-align: center;
+          background: #0a4f8b;
+          color: #fff;
           font-weight: 700;
-          color: #fff; }
+          transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+          /* Add smooth transition */ }
+        .all-product .filter-vs-product .product-section .trend .trend-card-btn:hover,
+        .all-product .filter-vs-product .product-section .trend .trend-card-btn:focus {
+          border: 1px solid #044985;
+          box-shadow: 0 0.5em 0.5em -0.4em #0d74cf;
+          /* Add transparent box shadow */
+          color: #0a4f8b;
+          font-weight: 700;
+          background-color: #fff;
+          border-color: #0a4f8b;
+          transform: translateY(-0.25em);
+          transition: transform 0.3s ease;
+          /* Add smooth transition */ }
         .all-product .filter-vs-product .product-section .trend figure a.btn:link,
         .all-product .filter-vs-product .product-section .trend figure a.btn:visited {
           border-radius: 0;
