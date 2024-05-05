@@ -2623,6 +2623,23 @@ section article.skills {
   margin-top: 21rem;
   margin-bottom: 7rem;
   font-size: 2rem; }
+  .about-us .gotoSectionButton {
+    font-size: 30px;
+    border-radius: 15px;
+    align-items: center;
+    color: black;
+    width: 90%;
+    height: 80px;
+    background-color: white;
+    border-right-color: white;
+    border: 1px solid #000;
+    align-items: center; }
+  .about-us .gotoSectionButton:hover {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+    transform: scale(1.1);
+    /* Zoom in to 110% on hover */
+    transition: transform 0.7s ease;
+    /* Add smooth transition */ }
   .about-us .au-box {
     margin-bottom: 7rem;
     padding-left: 7rem;
