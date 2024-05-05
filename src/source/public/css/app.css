@@ -2418,12 +2418,21 @@ section article.skills {
     .admin .product-item .box {
       padding: 1rem;
       border-radius: 20px;
-      background-image: url("/img/bg_delivery_box.png");
-      box-shadow: 0 0.5em 0.5em -0.4em #064174; }
+      background-image: url("/img/bg_delivery_box.png"); }
     .admin .product-item .dropdown-item {
       color: #000;
       font-family: Inter;
       font-size: 1.4rem; }
+  .admin .product-item:hover {
+    transform: scale(1.1);
+    /* Zoom in to 110% on hover */
+    transition: transform 0.7s ease;
+    /* Add smooth transition */ }
+    .admin .product-item:hover .box {
+      padding: 1rem;
+      border-radius: 20px;
+      background-image: url("/img/bg2.png");
+      box-shadow: 0 0.5em 0.5em -0.4em #064174; }
   .admin .list-inline-item-content {
     margin-top: 5px;
     font-size: 13px; }

@@ -150,12 +150,22 @@
       padding: 1rem;
       border-radius: 20px;
       background-image: url('/img/bg_delivery_box.png');
-      box-shadow: 0 0.5em 0.5em -0.4em #064174;
     }
     .dropdown-item {
       color: #000;
       font-family: Inter;
       font-size: 1.4rem;
+    }
+  }
+  .product-item:hover{
+    transform: scale(1.1); /* Zoom in to 110% on hover */
+    transition: transform 0.7s ease; /* Add smooth transition */
+    .box {
+      padding: 1rem;
+      border-radius: 20px;
+      background-image: url('/img/bg2.png');
+      box-shadow: 0 0.5em 0.5em -0.4em #064174;
+
     }
   }
   .list-inline-item-content{
