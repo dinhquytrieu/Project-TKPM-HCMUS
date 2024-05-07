@@ -656,7 +656,7 @@ class productController {
     }
   };
 
-  // [GET] product/full
+  // [GET] product/full (Admin - Products)
   getFullProduct = async (req, res, next) => {
     try {
       const page = isNaN(req.query.page) ? 1 : Math.max(1, parseInt(req.query.page));
