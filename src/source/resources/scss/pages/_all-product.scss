@@ -7,14 +7,29 @@
     margin-right: 0.75rem;
     background-color: #fff;
 
+
     .dropdown {
       background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0.5em 0.5em -0.4em #27567c;
       button,
       ul li {
         height: 4rem;
         width: 20rem;
         font-size: 1.6rem;
       }
+    }
+    .dropdown-toggle{
+      border-radius: 10px;
+      background-color: #044985;
+      border: 1px solid transparent;
+      box-shadow: 0 0.5em 0.5em -0.4em #d3ebff;
+    }
+    .dropdown-toggle:hover{
+      background-color: white;
+      border: 1px solid #0e5895;
+      box-shadow: 0 0.5em 0.5em -0.4em #0e5895;
+      color: #0e5895;
     }
   }
 
@@ -26,14 +41,15 @@
     .filter-section {
       // height: 37rem;
       background-color: $color-primary-tint;
-
+      border-radius: 20px;
       .search-bar {
+        margin: 10px;
         position: relative;
 
         .search-input {
           height: 3.4rem;
           width: 100%;
-          border-radius: 2rem;
+          border-radius: 10px;
           background-color: $color-white;
           color: $color-text-dark;
 
@@ -88,6 +104,8 @@
       }
 
       .filter-type-list {
+        padding-left: 10px;
+        padding-right: 10px;
         height: 100%;
         .list-title {
           font-size: 2rem;
@@ -95,24 +113,40 @@
           text-transform: uppercase;
         }
 
-        .list-title + hr {
-          width: 42%;
-        }
-
         .type-item {
-          font-size: 1.6rem;
-
+          background-color:white;
+          border: 1px solid #044985;
+          border-radius: 10px;
+          padding:7px 10px;
+          margin-top: 20px;
           a {
             display: inline-block;
           }
 
           a .type-name {
-            color: $color-text-dark;
+            color: #044985;
+            font-weight: 700;
             text-transform: capitalize;
           }
 
           .number {
-            color: $color-text-dark;
+            color:  #044985;
+          }
+        }
+        .type-item:hover {
+          transition: transform 1s ease; /* Add smooth transition */
+          background-color: #044985;
+          border: 1px solid #044985;
+          a {
+            display: inline-block;
+          }
+          a .type-name {
+            color: white;
+            font-weight: 700;
+            text-transform: capitalize;
+          }
+          .number {
+            color:  white;
           }
         }
       }
@@ -163,15 +197,16 @@
         }
 
         .trend-card {
-          margin: 0;
-          border-radius: 0;
-          border: 1px solid #31383e;
-          margin-bottom: 1rem;
+          border-radius: 10px;
+          border: none;
+          background-color: #dfebf5;
+          padding: 0 0;
+          box-shadow: 0 0.5em 0.5em -0.4em #064174;
         }
 
         .trend-card-img {
           background-color: #fff;
-          height: 24.3rem;
+          height: 18rem;
 
           .trend-prod-img {
             float: left;
@@ -198,11 +233,28 @@
         }
 
         .trend-card-btn {
+          border: 1px solid transparent;
           text-transform: uppercase;
-          border-radius: 0;
-          background: #31383e;
-          font-weight: 700;
+          border-radius: 10px;
+          margin: 10px;
+          padding: 10px;
+          text-align: center;
+          background: #0a4f8b;
           color: #fff;
+          font-weight: 700;
+          transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease; /* Add smooth transition */
+        }
+        
+        .trend-card-btn:hover,
+        .trend-card-btn:focus {
+          border: 1px solid #044985;
+          box-shadow: 0 0.5em 0.5em -0.4em #0d74cf; /* Add transparent box shadow */
+          color: #0a4f8b;
+          font-weight: 700;
+          background-color: #fff;
+          border-color: #0a4f8b;
+          transform: translateY(-0.25em);
+          transition: transform 0.3s ease; /* Add smooth transition */
         }
 
         figure {
