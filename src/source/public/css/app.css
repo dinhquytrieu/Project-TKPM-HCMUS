@@ -882,7 +882,7 @@ a.btn:hover, a.btn:active, a.btn:first-child:active,
 .select-ext, .manage-product .search-input,
 .manage-product .manage-product-select, .edit-product .product-category .edit-product-select {
   width: 100%;
-  height: 6rem;
+  height: 5.5rem;
   padding-left: 4rem;
   color: #757575;
   border: 0.1rem solid #ccc;
@@ -980,7 +980,7 @@ a.btn:hover, a.btn:active, a.btn:first-child:active,
     border-radius: 50%; }
 
 .edit-product .product-category .edit-product-select {
-  padding-left: 3rem;
+  padding-left: 2rem;
   appearance: none;
   border-right: 0.1rem solid #ccc; }
 
