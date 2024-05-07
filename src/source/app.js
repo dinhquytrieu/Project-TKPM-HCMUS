@@ -91,19 +91,13 @@ app.use((req, res, next) => {
     res.locals._cartNumber = 0;
   }
   if (!res.locals._cartNumber) {
-    res.locals._cartNumber = req.session.cart.reduce(
-      (accum, product) => accum + product.quantity,
-      0
-    );
+    res.locals._cartNumber = req.session.cart.length;
   }
   if (res.locals.isLoggedIn) {
     res.locals._id = req.user._id;
     res.locals._firstName = req.user.firstName;
     require("../middleware/cartInit")(req, res, next);
-    res.locals._cartNumber = req.user.cart.reduce(
-      (accum, product) => accum + product.quantity,
-      0
-    );
+    res.locals._cartNumber = req.session.cart.length;
     if (!req.session.readAnnounce) {
       req.session.readAnnounce = req.user.readAnnounce;
     }
