@@ -126,10 +126,8 @@ async function initCart(req, res, next) {
         );
       });
       let cart = req.session.cart;
-      res.locals._cartNumber = cart.reduce(
-        (accum, product) => accum + product.quantity,
-        0
-      );
+      // Update the cart number to reflect the count of unique items
+      res.locals._cartNumber = reqSessionCart.length;
     }
   } catch (err) {
     next(err);
