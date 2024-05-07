@@ -1714,7 +1714,8 @@ section article.skills {
           padding: 0 0.5rem;
           overflow: hidden;
           text-overflow: ellipsis;
-          height: 4.5rem; }
+          height: 4.5rem;
+          text-align: center; }
         .all-product .filter-vs-product .product-section .trend .trend-card-price {
           text-align: center;
           color: #000;

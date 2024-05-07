@@ -52,7 +52,7 @@
                 <img src='{{this.image}}' class='trend-prod-img' alt='Something ...' />
               </a>
               <p class='trend-card-title'>{{this.name}}</p>
-              <p class='trend-card-price'>{{this.price}} VND</p>
+              <p class='trend-card-price'>{{formatCurrency this.price}}</p>
               <a href='/product/specific-product/{{this._id}}' class='trend-card-btn'>Buy now</a>
             </div>
           </div>
