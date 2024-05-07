@@ -99,64 +99,6 @@ class productController {
   };
 
   // [GET] product/manage
-  // getManage = async (req, res, next) => {
-  //   try {
-  //     let options = {
-  //       idAccount: req.user.id,
-  //       $or: [{ status: "Available" }, { status: "Reported" }],
-  //     };
-  //     // let options = { idAccount: req.user.id, status: "Available" };
-  //     // Tìm kiếm
-  //     let keyword = req.query.keyword || "";
-  //     // Lọc theo loại
-  //     let category = req.query.category || "";
-  //     // Sắp xếp
-  //     let sortBy = req.query.sortBy || "-updatedAt";
-  //     keyword = keyword.trim();
-  //     let originalUrl = req.originalUrl;
-  //     if (keyword != "") {
-  //       const regex = new RegExp(keyword, "i");
-  //       options.name = regex;
-  //     }
-  //     if (category != "") {
-  //       options.category = category;
-  //     }
-  //     // Phân trang
-  //     let page = isNaN(req.query.page)
-  //       ? 1
-  //       : Math.max(1, parseInt(req.query.page));
-  //     const limit = 5;
-  //     // Thực hiện truy vấn
-  //     let products = await Product.find(options)
-  //       .skip((page - 1) * limit)
-  //       .limit(limit)
-  //       .sort(sortBy);
-  //     res.locals._keyword = keyword;
-  //     res.locals._category = category;
-  //     res.locals._sortBy = sortBy;
-  //     res.locals._numberOfItems = await Product.find(options).countDocuments();
-  //     res.locals._limit = limit;
-  //     res.locals._currentPage = page;
-  //     res.locals._originalUrl = req.url;
-  //     res.render("manage-product", {
-  //       products: mutipleMongooseToObject(products),
-  //       helpers: {
-  //         isEqual(c1, c2) {
-  //           return c1 == c2;
-  //         },
-  //         convertMoney: (str) => {
-  //           return Number(str).toLocaleString("it-IT", {
-  //             style: "currency",
-  //             currency: "VND",
-  //           });
-  //         },
-  //       },
-  //     });
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // };
-
   getManage = async (req, res, next) => {
     try {
         const { id } = req.user;
@@ -212,32 +154,6 @@ class productController {
   };
 
   // [POST] product/edit/save
-  // createNewProduct = async (req, res, next) => {
-  //   try {
-  //     // Lưu thông tin sản phẩm vào trong database
-  //     const formData = req.body;
-  //     formData.idAccount = req.user.id;
-  //     formData.price = Number(formData.price);
-  //     formData.stock = Number(formData.stock);
-  //     formData.isTrend = Number(formData.isTrend);
-  //     formData.keyword = formData.keyword.split(",");
-  //     formData.keyword = formData.keyword.map((str) => str.trim());
-  //     if (formData.isTrend) {
-  //       formData.status = "Trending";
-  //     }
-  //     formData.isTrend = false;
-  //     if (req.file && !req.fileValidationError) {
-  //       formData.image = req.file.path.replace("source/public", "");
-  //     } else {
-  //       formData.image = "/img/products/default.png";
-  //     }
-  //     const newProduct = new Product(formData);
-  //     await newProduct.save();
-  //     res.render("message/processing-request");
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // };
   createNewProduct = async (req, res, next) => {
     try {
         // Prepare the form data
@@ -275,23 +191,6 @@ class productController {
 
 
   // [GET] product/edit/:id
-  // getEditForUpdate = async (req, res, next) => {
-  //   try {
-  //     const product = await Product.findById(req.params.id);
-  //     res.render("edit-product", {
-  //       product: mongooseToObject(product),
-  //       helpers: {
-  //         isCategory(c1, c2) {
-  //           return c1 == c2;
-  //         },
-  //       },
-  //       getEditForUpdate: true,
-  //     });
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // };
-
   getEditForUpdate = async (req, res, next) => {
     try {
         // Fetch the product using the repository
@@ -315,73 +214,6 @@ class productController {
 
 
   // [POST] product/edit/save/:id
-  // updateProduct = async (req, res, next) => {
-  //   try {
-  //     const formData = req.body;
-  //     const product = await Product.findById(req.params.id);
-  //     if (req.file) {
-  //       if (product.image != "/img/products/default.png") {
-  //         fs.unlinkSync(`./source/public${product.image}`);
-  //       }
-  //       formData.image = req.file.path.replace("source/public", "");
-  //     } else if (product.image == "/img/products/default.png") {
-  //       formData.image = "/img/products/default.png";
-  //     }
-  //     formData.status = "Pending";
-  //     await Product.updateOne({ _id: req.params.id }, formData);
-  //     res.render("message/processing-request");
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // };
-
-  // [POST] product/edit/save/:id
-  // updateProduct = async (req, res, next) => {
-  //   try {
-  //     // console.log('Starting product update process');
-  
-  //     const formData = req.body;
-  //     // console.log('Received form data:', formData);
-  
-  //     const product = await Product.findById(req.params.id);
-  //     // console.log(`Product found: ${product._id}`);
-  
-  //     if (req.file) {
-  //         // Assuming the full server path is added before storing it, which needs to be removed
-  //         const imagePath = `./source/public${product.image}`; // Full path for server operations
-  //         // console.log(`Handling new file upload, checking existing image at: ${imagePath}`);
-  
-  //         // Check and delete the existing image if it's not the default
-  //         if (product.image !== "\\img\products\default.png" && fs.existsSync(imagePath)) {
-  //           // console.log('Existing image found, deleting...');
-  //           fs.unlinkSync(imagePath);
-  //         } else {
-  //           // console.log('No existing image to delete or default image used');
-  //         }
-  
-  //         // Correctly remove 'source/public/' from the path before saving it in formData
-  //         // console.log('req.file.path:', req.file.path);
-  //         formData.image = '/' + path.normalize(req.file.path).replace(/\\/g, '/').replace('source/public/', '');
-  //         // console.log('Updated image path for formData:', formData.image);
-  //     } else if (product.image === "\\img\products\default.png") {
-  //         formData.image = "/img/products/default.png";
-  //         // console.log('Using default image for product');
-  //     }
-  
-  //     formData.status = "Pending";
-  //     // console.log('Set product status to Pending');
-  
-  //     await Product.updateOne({ _id: req.params.id }, formData);
-  //     // console.log(`Product update complete for ID: ${req.params.id}`);
-  
-  //     res.render("message/processing-request");
-  //     // console.log('Processing request message rendered');
-  //   } catch (err) {
-  //     console.error('Error during product update:', err);
-  //     next(err);
-  //   }
-  // };
-
   updateProduct = async (req, res, next) => {
     try {
         const formData = req.body;
@@ -403,21 +235,6 @@ class productController {
 
 
   // [POST] product/delete/:id
-  // deleteProduct = async (req, res, next) => {
-  //   try {
-  //     const product = await Product.findById(req.params.id);
-  //     if (product.image != "/img/products/default.png") {
-  //       fs.unlinkSync(`./source/public${product.image}`);
-  //     }
-  //     await Product.deleteOne({ _id: req.params.id });
-  //     res.redirect(
-  //       `/product/manage?page=${req.query.page ? req.query.page : ""}`
-  //     );
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // };
-
   deleteProduct = async (req, res, next) => {
     try {
         // Call the repository function to delete the product
@@ -493,47 +310,6 @@ class productController {
   };
 
   // [GET] product/all-product
-  // showAllProduct = async (req, res, next) => {
-  //   try {
-  //     let page = isNaN(req.query.page)
-  //       ? 1
-  //       : Math.max(1, parseInt(req.query.page));
-  //     const limit = 8;
-  //     const products = await Product.find({
-  //       $or: [{ status: "Available" }, { status: "Reported" }],
-  //     })
-  //       .skip((page - 1) * limit)
-  //       .limit(limit);
-  //     const categories = await Product.aggregate([
-  //       {
-  //         $match: {
-  //           status: { $in: ["Available", "Reported"] },
-  //         },
-  //       },
-  //       {
-  //         $group: {
-  //           _id: "$category",
-  //           count: { $sum: 1 },
-  //         },
-  //       },
-  //       {
-  //         $sort: { _id: 1 },
-  //       },
-  //     ]);
-  //     res.locals._numberOfItems = await Product.find({
-  //       $or: [{ status: "Available" }, { status: "Reported" }],
-  //     }).countDocuments();
-  //     res.locals._limit = limit;
-  //     res.locals._currentPage = page;
-
-  //     res.locals.categories = categories;
-  //     res.locals.products = mutipleMongooseToObject(products);
-  //     res.render("all-product");
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
-
   showAllProduct = async (req, res, next) => {
     try {
         const page = isNaN(req.query.page)
@@ -564,52 +340,6 @@ class productController {
 
 
   // [GET] product/all-product/category
-  // filterProduct = async (req, res, next) => {
-  //   try {
-  //     let page = isNaN(req.query.page)
-  //       ? 1
-  //       : Math.max(1, parseInt(req.query.page));
-  //     const limit = 8;
-
-  //     const type = req.query.category; //? req.query.category : 0
-  //     const products = await Product.find({
-  //       category: type,
-  //       $or: [{ status: "Available" }, { status: "Reported" }],
-  //     })
-  //       .skip((page - 1) * limit)
-  //       .limit(limit);
-  //     const categories = await Product.aggregate([
-  //       {
-  //         $match: {
-  //           status: { $in: ["Available", "Reported"] },
-  //         },
-  //       },
-  //       {
-  //         $group: {
-  //           _id: "$category",
-  //           count: { $sum: 1 },
-  //         },
-  //       },
-  //       {
-  //         $sort: { _id: 1 }, // Sắp xếp giảm dần dựa trên trường 'count'
-  //       },
-  //     ]);
-  //     res.locals._numberOfItems = await Product.find({
-  //       category: type,
-  //       $or: [{ status: "Available" }, { status: "Reported" }],
-  //     }).countDocuments();
-  //     res.locals._limit = limit;
-  //     res.locals._currentPage = page;
-
-  //     res.locals.categories = categories;
-  //     res.locals.products = mutipleMongooseToObject(products);
-
-  //     res.render("all-product");
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
-
   filterProduct = async (req, res, next) => {
     try {
         const page = isNaN(req.query.page) ? 1 : Math.max(1, parseInt(req.query.page));
@@ -675,37 +405,6 @@ class productController {
   };
 
   // [GET] product/all-product/search
-  // searchProduct = async (req, res, next) => {
-  //   try {
-  //     const page = isNaN(req.query.page) ? 1 : Math.max(1, parseInt(req.query.page));
-  //     const limit = 8;
-  //     const offset = (page - 1) * limit;
-      
-  //     const keyword = req.query.keyword || "";
-  //     if (keyword.trim() != "") {
-  //       const options = { $or: [{ status: "Available" }, { status: "Reported" }] };
-
-  //       const products = await ProductRepository.searchProductsByKeyword(keyword, options, { offset, limit });
-  //       const categories = await ProductRepository.aggregateCategories(["Available", "Reported"]);
-  //       const numberOfItems = await ProductRepository.countProductsByKeyword(keyword, options);
-
-  //       res.locals = {
-  //         _numberOfItems: numberOfItems,
-  //         _limit: limit,
-  //         _currentPage: page,
-  //         categories: categories,
-  //         products: mutipleMongooseToObject(products)
-  //       };
-
-  //       res.render("all-product");
-  //     } else {
-  //       res.redirect("back");
-  //     }
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
-
   searchProduct = async (req, res, next) => {
     try {
       let page = isNaN(req.query.page)
@@ -736,35 +435,6 @@ class productController {
   };
 
   // [GET] product/specific-product
-  // showSpecificProduct = async (req, res, next) => {
-  //   try {
-  //     const productId = req.params.id;
-
-  //     const product = await ProductRepository.findProductById(productId);
-  //     const details = product.description.split("\n");
-  //     const evaluates = await ProductRepository.findEvaluationsByProductId(productId);
-  //     const evaNumber = await ProductRepository.countEvaluationsByProductId(productId);
-  //     const avgRating = await ProductRepository.calculateAverageRating(productId);
-  //     const related = await ProductRepository.findRelatedProducts(product.keyword);
-
-  //     res.locals = {
-  //       evaNumber: evaNumber,
-  //       details: details,
-  //       product: mongooseToObject(product),
-  //       stars: avgRating,
-  //       related: related,
-  //       evaluates: mutipleMongooseToObject(evaluates)
-  //     };
-
-  //     res.render("specific-product", {
-  //       stock: product.stock,
-  //       formatCurrency: formatCurrency,
-  //     });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
-
   showSpecificProduct = async (req, res, next) => {
     try {
       const productId = req.params.id;

@@ -283,6 +283,32 @@ class ProductRepository {
             { $sort: { _id: 1 } }
         ]);
     }
+
+    async getProductById(productId) {
+        const product = await Product.findById(productId);
+        return product;
+    }
+
+    async updateProductStock(productId, quantity) {
+        const product = await this.getProductById(productId);
+        product.stock -= quantity;
+        await product.save();
+        return product.stock;
+    }
+
+    async findTrendingProducts(limit = 6) {
+        return await Product.find({
+          isTrend: true,
+          $or: [{ status: "Available" }, { status: "Reported" }],
+        })
+        .limit(limit)
+        .sort("timestamps: -1");
+      }
+
+    async getProductWithAccount(productId) {
+        const product = await Product.findOne({ _id: productId }).populate("idAccount");
+        return product;
+      }
     
 }
 

@@ -22,6 +22,11 @@ class AccountRepository {
     return bcrypt.compare(candidatePassword, userPassword);
   }
 
+  async findAccountById(accountId) {
+    const account = await Account.findOne({ _id: accountId });
+    return account;
+  }
+
   async hashPassword(password) {
     const salt = bcrypt.genSaltSync(10);
     return bcrypt.hashSync(password, salt);
@@ -121,6 +126,24 @@ class AccountRepository {
 
     await user.save();
     return user;
+  }
+
+  async findAccountWithPopulatedCart(accountId) {
+    const account = await Account.findOne({ _id: accountId }).populate({
+      path: 'cart._id',
+      populate: {
+        path: 'idAccount',
+      },
+    });
+    return account;
+  }
+
+  async updateAccountCart(accountId, newCart) {
+    await Account.updateOne({ _id: accountId }, { $set: { cart: newCart } });
+  }
+
+  async clearCart(accountId) {
+    await this.updateAccountCart(accountId, []);
   }
 }
 
