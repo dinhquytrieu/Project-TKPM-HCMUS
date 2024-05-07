@@ -86,6 +86,43 @@ class ProductRepository {
         return await Product.updateOne({ _id: productId }, { $set: { status: status } });
     }
 
+    async updateProduct(productId, formData, imagePath, hasNewFile) {
+        const product = await Product.findById(productId);
+        if (!product) {
+            throw new Error('Product not found');
+        }
+    
+        // Handle image update or replacement
+        if (hasNewFile) {
+            const currentImagePath = `./source/public${product.image}`; // Full path for server operations
+            if (product.image !== "/img/products/default.png" && fs.existsSync(currentImagePath)) {
+                fs.unlinkSync(currentImagePath); // Delete the existing image
+            }
+            formData.image = '/' + path.normalize(imagePath).replace(/\\/g, '/').replace('source/public/', '');
+        } else if (product.image === "\\img\\products\\default.png") {
+            formData.image = "/img/products/default.png";
+        }
+    
+        formData.status = "Pending"; // Default to 'Pending' for all updates
+        await Product.updateOne({ _id: productId }, formData);
+    }
+
+    async deleteProduct(productId) {
+        const product = await Product.findById(productId);
+        if (!product) {
+            throw new Error('Product not found');
+        }
+        if (product.image !== "/img/products/default.png") {
+            const imagePath = `./source/public${product.image}`;
+            if (fs.existsSync(imagePath)) {
+                fs.unlinkSync(imagePath);
+            }
+        }
+        await Product.deleteOne({ _id: productId });
+    }
+    
+    
+
     async findAllProductsPaginated(page, limit) {
         return await Product.find()
             .populate("idAccount")
@@ -178,6 +215,75 @@ class ProductRepository {
         }
         return await product.save();
     }
+
+    async findProductsByAccountAndFilters(idAccount, keyword, category, sortBy, page, limit) {
+        let options = {
+            idAccount: idAccount,
+            $or: [{ status: "Available" }, { status: "Reported" }]
+        };
+    
+        if (keyword) {
+            const regex = new RegExp(keyword, 'i');
+            options.name = regex;
+        }
+    
+        if (category) {
+            options.category = category;
+        }
+    
+        const products = await Product.find(options)
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .sort(sortBy);
+    
+        const numberOfItems = await Product.countDocuments(options);
+    
+        return { products, numberOfItems };
+    }
+
+    async createProduct(productData) {
+        const newProduct = new Product(productData);
+        await newProduct.save();
+        return newProduct;
+    }
+
+    async findPaginatedProducts(options, page, limit) {
+        const products = await Product.find(options)
+            .skip((page - 1) * limit)
+            .limit(limit);
+        return products;
+    }
+    
+    async aggregateProductCategories(statuses) {
+        return await Product.aggregate([
+            { $match: { status: { $in: statuses } } },
+            { $group: { _id: "$category", count: { $sum: 1 } } },
+            { $sort: { _id: 1 } }
+        ]);
+    }
+    
+    async countProducts(options) {
+        return await Product.find(options).countDocuments();
+    }
+
+    async findFilteredProducts(options, page, limit) {
+        return await Product.find(options)
+            .skip((page - 1) * limit)
+            .limit(limit);
+    }
+    
+    async countFilteredProducts(options) {
+        return await Product.find(options).countDocuments();
+    }
+    
+    async aggregateCategoriesByStatus(statuses) {
+        return await Product.aggregate([
+            { $match: { status: { $in: statuses } } },
+            { $group: { _id: "$category", count: { $sum: 1 } } },
+            { $sort: { _id: 1 } }
+        ]);
+    }
+    
 }
 
 module.exports = new ProductRepository();

@@ -8,6 +8,18 @@ class OrderRepository {
       .populate("idSeller")
       .sort({ date: -1 });
   }
+
+  async findOrderForEvaluation(accountId, productId) {
+    return await Order.findOne({
+        idAccount: accountId,
+        "detail.idProduct": productId,
+        "detail.isEvaluated": false
+    });
+}
+
+async saveOrder(order) {
+    return await order.save();
+}
 }
 
 module.exports = new OrderRepository();
