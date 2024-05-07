@@ -42,33 +42,31 @@
   display: flex;
   justify-content: end;
   margin-top: 5rem;
-  // button{
-  //     height: 60%;
-  //     width: 10rem;
-  // }
   button {
-    // height: 70%;
-    width: 15rem;
-    font-size: 1.5rem;
-    font-weight: 500;
-    border-radius: 0.5rem;
-    padding: 1rem 0rem;
-    transition: all 0.3s;
+    width: 15vw;
+    border-radius: 15px;
+    border: 1px solid transparent;
+    text-transform: uppercase;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
     text-align: center;
-    margin-top: 2rem;
-    margin-right: 1rem;
-    background-color: var(--dark-blue);
-    // width: calc(33.33%);
-    color: white;
-
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    border: 0.1rem solid black;
-
-    &:hover {
-      background-color: var(--light-blue);
-      color: black;
-    }
+    background: #0a4f8b;
+    color: #fff;
+    font-weight: 700;
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease; 
   }
+  button:hover,
+  button:focus {
+    border: 1px solid #044985;
+    color: #0a4f8b;
+    font-weight: 700;
+    background-color: #fff;
+    border-color: #0a4f8b;
+    animation: pulse 1s;
+    box-shadow: 0 0 0 2em transparent;
+  }
+
 }
 
 .contract-container {
