@@ -31,6 +31,10 @@ cartSlider.addEventListener("click", (e) => {
   e.stopPropagation();
 });
 
+const formatCurrency = (price) => {
+  return Number(price).toLocaleString("it-IT", { style: "currency", currency: "VND" });
+}
+
 async function buildCartScreen(products) {
   // Tạo giao diện cho Cart screen
   cartList.innerHTML = "";
@@ -49,10 +53,9 @@ async function buildCartScreen(products) {
           <p class="product-title">${product.name}</p>
           <p class="product-quantity-price">
             <span class="product-quantity">${product.quantity}</span>x
-            <span class="product-price">${product.price.toLocaleString(
-              "it-IT",
-              { style: "currency", currency: "VND" }
-            )}</span>
+            <span class="product-price">
+              ${product.price} ₫
+            </span>
           </p>
         </div>
         <i class="fa-thin fa-circle-xmark col-1 d-flex align-items-center product-close-btn" onclick="deleteFromCart('${
@@ -73,10 +76,7 @@ async function buildCartScreen(products) {
       `
       <p class="cart-price text-capitalize text-center">
         Total payment:
-        <span>${totalPay.toLocaleString("it-IT", {
-          style: "currency",
-          currency: "VND",
-        })}</span>
+        <span>${totalPay} ₫</span>
       </p>
       <a class="btn text-uppercase" href="/order/payment-for-cart" role="button">Pay for cart</a>
     `

@@ -111,7 +111,7 @@
                     <p class='list-inline-item'>Shop: {{this.idAccount.shopName}}</p>
                     <div class='list-inline-item'>Status: <div class='list-inline-item status'>{{this.status}}</div> | {{#if this.isTrend}} onTrend {{else}} Pending {{/if}} </div>
                     <p class='list-inline-item'>Category: {{this.category}}</p>
-                    <p class='list-inline-item'>Price: {{this.price}}</p>
+                    <p class='list-inline-item'>Price: {{formatCurrency this.price}}</p>
                     <p class='list-inline-item flex-fill'>Stock: {{this.stock}}</p>
                   
                   </div>

@@ -391,7 +391,14 @@ class productController {
 
       res.locals.categories = categories;
       res.locals.products = mutipleMongooseToObject(products);
-      res.render("all-product");
+      res.render("all-product", {
+        convertMoney: (str) => {
+          return Number(str).toLocaleString("it-IT", {
+            style: "currency",
+            currency: "VND",
+          });
+        },
+      });
     } catch (error) {
       next(error);
     }
@@ -438,7 +445,15 @@ class productController {
       res.locals.categories = categories;
       res.locals.products = mutipleMongooseToObject(products);
 
-      res.render("all-product");
+      res.render("all-product", {
+        convertMoney: (str) => {
+          return Number(str).toLocaleString("it-IT", {
+            style: "currency",
+            currency: "VND",
+          });
+        },
+        formatCurrency: formatCurrency,
+      });
     } catch (error) {
       next(error);
     }
@@ -472,7 +487,15 @@ class productController {
         products: mutipleMongooseToObject(products)
       };
 
-      res.render("all-product");
+      res.render("all-product", {
+        convertMoney: (str) => {
+          return Number(str).toLocaleString("it-IT", {
+            style: "currency",
+            currency: "VND",
+          });
+        },
+        formatCurrency: formatCurrency,
+      });
     } catch (error) {
       next(error);
     }

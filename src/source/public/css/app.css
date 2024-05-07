@@ -488,7 +488,7 @@ a.btn:hover, a.btn:active, a.btn:first-child:active,
 
 .subnav {
   position: absolute;
-  top: calc(100% + 1rem);
+  top: calc(85%);
   left: 2rem;
   font-size: 1.6rem;
   font-weight: normal;
@@ -1346,7 +1346,8 @@ section article.skills {
       cursor: pointer; }
       .specific-product .comment-section .comment-item .comment-main .comment-user .report-section button {
         display: none;
-        background-color: rgba(59, 153, 215, 0.7);
+        /* background-color: rgba(59, 153, 215, 0.7); */
+        background-color: #3b99d7;
         border-radius: 5px;
         height: 3.3rem;
         font-size: 1.5rem;
