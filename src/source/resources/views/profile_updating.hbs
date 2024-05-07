@@ -19,7 +19,9 @@
             </div>
             <div class='signup-btn'>
               <button type='button' class='btn btn-outline-secondary'
-                onclick="window.location.href='/account/sign-out';">SIGN OUT</button>
+                onclick="window.location.href='/account/sign-out';"
+                style="border-radius: 6px; margin-top: 6px;"
+                >SIGN OUT</button>
             </div>
           </div>
         </div>
@@ -52,57 +54,59 @@
       <div class='col-9'>
         <form class='row g-3' id='form-1' method="POST" action="/account/my-profile/{{user._id}}/update">
           <div class='col-md-6'>
-            <label class='form-label fw-bold'>First name*</label>
+            <label class='form-label fw-bold mb-3'>First name*</label>
             <input id='firstName' type='text' class='form-control input-size shadow' name="firstName"
-              value="{{user.firstName}}" />
+              value="{{user.firstName}}" style="border-radius: 10px; padding-left: 16px;" />
 
           </div>
           <div class='col-md-6'>
 
-            <label class='form-label fw-bold'>Last name*</label>
+            <label class='form-label fw-bold mb-3'>Last name*</label>
             <input id='lastName' type='text' class='form-control input-size shadow' name="lastName"
-              value="{{user.lastName}}" />
+              value="{{user.lastName}}" style="border-radius: 10px; padding-left: 16px;"/>
           </div>
           <div class='col-12'>
-            <label class='form-label fw-bold'>Address</label>
+            <label class='form-label fw-bold mb-3'>Address</label>
             <input id='address' type='text' class='form-control input-size shadow' placeholder='' name="address"
-              value="{{user.address}}" />
+              value="{{user.address}}" style="border-radius: 10px; padding-left: 16px;"/>
           </div>
           <div class='col-12'>
-            <label class='form-label fw-bold'>Email*</label>
+            <label class='form-label fw-bold mb-3'>Email*</label>
             <input id='email' type='text' class='form-control input-size shadow' placeholder='' name="email"
-              value="{{user.email}}" />
+              value="{{user.email}}" style="border-radius: 10px; padding-left: 16px;"/>
           </div>
-          <input type='hidden' id='avatarPath' name='avatarPath' value='{{user.avatar}}'>
+          <input type='hidden' id='avatarPath' name='avatarPath' value='{{user.avatar}}' style="border-radius: 10px; padding-left: 16px;">
           {{!-- <img id='avatar-image' src='{{user.avatar}}' alt='Avatar' /> --}}
           <div class='col-md-6'>
-            <label class='form-label fw-bold'>Phone number*</label>
-            <input id='phone' type='text' class='form-control input-size shadow' name="phone" value="{{user.phone}}"
+            <label class='form-label fw-bold mb-3'>Phone number*</label>
+            <input id='phone' type='text' class='form-control input-size shadow' name="phone" value="{{user.phone}}" style="border-radius: 10px; padding-left: 16px;"
              />
           </div>
           <div class='col-md-6'>
-            <label class='form-label fw-bold'>Job</label>
-            <input id='job' type='text' class='form-control input-size shadow' name="job" value="{{user.job}}"
+            <label class='form-label fw-bold mb-3'>Job</label>
+            <input id='job' type='text' class='form-control input-size shadow' name="job" value="{{user.job}}" style="border-radius: 10px; padding-left: 16px;"
              />
           </div>
           <div class='col-12 change-password fw-bold'>
             CHANGE PASSWORD
           </div>
           <div class='col-12'>
-            <label class='form-label fw-bold'>Present password*</label>
-            <input id='present-password' type='password' class='form-control input-size shadow' placeholder=''
+            <label class='form-label fw-bold mb-3'>Present password*</label>
+            <input id='present-password' type='password' class='form-control input-size shadow' placeholder='' style="border-radius: 10px; padding-left: 16px;"
             name="presentPassword" />
           </div>
 
           <div class='col-12'>
-            <label class='form-label fw-bold'>New password*</label>
-            <input id='new-password' type='password' class='form-control input-size shadow' placeholder='' 
+            <label class='form-label fw-bold mb-3'>New password*</label>
+            <input id='new-password' type='password' class='form-control input-size shadow' placeholder='' style="border-radius: 10px; padding-left: 16px;" 
             name="newPassword"/>
           </div>
 
           <div class='col-12 save-changes'>
-            <button type="submit" class='form-submit btn btn-outline-secondary shadow'>SAVE
-              CHANGES</button>
+            <button type="submit" class='form-submit btn btn-outline-secondary shadow' 
+              style="border-radius: 10px; margin-top: 16px; border: none;"
+            >
+              SAVE CHANGES</button>
           </div>
         </form>
       </div>
