@@ -1,3 +1,6 @@
+// API calls for product: These routes define the endpoints at which the server listens for requests, 
+// and they are mapped to specific controller functions that execute the logic related to these requests.
+
 const express = require("express");
 const { upload } = require("../utils/upload-file");
 const productController = require("../controllers/product.controller");

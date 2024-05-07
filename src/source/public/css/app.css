@@ -232,25 +232,23 @@ a.btn:hover, a.btn:active, a.btn:first-child:active,
 
 .search-bar {
   position: relative; }
-  .search-bar .search-bar {
-    position: relative; }
-    .search-bar .search-bar .search-input {
-      height: 3.4rem;
-      width: 100%;
-      border-radius: 2rem;
-      background-color: rgba(255, 255, 255, 0.2);
+  .search-bar .search-input {
+    height: 3.4rem;
+    width: 100%;
+    border-radius: 2rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff; }
+    .search-bar .search-input::placeholder {
       color: #fff; }
-      .search-bar .search-bar .search-input::placeholder {
-        color: #fff; }
-    .search-bar .search-bar .search-icon-link {
-      width: 2rem;
-      font-size: 1.6rem;
-      position: absolute;
-      right: 2rem;
-      top: 2rem;
-      background-color: transparent; }
-      .search-bar .search-bar .search-icon-link .search-icon::before {
-        color: #fff; }
+  .search-bar .search-icon-link {
+    width: 2rem;
+    font-size: 1.6rem;
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+    background-color: transparent; }
+    .search-bar .search-icon-link .search-icon::before {
+      color: #fff; }
 
 .header.light {
   background-image: url("/img/bg1.png"); }
@@ -2438,12 +2436,13 @@ section article.skills {
       background-color: rgba(76, 171, 253, 0.3);
       border-radius: 5px;
       text-align: start;
-      width: 18rem; }
+      width: 98%; }
       .admin .admin-sidebar .nav-item .active {
         background-color: #3b99d7;
         color: #fff; }
     .admin .admin-sidebar .nav-link {
-      color: #000; }
+      color: #000;
+      padding-left: 2.65rem; }
     .admin .admin-sidebar .nav-icon {
       margin-right: 0.5rem; }
     .admin .admin-sidebar .nav-title {

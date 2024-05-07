@@ -140,32 +140,28 @@
 .search-bar {
   position: relative;
 
-  .search-bar {
-    position: relative;
+  .search-input {
+    height: 3.4rem;
+    width: 100%;
+    border-radius: 2rem;
+    background-color: rgba($color: $color-white, $alpha: 0.2);
+    color: #fff;
 
-    .search-input {
-      height: 3.4rem;
-      width: 100%;
-      border-radius: 2rem;
-      background-color: rgba($color: $color-white, $alpha: 0.2);
+    &::placeholder {
       color: #fff;
-
-      &::placeholder {
-        color: #fff;
-      }
     }
+  }
 
-    .search-icon-link {
-      width: 2rem;
-      font-size: 1.6rem;
-      position: absolute;
-      right: 2rem;
-      top: 2rem;
-      background-color: transparent;
+  .search-icon-link {
+    width: 2rem;
+    font-size: 1.6rem;
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+    background-color: transparent;
 
-      .search-icon::before {
-        color: #fff;
-      }
+    .search-icon::before {
+      color: #fff;
     }
   }
 }

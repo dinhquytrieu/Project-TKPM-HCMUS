@@ -172,21 +172,33 @@ class productController {
     try {
       // Lưu thông tin sản phẩm vào trong database
       const formData = req.body;
-      formData.idAccount = req.user.id;
+      formData.idAccount = req.user.id; // Ensure you're setting the correct account ID
       formData.price = Number(formData.price);
       formData.stock = Number(formData.stock);
       formData.isTrend = Number(formData.isTrend);
-      formData.keyword = formData.keyword.split(",");
-      formData.keyword = formData.keyword.map((str) => str.trim());
+      formData.keyword = formData.keyword.split(",").map((str) => str.trim());
       if (formData.isTrend) {
         formData.status = "Trending";
+      } else {
+        formData.status = "Pending"; // Set default status
       }
       formData.isTrend = false;
+
+      // Handling image upload
       if (req.file && !req.fileValidationError) {
-        formData.image = req.file.path.replace("source/public", "");
+        const imagePath = `./source/public${formData.image}`; // Full path for server operations
+        // Check and potentially remove a previously stored image
+        if (formData.image !== "/img/products/default.png" && fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath);
+        }
+
+        // Correctly remove 'source/public/' from the path before saving it in formData
+        formData.image = '/' + path.normalize(req.file.path).replace(/\\/g, '/').replace('source/public/', '');
       } else {
+        // Handle default image case or file validation error
         formData.image = "/img/products/default.png";
       }
+
       const newProduct = new Product(formData);
       await newProduct.save();
       res.render("message/processing-request");
@@ -212,27 +224,6 @@ class productController {
       next(err);
     }
   };
-
-  // [POST] product/edit/save/:id
-  // updateProduct = async (req, res, next) => {
-  //   try {
-  //     const formData = req.body;
-  //     const product = await Product.findById(req.params.id);
-  //     if (req.file) {
-  //       if (product.image != "/img/products/default.png") {
-  //         fs.unlinkSync(`./source/public${product.image}`);
-  //       }
-  //       formData.image = req.file.path.replace("source/public", "");
-  //     } else if (product.image == "/img/products/default.png") {
-  //       formData.image = "/img/products/default.png";
-  //     }
-  //     formData.status = "Pending";
-  //     await Product.updateOne({ _id: req.params.id }, formData);
-  //     res.render("message/processing-request");
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // };
 
   // [POST] product/edit/save/:id
   updateProduct = async (req, res, next) => {
@@ -478,38 +469,6 @@ class productController {
     }
   };
 
-  // [GET] product/all-product/search
-  // searchProduct = async (req, res, next) => {
-  //   try {
-  //     const page = isNaN(req.query.page) ? 1 : Math.max(1, parseInt(req.query.page));
-  //     const limit = 8;
-  //     const offset = (page - 1) * limit;
-      
-  //     const keyword = req.query.keyword || "";
-  //     if (keyword.trim() != "") {
-  //       const options = { $or: [{ status: "Available" }, { status: "Reported" }] };
-
-  //       const products = await ProductRepository.searchProductsByKeyword(keyword, options, { offset, limit });
-  //       const categories = await ProductRepository.aggregateCategories(["Available", "Reported"]);
-  //       const numberOfItems = await ProductRepository.countProductsByKeyword(keyword, options);
-
-  //       res.locals = {
-  //         _numberOfItems: numberOfItems,
-  //         _limit: limit,
-  //         _currentPage: page,
-  //         categories: categories,
-  //         products: mutipleMongooseToObject(products)
-  //       };
-
-  //       res.render("all-product");
-  //     } else {
-  //       res.redirect("back");
-  //     }
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
-
   searchProduct = async (req, res, next) => {
     try {
       let page = isNaN(req.query.page)
@@ -538,36 +497,6 @@ class productController {
       next(error);
     }
   };
-
-  // [GET] product/specific-product
-  // showSpecificProduct = async (req, res, next) => {
-  //   try {
-  //     const productId = req.params.id;
-
-  //     const product = await ProductRepository.findProductById(productId);
-  //     const details = product.description.split("\n");
-  //     const evaluates = await ProductRepository.findEvaluationsByProductId(productId);
-  //     const evaNumber = await ProductRepository.countEvaluationsByProductId(productId);
-  //     const avgRating = await ProductRepository.calculateAverageRating(productId);
-  //     const related = await ProductRepository.findRelatedProducts(product.keyword);
-
-  //     res.locals = {
-  //       evaNumber: evaNumber,
-  //       details: details,
-  //       product: mongooseToObject(product),
-  //       stars: avgRating,
-  //       related: related,
-  //       evaluates: mutipleMongooseToObject(evaluates)
-  //     };
-
-  //     res.render("specific-product", {
-  //       stock: product.stock,
-  //       formatCurrency: formatCurrency,
-  //     });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
 
   showSpecificProduct = async (req, res, next) => {
     try {
@@ -618,26 +547,40 @@ class productController {
     }
   };
 
-  // [GET] product/full
+  // [GET] product/full (Admin - Products)
   getFullProduct = async (req, res, next) => {
     try {
       const page = isNaN(req.query.page) ? 1 : Math.max(1, parseInt(req.query.page));
       const limit = 10;
+      const searchQuery = req.query.search || '';
+      // console.log('Search query:', searchQuery);
 
-      const product1 = await ProductRepository.findAllProductsPaginated(page, limit);
-      const allProducts = mutipleMongooseToObject(product1);
+      const products = await ProductRepository.findAllProductsPaginated(page, limit, searchQuery);
+      // console.log('Products:', products);
+      const allProducts = mutipleMongooseToObject(products);
 
-      const numberOfItems = await ProductRepository.countAllProducts();
+      const numberOfItems = await ProductRepository.countAllProducts(searchQuery);
 
-      res.locals._numberOfItems = numberOfItems;
-      res.locals._limit = limit;
-      res.locals._currentPage = page;
+      if (req.query.json) {
+        // If a 'json' query parameter is present, respond with JSON
+        return res.json({
+          products: allProducts,
+          _numberOfItems: numberOfItems,
+          _limit: limit,
+          _currentPage: page
+        });
+      }
 
+      // Otherwise, render the page as usual
       res.render("admin_product_all", {
         products: allProducts,
         numOfProducts: allProducts.length,
+        _numberOfItems: numberOfItems,
+        _limit: limit,
+        _currentPage: page
       });
     } catch (error) {
+      console.error('Error in getFullProduct:', error);
       next(error);
     }
   };

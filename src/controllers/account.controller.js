@@ -8,7 +8,7 @@ const fs = require("fs");
 // const path = require("path");
 const passport = require("passport");
 const { sendForgotPasswordMail } = require("../utils/mail");
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
 const {
   mutipleMongooseToObject,
   mongooseToObject,

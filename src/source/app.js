@@ -14,7 +14,9 @@ const passport = require("../middleware/passport");
 const redisStore = require("connect-redis").default;
 const { createClient } = require("redis");
 const redisClient = createClient({
-  url: "redis://127.0.0.1:6379",
+  url: "redis://redis-16889.c299.asia-northeast1-1.gce.redns.redis-cloud.com:16889",
+  username: 'default',
+  password: 'qexkipbn3hm1Ef12PSfuOaFUU2cirJyy'
 });
 
 redisClient.connect().catch(console.error);
@@ -89,19 +91,13 @@ app.use((req, res, next) => {
     res.locals._cartNumber = 0;
   }
   if (!res.locals._cartNumber) {
-    res.locals._cartNumber = req.session.cart.reduce(
-      (accum, product) => accum + product.quantity,
-      0
-    );
+    res.locals._cartNumber = req.session.cart.length;
   }
   if (res.locals.isLoggedIn) {
     res.locals._id = req.user._id;
     res.locals._firstName = req.user.firstName;
     require("../middleware/cartInit")(req, res, next);
-    res.locals._cartNumber = req.user.cart.reduce(
-      (accum, product) => accum + product.quantity,
-      0
-    );
+    res.locals._cartNumber = req.session.cart.length;
     if (!req.session.readAnnounce) {
       req.session.readAnnounce = req.user.readAnnounce;
     }
