@@ -34,8 +34,8 @@
             <i class='fa-solid fa-circle-user user-avatar'></i>
             <span>Hi, {{_firstName}}!</span></a>
         {{else}}
-        <a class='btn btn-log-in text-uppercase ms-auto me-3' href='/account/sign-in' role='button'>sign in</a>
-        <a class='btn btn-sign-up text-uppercase me-5' href='/account/sign-up' role='button'>sign up</a>
+        <a class='btn-log-in ms-auto me-3' href='/account/sign-in' role='button'>sign in</a>
+        <a class='btn-log-in me-5' href='/account/sign-up' role='button'>sign up</a>
         {{/if}}
         <i class='fa-solid fa-cart-shopping cart-icon' onclick="getCart()"></i>
         <span class='badge badge-warning' id='lblCartCount'>{{_cartNumber}}</span>
