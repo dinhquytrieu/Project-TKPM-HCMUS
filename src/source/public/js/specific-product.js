@@ -15,10 +15,10 @@ async function addCart(id, quantity) {
         body: JSON.stringify({ id: id, quantity: quantity }),
       });
       let products = await res.json();
-      const cartNumber = products.reduce(
-        (accum, product) => accum + product.quantity,
-        0
-      );
+
+      // Update cartNumber to represent the count of unique products
+      const cartNumber = products.length; // This now counts the number of unique product entries
+
       document.getElementById("lblCartCount").innerText = `${cartNumber}`;
       getCart();
     }

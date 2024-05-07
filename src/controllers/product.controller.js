@@ -168,7 +168,6 @@ class productController {
   };
 
   // [POST] product/edit/save
-  // [POST] product/edit/save
   createNewProduct = async (req, res, next) => {
     try {
       // Lưu thông tin sản phẩm vào trong database
