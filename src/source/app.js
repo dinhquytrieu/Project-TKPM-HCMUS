@@ -83,42 +83,32 @@ app.use(flash());
 
 // Middleware khởi tạo các thông tin cần thiết cho người dùng như trạng thái đăng nhập, giỏ hàng, ...
 app.use((req, res, next) => {
-  // Check if the user is logged in and store the state in isLoggedIn
+  // Check coi người dùng đăng nhập hay chưa, lưu trạng thái vào isLoggedIn
   res.locals.isLoggedIn = req.isAuthenticated();
-
-  // Initialize the cart if it does not exist in the session
+  // Khởi tạo giỏ hàng
   if (!req.session.cart) {
     req.session.cart = [];
-    res.locals._cartNumber = 0;  // Number of unique items in the cart is zero if cart is empty
+    res.locals._cartNumber = 0;
   }
-
-  // If res.locals._cartNumber is not initialized, calculate the number of unique items in the session cart
   if (!res.locals._cartNumber) {
-    res.locals._cartNumber = req.session.cart.length;  // Number of unique products in the session cart
+    res.locals._cartNumber = req.session.cart.reduce(
+      (accum, product) => accum + product.quantity,
+      0
+    );
   }
-
-  // Additional settings and initializations if the user is logged in
   if (res.locals.isLoggedIn) {
     res.locals._id = req.user._id;
     res.locals._firstName = req.user.firstName;
-    
-    // Initialize the cart from user's stored cart information
-    require("../middleware/cartInit")(req, res, async () => {
-      // Update _cartNumber based on the user's cart from the database after initialization
-      if (req.user && req.user.cart) {
-        res.locals._cartNumber = req.user.cart.length;  // Number of unique products in the user's cart
-      }
-      
-      // Check if announcements have been read, synchronize session with user's state
-      if (!req.session.readAnnounce && req.user.readAnnounce) {
-        req.session.readAnnounce = req.user.readAnnounce;
-      }
-
-      next();  // Proceed to the next middleware
-    });
-  } else {
-    next();  // If not logged in, just continue to the next middleware
+    require("../middleware/cartInit")(req, res, next);
+    res.locals._cartNumber = req.user.cart.reduce(
+      (accum, product) => accum + product.quantity,
+      0
+    );
+    if (!req.session.readAnnounce) {
+      req.session.readAnnounce = req.user.readAnnounce;
+    }
   }
+  next();
 });
 
 // ROUTES INIT
