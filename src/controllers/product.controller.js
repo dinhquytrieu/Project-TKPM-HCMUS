@@ -168,25 +168,38 @@ class productController {
   };
 
   // [POST] product/edit/save
+  // [POST] product/edit/save
   createNewProduct = async (req, res, next) => {
     try {
       // Lưu thông tin sản phẩm vào trong database
       const formData = req.body;
-      formData.idAccount = req.user.id;
+      formData.idAccount = req.user.id; // Ensure you're setting the correct account ID
       formData.price = Number(formData.price);
       formData.stock = Number(formData.stock);
       formData.isTrend = Number(formData.isTrend);
-      formData.keyword = formData.keyword.split(",");
-      formData.keyword = formData.keyword.map((str) => str.trim());
+      formData.keyword = formData.keyword.split(",").map((str) => str.trim());
       if (formData.isTrend) {
         formData.status = "Trending";
+      } else {
+        formData.status = "Pending"; // Set default status
       }
       formData.isTrend = false;
+
+      // Handling image upload
       if (req.file && !req.fileValidationError) {
-        formData.image = req.file.path.replace("source/public", "");
+        const imagePath = `./source/public${formData.image}`; // Full path for server operations
+        // Check and potentially remove a previously stored image
+        if (formData.image !== "/img/products/default.png" && fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath);
+        }
+
+        // Correctly remove 'source/public/' from the path before saving it in formData
+        formData.image = '/' + path.normalize(req.file.path).replace(/\\/g, '/').replace('source/public/', '');
       } else {
+        // Handle default image case or file validation error
         formData.image = "/img/products/default.png";
       }
+
       const newProduct = new Product(formData);
       await newProduct.save();
       res.render("message/processing-request");
@@ -194,6 +207,32 @@ class productController {
       next(err);
     }
   };
+  // createNewProduct = async (req, res, next) => {
+  //   try {
+  //     // Lưu thông tin sản phẩm vào trong database
+  //     const formData = req.body;
+  //     formData.idAccount = req.user.id;
+  //     formData.price = Number(formData.price);
+  //     formData.stock = Number(formData.stock);
+  //     formData.isTrend = Number(formData.isTrend);
+  //     formData.keyword = formData.keyword.split(",");
+  //     formData.keyword = formData.keyword.map((str) => str.trim());
+  //     if (formData.isTrend) {
+  //       formData.status = "Trending";
+  //     }
+  //     formData.isTrend = false;
+  //     if (req.file && !req.fileValidationError) {
+  //       formData.image = req.file.path.replace("source/public", "");
+  //     } else {
+  //       formData.image = "/img/products/default.png";
+  //     }
+  //     const newProduct = new Product(formData);
+  //     await newProduct.save();
+  //     res.render("message/processing-request");
+  //   } catch (err) {
+  //     next(err);
+  //   }
+  // };
 
   // [GET] product/edit/:id
   getEditForUpdate = async (req, res, next) => {
