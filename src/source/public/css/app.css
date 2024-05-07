@@ -2205,6 +2205,11 @@ section article.skills {
     margin-bottom: 2rem; }
   .admin .admin-announce-box {
     margin-bottom: 2rem; }
+    .admin .admin-announce-box {
+      padding: 16px 24px;
+      border-radius: 20px;
+      background: rgba(217, 237, 247, 0.5);
+      margin-bottom: 2rem; }
     .admin .admin-announce-box .content {
       max-width: 80rem; }
     .admin .admin-announce-box .view-more-announcement {
