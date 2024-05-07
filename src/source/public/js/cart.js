@@ -84,7 +84,12 @@ async function buildCartScreen(products) {
   } else {
     const cartPrice = document.querySelector(".cart .cart-price");
     const cartPayBtn = document.querySelector(".cart a.btn");
-    cartList.innerHTML = `<p class="cart-empty-text text-center mt-5 ">You don't have any products in your cart !</p>`;
+    cartList.innerHTML = `
+    <div class="mt-5" style="display: flex; flex-direction: column; align-items: center;">
+      <img src="/img/empty_cart.png" alt="Empty cart" style="width: 50%; height: auto;"/>
+      <p class="cart-empty-text text-center" style="font-weight: bold; font-size: 3rem;">Empty cart</p>
+    </div>
+    `;
     cartPrice?.classList.add("d-none");
     cartPayBtn?.classList.add("d-none");
   }
