@@ -77,60 +77,52 @@ const { mongooseToObject } = require("../utils/mongoose");
 
 async function initCart(req, res, next) {
   try {
-    // Nếu người dùng đã đăng nhập thì đồng nhất giỏ hàng ở trong session với lại giỏ hàng ở trong user sau đó update DB
+    // Check if user is logged in to synchronize the cart items
     if (req.user) {
-      // Tạo deep copy
-      reqUserCart = JSON.parse(JSON.stringify(req.user.cart));
-      reqSessionCart = JSON.parse(JSON.stringify(req.session.cart));
-      reqUserCart.forEach(async (eleUser, idxUser) => {
-        let isFound = false;
-        reqSessionCart.forEach((eleSess, idxSess) => {
-          if (eleUser._id == eleSess._id) {
-            if (eleUser.quantity != eleSess.quantity) {
-              let maxQuantity = Math.max(
-                req.user.cart[idxUser].quantity,
-                req.session.cart[idxSess].quantity
-              );
-              req.user.cart[idxUser].quantity = maxQuantity;
-              req.session.cart[idxSess].quantity = maxQuantity;
-            }
-            isFound = true;
-            return;
-          }
-        });
+      // Deep copy the carts
+      const reqUserCart = JSON.parse(JSON.stringify(req.user.cart));
+      const reqSessionCart = JSON.parse(JSON.stringify(req.session.cart));
+
+      // Synchronize from user's cart to session cart
+      reqUserCart.forEach(async (eleUser) => {
+        let isFound = reqSessionCart.some(eleSess => eleSess._id === eleUser._id);
         if (!isFound) {
           let productInfo = await Product.findById(eleUser._id);
           productInfo = mongooseToObject(productInfo);
           productInfo.quantity = eleUser.quantity;
           req.session.cart.push(productInfo);
+        } else {
+          const sessionItem = reqSessionCart.find(eleSess => eleSess._id === eleUser._id);
+          const maxQuantity = Math.max(eleUser.quantity, sessionItem.quantity);
+          sessionItem.quantity = maxQuantity;
         }
       });
 
-      reqSessionCart.forEach(async (eleSess, idxSess) => {
-        let isFound = false;
-        reqUserCart.forEach((eleUser, idxUser) => {
-          if (eleUser._id == eleSess._id) {
-            isFound = true;
-            return;
-          }
-        });
-        if (!isFound) {
-          req.user.cart.push({
+      // Synchronize from session cart to user's cart
+      reqSessionCart.forEach((eleSess) => {
+        let userItem = reqUserCart.find(eleUser => eleUser._id === eleSess._id);
+        if (!userItem) {
+          reqUserCart.push({
             _id: eleSess._id,
             quantity: eleSess.quantity,
           });
+        } else {
+          userItem.quantity = eleSess.quantity; // Ensure quantity is synchronized
         }
-        await Account.findOneAndUpdate(
-          { _id: req.user._id },
-          { cart: req.user.cart }
-        );
       });
-      let cart = req.session.cart;
+
+      // Update the user cart in the database
+      await Account.findOneAndUpdate(
+        { _id: req.user._id },
+        { cart: reqUserCart }
+      );
+
       // Update the cart number to reflect the count of unique items
-      res.locals._cartNumber = reqSessionCart.length;
+      res.locals._cartNumber = reqSessionCart.length; // Count of unique products
     }
   } catch (err) {
     next(err);
   }
 }
+
 module.exports = initCart;
