@@ -206,32 +206,6 @@ class productController {
       next(err);
     }
   };
-  // createNewProduct = async (req, res, next) => {
-  //   try {
-  //     // Lưu thông tin sản phẩm vào trong database
-  //     const formData = req.body;
-  //     formData.idAccount = req.user.id;
-  //     formData.price = Number(formData.price);
-  //     formData.stock = Number(formData.stock);
-  //     formData.isTrend = Number(formData.isTrend);
-  //     formData.keyword = formData.keyword.split(",");
-  //     formData.keyword = formData.keyword.map((str) => str.trim());
-  //     if (formData.isTrend) {
-  //       formData.status = "Trending";
-  //     }
-  //     formData.isTrend = false;
-  //     if (req.file && !req.fileValidationError) {
-  //       formData.image = req.file.path.replace("source/public", "");
-  //     } else {
-  //       formData.image = "/img/products/default.png";
-  //     }
-  //     const newProduct = new Product(formData);
-  //     await newProduct.save();
-  //     res.render("message/processing-request");
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // };
 
   // [GET] product/edit/:id
   getEditForUpdate = async (req, res, next) => {
@@ -250,27 +224,6 @@ class productController {
       next(err);
     }
   };
-
-  // [POST] product/edit/save/:id
-  // updateProduct = async (req, res, next) => {
-  //   try {
-  //     const formData = req.body;
-  //     const product = await Product.findById(req.params.id);
-  //     if (req.file) {
-  //       if (product.image != "/img/products/default.png") {
-  //         fs.unlinkSync(`./source/public${product.image}`);
-  //       }
-  //       formData.image = req.file.path.replace("source/public", "");
-  //     } else if (product.image == "/img/products/default.png") {
-  //       formData.image = "/img/products/default.png";
-  //     }
-  //     formData.status = "Pending";
-  //     await Product.updateOne({ _id: req.params.id }, formData);
-  //     res.render("message/processing-request");
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // };
 
   // [POST] product/edit/save/:id
   updateProduct = async (req, res, next) => {
@@ -516,38 +469,6 @@ class productController {
     }
   };
 
-  // [GET] product/all-product/search
-  // searchProduct = async (req, res, next) => {
-  //   try {
-  //     const page = isNaN(req.query.page) ? 1 : Math.max(1, parseInt(req.query.page));
-  //     const limit = 8;
-  //     const offset = (page - 1) * limit;
-      
-  //     const keyword = req.query.keyword || "";
-  //     if (keyword.trim() != "") {
-  //       const options = { $or: [{ status: "Available" }, { status: "Reported" }] };
-
-  //       const products = await ProductRepository.searchProductsByKeyword(keyword, options, { offset, limit });
-  //       const categories = await ProductRepository.aggregateCategories(["Available", "Reported"]);
-  //       const numberOfItems = await ProductRepository.countProductsByKeyword(keyword, options);
-
-  //       res.locals = {
-  //         _numberOfItems: numberOfItems,
-  //         _limit: limit,
-  //         _currentPage: page,
-  //         categories: categories,
-  //         products: mutipleMongooseToObject(products)
-  //       };
-
-  //       res.render("all-product");
-  //     } else {
-  //       res.redirect("back");
-  //     }
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
-
   searchProduct = async (req, res, next) => {
     try {
       let page = isNaN(req.query.page)
@@ -576,36 +497,6 @@ class productController {
       next(error);
     }
   };
-
-  // [GET] product/specific-product
-  // showSpecificProduct = async (req, res, next) => {
-  //   try {
-  //     const productId = req.params.id;
-
-  //     const product = await ProductRepository.findProductById(productId);
-  //     const details = product.description.split("\n");
-  //     const evaluates = await ProductRepository.findEvaluationsByProductId(productId);
-  //     const evaNumber = await ProductRepository.countEvaluationsByProductId(productId);
-  //     const avgRating = await ProductRepository.calculateAverageRating(productId);
-  //     const related = await ProductRepository.findRelatedProducts(product.keyword);
-
-  //     res.locals = {
-  //       evaNumber: evaNumber,
-  //       details: details,
-  //       product: mongooseToObject(product),
-  //       stars: avgRating,
-  //       related: related,
-  //       evaluates: mutipleMongooseToObject(evaluates)
-  //     };
-
-  //     res.render("specific-product", {
-  //       stock: product.stock,
-  //       formatCurrency: formatCurrency,
-  //     });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
 
   showSpecificProduct = async (req, res, next) => {
     try {
@@ -662,8 +553,10 @@ class productController {
       const page = isNaN(req.query.page) ? 1 : Math.max(1, parseInt(req.query.page));
       const limit = 10;
       const searchQuery = req.query.search || '';
+      // console.log('Search query:', searchQuery);
 
       const products = await ProductRepository.findAllProductsPaginated(page, limit, searchQuery);
+      // console.log('Products:', products);
       const allProducts = mutipleMongooseToObject(products);
 
       const numberOfItems = await ProductRepository.countAllProducts(searchQuery);

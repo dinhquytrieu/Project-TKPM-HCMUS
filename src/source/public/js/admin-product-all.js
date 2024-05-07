@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Handle search input for dynamic searching
     searchInput.addEventListener('input', function () {
-        console.log('Search:', searchInput.value);
+        // console.log('Search:', searchInput.value);
         fetchAndUpdateProducts(1); // Always revert to page 1 for new searches
     });
 
@@ -85,7 +85,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Initialize or update pagination dynamically
-    function initPagination(currentPage, numberOfItems, limit) {
+    window.initPagination = function(currentPage, numberOfItems, limit) {
+        console.log('Pagination:', currentPage, numberOfItems, limit);
         const numPages = Math.ceil(numberOfItems / limit);
         const leftMost = currentPage - ((currentPage - 1) % 3);
         pagination.innerHTML = ''; // Clear existing pagination
@@ -103,7 +104,27 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             pagination.classList.add("d-none");
         }
-    }
+    };
+    // function initPagination(currentPage, numberOfItems, limit) {
+    //     console.log('Pagination:', currentPage, numberOfItems, limit);
+    //     const numPages = Math.ceil(numberOfItems / limit);
+    //     const leftMost = currentPage - ((currentPage - 1) % 3);
+    //     pagination.innerHTML = ''; // Clear existing pagination
+    //     if (numberOfItems > 0) {
+    //         pagination.classList.remove("d-none");
+    //         createPaginationItem('<<', 1);
+    //         createPaginationItem('<', Math.max(1, currentPage - 1));
+
+    //         for (let i = leftMost; i <= Math.min(leftMost + 2, numPages); i++) {
+    //             createPaginationItem(i, i, i === currentPage);
+    //         }
+
+    //         createPaginationItem('>', Math.min(currentPage + 1, numPages));
+    //         createPaginationItem('>>', numPages);
+    //     } else {
+    //         pagination.classList.add("d-none");
+    //     }
+    // }
 
     // Create and append pagination items
     function createPaginationItem(text, page, isActive = false) {
@@ -122,5 +143,5 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Initial fetch for page 1
-    fetchAndUpdateProducts(1);
+    // fetchAndUpdateProducts(1);
 });  

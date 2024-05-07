@@ -87,71 +87,49 @@ class ProductRepository {
     }
 
     async findAllProductsPaginated(page, limit, searchQuery) {
-        let pipeline = [
-            {
-                $search: {
-                    index: 'all_products',
-                    text: {
-                        query: searchQuery,
-                        path: ['name']
-                    }
-                }
-            },
-            {
-                $lookup: {
-                    from: 'accounts',
-                    localField: 'idAccount',
-                    foreignField: '_id',
-                    as: 'idAccountDetails'
-                }
-            },
-            {
-                $set: {
-                    idAccount: { $arrayElemAt: ["$idAccountDetails", 0] }
-                }
-            },
-            {
-                $sort: { time: -1 }
-            },
-            {
-                $skip: (page - 1) * limit
-            },
-            {
-                $limit: limit
-            }
-        ];
-    
-        if (!searchQuery) {
-            pipeline.shift();
+        let productsQuery = Product.find().populate("idAccount").sort({ time: -1 });
+        
+        // Apply search query filter if provided
+        if (searchQuery) {
+            const regex = new RegExp(searchQuery, 'i'); // Case-insensitive search
+            productsQuery = productsQuery.find({
+                $or: [
+                    { name: { $regex: regex } }, // Filter by name
+                    // { description: { $regex: regex } }, // Filter by description
+                    // { keyword: { $in: [searchQuery] } } // Filter by keyword
+                ]
+            });
         }
-    
-        return await Product.aggregate(pipeline);
-    }      
+        
+        // Apply pagination
+        productsQuery = productsQuery.skip((page - 1) * limit).limit(limit);
+        
+        // Execute the query
+        const products = await productsQuery.exec();
+        
+        return products;
+    }     
 
     async countAllProducts(searchQuery) {
-        let pipeline = [
-            {
-                $search: {
-                    index: 'all_products', // Make sure to use the correct index name
-                    text: {
-                        query: searchQuery,
-                        path: ['name'] // Adjust fields according to where you want to search
-                    }
-                }
-            },
-            {
-                $count: 'totalCount'
-            }
-        ];
-    
-        if (!searchQuery) {
-            // If there's no search query, replace $search with a simpler match
-            pipeline = [{ $match: {} }, { $count: 'totalCount' }];
+        let countQuery = Product.find();
+        
+        // Apply search query filter if provided
+        if (searchQuery) {
+            const regex = new RegExp(searchQuery, 'i'); // Case-insensitive search
+            countQuery = countQuery.find({
+                $or: [
+                    { name: { $regex: regex } }, // Filter by name
+                    // { description: { $regex: regex } }, // Filter by description
+                    // { keyword: { $in: [searchQuery] } } // Filter by keyword
+                ]
+            });
         }
-    
-        const result = await Product.aggregate(pipeline);
-        return result.length > 0 ? result[0].totalCount : 0;
-    }    
+        
+        // Execute the query and count the documents
+        const count = await countQuery.countDocuments();
+        
+        return count;
+    }
 
     async findBannedProductsPaginated(page, limit) {
         return await Product.find({ status: "Banned" })
