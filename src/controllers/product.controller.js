@@ -661,21 +661,33 @@ class productController {
     try {
       const page = isNaN(req.query.page) ? 1 : Math.max(1, parseInt(req.query.page));
       const limit = 10;
+      const searchQuery = req.query.search || '';
 
-      const product1 = await ProductRepository.findAllProductsPaginated(page, limit);
-      const allProducts = mutipleMongooseToObject(product1);
+      const products = await ProductRepository.findAllProductsPaginated(page, limit, searchQuery);
+      const allProducts = mutipleMongooseToObject(products);
 
-      const numberOfItems = await ProductRepository.countAllProducts();
+      const numberOfItems = await ProductRepository.countAllProducts(searchQuery);
 
-      res.locals._numberOfItems = numberOfItems;
-      res.locals._limit = limit;
-      res.locals._currentPage = page;
+      if (req.query.json) {
+        // If a 'json' query parameter is present, respond with JSON
+        return res.json({
+          products: allProducts,
+          _numberOfItems: numberOfItems,
+          _limit: limit,
+          _currentPage: page
+        });
+      }
 
+      // Otherwise, render the page as usual
       res.render("admin_product_all", {
         products: allProducts,
         numOfProducts: allProducts.length,
+        _numberOfItems: numberOfItems,
+        _limit: limit,
+        _currentPage: page
       });
     } catch (error) {
+      console.error('Error in getFullProduct:', error);
       next(error);
     }
   };

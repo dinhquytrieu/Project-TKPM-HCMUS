@@ -86,17 +86,72 @@ class ProductRepository {
         return await Product.updateOne({ _id: productId }, { $set: { status: status } });
     }
 
-    async findAllProductsPaginated(page, limit) {
-        return await Product.find()
-            .populate("idAccount")
-            .sort({ time: -1 })
-            .skip((page - 1) * limit)
-            .limit(limit);
-    }
+    async findAllProductsPaginated(page, limit, searchQuery) {
+        let pipeline = [
+            {
+                $search: {
+                    index: 'all_products',
+                    text: {
+                        query: searchQuery,
+                        path: ['name']
+                    }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'accounts',
+                    localField: 'idAccount',
+                    foreignField: '_id',
+                    as: 'idAccountDetails'
+                }
+            },
+            {
+                $set: {
+                    idAccount: { $arrayElemAt: ["$idAccountDetails", 0] }
+                }
+            },
+            {
+                $sort: { time: -1 }
+            },
+            {
+                $skip: (page - 1) * limit
+            },
+            {
+                $limit: limit
+            }
+        ];
+    
+        if (!searchQuery) {
+            pipeline.shift();
+        }
+    
+        return await Product.aggregate(pipeline);
+    }      
 
-    async countAllProducts() {
-        return await Product.find().countDocuments();
-    }
+    async countAllProducts(searchQuery) {
+        let pipeline = [
+            {
+                $search: {
+                    index: 'all_products', // Make sure to use the correct index name
+                    text: {
+                        query: searchQuery,
+                        path: ['name'] // Adjust fields according to where you want to search
+                    }
+                }
+            },
+            {
+                $count: 'totalCount'
+            }
+        ];
+    
+        if (!searchQuery) {
+            // If there's no search query, replace $search with a simpler match
+            pipeline = [{ $match: {} }, { $count: 'totalCount' }];
+        }
+    
+        const result = await Product.aggregate(pipeline);
+        return result.length > 0 ? result[0].totalCount : 0;
+    }    
 
     async findBannedProductsPaginated(page, limit) {
         return await Product.find({ status: "Banned" })
