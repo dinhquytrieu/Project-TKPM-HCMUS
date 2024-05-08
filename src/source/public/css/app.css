@@ -507,7 +507,7 @@ a.btn:hover, a.btn:active, a.btn:first-child:active,
 
 .subnav {
   position: absolute;
-  top: calc(100% + 1rem);
+  top: calc(85%);
   left: 2rem;
   font-size: 1.6rem;
   font-weight: normal;
@@ -972,7 +972,7 @@ a.btn:hover, a.btn:active, a.btn:first-child:active,
 .select-ext, .manage-product .search-input,
 .manage-product .manage-product-select, .edit-product .product-category .edit-product-select {
   width: 100%;
-  height: 6rem;
+  height: 5.5rem;
   padding-left: 4rem;
   color: #757575;
   border: 0.1rem solid #ccc;
@@ -1070,7 +1070,7 @@ a.btn:hover, a.btn:active, a.btn:first-child:active,
     border-radius: 50%; }
 
 .edit-product .product-category .edit-product-select {
-  padding-left: 3rem;
+  padding-left: 2rem;
   appearance: none;
   border-right: 0.1rem solid #ccc; }
 
@@ -1460,7 +1460,8 @@ section article.skills {
       cursor: pointer; }
       .specific-product .comment-section .comment-item .comment-main .comment-user .report-section button {
         display: none;
-        background-color: rgba(59, 153, 215, 0.7);
+        /* background-color: rgba(59, 153, 215, 0.7); */
+        background-color: #3b99d7;
         border-radius: 5px;
         height: 3.3rem;
         font-size: 1.5rem;
@@ -2429,6 +2430,11 @@ section article.skills {
     margin-bottom: 2rem; }
   .admin .admin-announce-box {
     margin-bottom: 2rem; }
+    .admin .admin-announce-box {
+      padding: 16px 24px;
+      border-radius: 20px;
+      background: rgba(217, 237, 247, 0.5);
+      margin-bottom: 2rem; }
     .admin .admin-announce-box .content {
       max-width: 80rem; }
     .admin .admin-announce-box .view-more-announcement {
