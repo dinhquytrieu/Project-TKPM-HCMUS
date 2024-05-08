@@ -133,15 +133,33 @@ class ProductRepository {
         await Product.deleteOne({ _id: productId });
     }
     
+    async findAllProductsPaginated(page, limit, searchQuery, statusFilter) {
+        let productsQuery = Product.find().populate("idAccount").sort({ time: -1 });
     
-
-    async findAllProductsPaginated(page, limit) {
-        return await Product.find()
-            .populate("idAccount")
-            .sort({ time: -1 })
-            .skip((page - 1) * limit)
-            .limit(limit);
+        let queryConditions = [];
+        if (searchQuery) {
+            const regex = new RegExp(searchQuery, 'i'); // Case-insensitive search
+            queryConditions.push({ name: { $regex: regex } });
+        }
+        if (statusFilter) {
+            queryConditions.push({ status: statusFilter });
+        }
+    
+        if (queryConditions.length > 0) {
+            productsQuery = productsQuery.find({ $and: queryConditions });
+        }
+    
+        productsQuery = productsQuery.skip((page - 1) * limit).limit(limit);
+        return await productsQuery.exec();
     }
+
+    // async findAllProductsPaginated(page, limit) {
+    //     return await Product.find()
+    //         .populate("idAccount")
+    //         .sort({ time: -1 })
+    //         .skip((page - 1) * limit)
+    //         .limit(limit);
+    // }
     // async findAllProductsPaginated(page, limit, searchQuery) {
     //     let productsQuery = Product.find().populate("idAccount").sort({ time: -1 });
 
