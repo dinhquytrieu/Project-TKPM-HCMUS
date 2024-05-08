@@ -1579,7 +1579,10 @@ section article.skills {
       .all-product .sort-section .dropdown ul li {
         height: 4rem;
         width: 20rem;
-        font-size: 1.6rem; }
+        font-size: 1.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center; }
     .all-product .sort-section .dropdown-toggle {
       border-radius: 10px;
       background-color: #044985;
