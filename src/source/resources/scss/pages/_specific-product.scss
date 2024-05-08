@@ -2,6 +2,13 @@
   margin-top: 17rem;
   max-width: 108rem;
 
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    /* This line ensures that all children columns are of equal height */
+  }
+
   // global
   hr {
     width: calc(100% - 1.5rem);
@@ -12,6 +19,12 @@
   // payment section
   .payment-section {
     font-size: $font-size-primary;
+
+    // .img-item,
+    // .details-item {
+    //   height: 100%;
+    //   /* This ensures they take full height of their parent */
+    // }
 
     .img-item {
       height: 51.4rem;
@@ -24,18 +37,29 @@
 
         .img-product {
           border-radius: 20px;
-          width: 35rem;
+          max-height: 100%;
+          /* Ensures the image does not overflow its container */
+          width: auto;
+          /* Maintain aspect ratio */
           box-shadow: 0 0.5em 0.5em -0.4em #0d263c;
         }
-        .img-product:hover{
-          transform: scale(1.1); /* Zoom in to 110% on hover */
-          transition: transform 0.3s ease; /* Add smooth transition */
+
+        .img-product:hover {
+          transform: scale(1.1);
+          /* Zoom in to 110% on hover */
+          transition: transform 0.3s ease;
+          /* Add smooth transition */
         }
       }
     }
 
     .details-item {
       font-family: "Inter", sans-serif;
+
+      > :not(:last-child) {
+        margin-bottom: 2.5rem;
+      }
+
       .intro {
         position: relative;
 
@@ -71,6 +95,7 @@
             padding: 0.5rem 0.5rem;
             border-radius: 6px;
             transition: all 0.3s;
+
             a {
               color: #000;
               white-space: nowrap;
@@ -118,9 +143,8 @@
       .details-product {
         border-radius: 20px;
         width: 100%;
-        margin-top: 2rem;
         background-color: transparent;
-        border:1px solid #000;
+        border: 1px solid #000;
 
         .title_detail {
           margin-top: 10px;
@@ -140,6 +164,7 @@
           padding: 10px;
           font-size: 1.5rem;
           margin-top: 10px !important;
+
           li {
             margin-bottom: 0.2rem;
           }
@@ -147,7 +172,10 @@
       }
 
       .adjust-quantity {
-        margin-top: 4.8rem;
+
+        .quantity-text-size {
+          font-size: 1.8rem;
+        }
 
         .quantity {
           line-height: 2.5rem;
@@ -155,8 +183,21 @@
         }
 
         .adjust-icon {
+          .btn:nth-child(1) {
+            background-color: $color-text-light;
+
+            &:hover {
+              background-color: $color-primary-shade;
+            }
+          }
+
           .btn:nth-child(2) {
             margin-left: 0.5rem;
+            background-color: $color-light-blue;
+
+            &:hover {
+              background-color: $color-primary-shade;
+            }
           }
         }
 
@@ -167,11 +208,9 @@
       }
 
       .payment-btn-section {
-        margin-top: 2.4rem;
 
         .add-cart-btn {
-          width: 16rem;
-          padding: 1rem 0;
+          padding: 1rem 1rem;
           text-transform: uppercase;
           background: #d2e6ef;
           color: #000;
@@ -185,9 +224,7 @@
         }
 
         .payment-btn {
-          width: 22rem;
-          margin-left: 2rem;
-          padding: 1rem 0;
+          padding: 1rem 1rem;
           background: $color-primary-shade;
           color: #fff;
           font-family: $font-family-primary;
@@ -233,6 +270,7 @@
           right: 0.5%;
           top: 41%;
           padding: 1rem;
+
           button {
             background: transparent;
           }
@@ -252,6 +290,7 @@
           border-radius: 1rem;
           padding: 1.5rem 2rem;
           box-shadow: 0 0.5em 0.5em -0.4em #064174;
+
           .report-section {
             position: absolute;
             font-size: 2.6rem;
@@ -298,8 +337,7 @@
                 font-weight: 600;
               }
 
-              .date {
-              }
+              .date {}
             }
           }
 
@@ -365,7 +403,7 @@
             width: 75%;
             vertical-align: middle;
             object-fit: cover;
-          
+
           }
         }
       }

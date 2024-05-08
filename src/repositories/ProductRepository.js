@@ -73,14 +73,26 @@ class ProductRepository {
         return total > 0 ? sum / total : 0;
     }
 
-    async findRelatedProducts(keyword) {
-        return await Product.aggregate([
-            {
-                $match: { keyword: keyword },
-            },
-            { $limit: 6 },
-        ]);
-    }
+    findRelatedProducts = async (keyword, currentProductId) => {
+        try {
+          const relatedProducts = await Product.find({
+            keyword: { $in: keyword },
+            _id: { $ne: currentProductId } // Exclude the current product by its ID
+          }).limit(6); // Limit the number of related products, if necessary
+      
+          return relatedProducts;
+        } catch (error) {
+          throw error;
+        }
+      };
+    // async findRelatedProducts(keyword) {
+    //     return await Product.aggregate([
+    //         {
+    //             $match: { keyword: keyword },
+    //         },
+    //         { $limit: 6 },
+    //     ]);
+    // }
 
     async updateProductStatus(productId, status) {
         return await Product.updateOne({ _id: productId }, { $set: { status: status } });

@@ -1,23 +1,21 @@
 <div class="specific-product container">
-  <div class="row payment-section">
-    <div class="col-6 img-item d-flex align-items-center">
+  <div class="row payment-section d-flex align-items-center">
+    <div class="col-6 img-item d-flex align-items-center justify-content-center">
       <a href="#">
-        <img class="img-product" src="{{product.image}}" alt="error" style/>
+        <img class="img-product" src="{{product.image}}" alt="error" style />
       </a>
     </div>
-    <div class="col-6 details-item">
+
+    <div class="col-6 details-item d-flex flex-column">
       <div class="intro">
-        <form
-          class="report-section"
-          method="POST"
-          action="/product/specific-product/{{product._id}}/report?_method=PUT"
-        >
+        <form class="report-section" method="POST"
+          action="/product/specific-product/{{product._id}}/report?_method=PUT">
           <i class="fa-solid fa-ellipsis"></i>
           {{!-- <button>Report</button> --}}
           {{#if (isEqual product.status 'Reported')}}
-                  <button disabled>Reported</button>
+          <button disabled style="color: white;">Reported</button>
           {{else}}
-              <button style="color: white">Report</button>
+          <button style="color: white">Report</button>
           {{/if}}
           <div class="view-shop">
             <a href="../../account/page/{{product.idAccount}}">View Shop</a>
@@ -27,18 +25,12 @@
         <h1 class="product-name">{{product.name}}</h1>
         <h2 class="product-price">{{formatCurrency product.price}}</h2>
         <div class="rating d-flex align-items-center mt-4">
-          <h3
-            class="score m-0"
-            style="font-family: 'Inter', sans-serif;"
-          >{{showStar stars}}
+          <h3 class="score m-0" style="font-family: 'Inter', sans-serif;">{{showStar stars}}
             <i class="fa-solid fa-star" style="color: #f9a410;"></i>
             /5
             <i class="fa-solid fa-star" style="color: #f9a410;"></i>
           </h3>
-          <h3
-            class="number mb-0"
-            style="margin-left: 3rem; font-family: 'Inter', sans-serif;"
-          >{{evaNumber}}
+          <h3 class="number mb-0" style="margin-left: 3rem; font-family: 'Inter', sans-serif;">{{evaNumber}}
             comments
           </h3>
         </div>
@@ -47,46 +39,38 @@
         <div class="title_detail">Product Description</div>
         <ul class="details-list mt-3">
           {{#each details}}
-            <li>{{this}}</li>
+          <li>{{this}}</li>
           {{/each}}
         </ul>
       </div>
 
-      <div class="adjust-quantity d-flex">
-        <div class="quantity">Quantity:
-          <span
-            class="quantity-number"
-            style="display: inline-block; width: 2rem;"
-          >1</span>
+      <div class="adjust-quantity d-flex align-items-center details-product justify-content-between"
+        style="padding: 15px;">
+        <div class="quantity quantity-text-size">Quantity:
+          <span class="quantity-number">1</span>
         </div>
-        <div class="adjust-icon ms-5">
-          <a href="#" class="plus-btn btn">
-            <i class="fa-sharp fa-solid fa-plus"></i>
-          </a>
-          <a href="#" class="minus-btn btn">
+        <div class="adjust-icon">
+          <a href="#" class="minus-btn btn quantity-text-size">
             <i class="fa-solid fa-minus"></i>
           </a>
+          <a href="#" class="plus-btn btn quantity-text-size">
+            <i class="fa-sharp fa-solid fa-plus"></i>
+          </a>
         </div>
-        <div class="available-product ms-5"><span>{{stock}}</span>
+        <div class="available-product quantity-text-size"><span>{{stock}}</span>
           available products</div>
       </div>
 
-      <div class="payment-btn-section">
-        <a
-          href="#"
-          class="add-cart-btn btn"
-          id="js-add-cart-btn"
-          onclick="addCart('{{product._id}}', document.querySelector('.quantity-number').textContent);"
-        >Add to cart</a>
-        <a
-          href="/order/payment/{{product._id}}"
-          class="payment-btn btn"
-          id="buy-now-btn"
-        >BUY NOW</a>
+      <div class="payment-btn-section d-flex justify-content-between">
+        <a href="#" class="add-cart-btn btn" id="js-add-cart-btn" style="width: 48%;"
+          onclick="addCart('{{product._id}}', document.querySelector('.quantity-number').textContent);">Add to cart</a>
+        <a href="/order/payment/{{product._id}}" class="payment-btn btn" id="buy-now-btn" style="width: 48%;">BUY
+          NOW</a>
       </div>
     </div>
-    <hr />
   </div>
+
+  <hr />
 
   <div class="row comment-section">
     <div class="comment-item">
@@ -98,19 +82,9 @@
         </div>
       </section>
 
-      <form
-        class="write-cmt d-flex mt-3 align-items-center"
-        method="POST"
-        action="/evaluate/specific-product/{{product._id}}/create"
-        id="form-comment"
-      >
-        <textarea
-          name="cmtInput"
-          id="write-cmt-input"
-          cols="60"
-          rows="2"
-          placeholder="Write to comment..."
-        ></textarea>
+      <form class="write-cmt d-flex mt-3 align-items-center" method="POST"
+        action="/evaluate/specific-product/{{product._id}}/create" id="form-comment">
+        <textarea name="cmtInput" id="write-cmt-input" cols="60" rows="2" placeholder="Write to comment..."></textarea>
         <div class="send-btn btn">
           <button>
             <i class="fa-solid fa-paper-plane"></i>
@@ -120,64 +94,53 @@
 
       <div class="comment-main mt-3" data-id="{{@index}}">
         {{#each evaluates}}
-          <div class="comment-user mb-4">
-            <form
-              class="report-section"
-              method="POST"
-              action="/evaluate/specific-product/{{this._id}}/report?_method=PUT"
-            >
-              <i class="fa-solid fa-ellipsis"></i>
-              {{!-- <button>Report</button> --}}
-              {{#if (isEqual this.status 'reported')}}
-                  <button disabled>Reported</button>
-              {{else}}
-                  <button style="color: white">Report</button>
-              {{/if}}
-            </form>
+        <div class="comment-user mb-4">
+          <form class="report-section" method="POST"
+            action="/evaluate/specific-product/{{this._id}}/report?_method=PUT">
+            <i class="fa-solid fa-ellipsis"></i>
+            {{!-- <button>Report</button> --}}
+            {{#if (isEqual this.status 'reported')}}
+            <button disabled style="color: white">Reported</button>
+            {{else}}
+            <button style="color: white">Report</button>
+            {{/if}}
+          </form>
 
-            <div class="information d-flex align-items-center">
-              <div class="avatar">
-                <a href="/account/page/{{this.idAccount._id}}">
-                  <img
-                    class="img-avatar"
-                    src="{{this.idAccount.avatar}}"
-                    alt="error"
-                  />
-                </a>
-              </div>
-              <div class="infor-span ms-3">
-                <span class="name">{{this.idAccount.lastName}}
-                  {{this.idAccount.firstName}}</span>
-                <div class="date mt-1">{{convertDate this.date}}</div>
-              </div>
-              <div class="stars ms-4">
-                {{#if this.rating}}
-                  {{! Nội dung khi điều kiện đúng }}
-                  <h3
-                    class="score m-0"
-                    style="font-family: 'Inter', sans-serif; font-size: 1.5rem;"
-                  >{{showStar this.rating}}
-                    <i class="fa-solid fa-star" style="color: #f9a410;"></i>
-                    /5
-                    <i
-                      class="fa-solid fa-star"
-                      style="color: #f9a410;"
-                    ></i></h3>
-                {{else}}
-                  {{! Nội dung khi điều kiện sai }}
-                {{/if}}
-              </div>
+          <div class="information d-flex align-items-center">
+            <div class="avatar">
+              <a href="/account/page/{{this.idAccount._id}}">
+                <img class="img-avatar" src="{{this.idAccount.avatar}}" alt="error" />
+              </a>
             </div>
-            <div class="comment-info">
-              {{this.content}}
+            <div class="infor-span ms-3">
+              <span class="name">{{this.idAccount.lastName}}
+                {{this.idAccount.firstName}}</span>
+              <div class="date mt-1">{{convertDate this.date}}</div>
+            </div>
+            <div class="stars ms-4">
+              {{#if this.rating}}
+              {{! Nội dung khi điều kiện đúng }}
+              <h3 class="score m-0" style="font-family: 'Inter', sans-serif; font-size: 1.5rem;">{{showStar
+                this.rating}}
+                <i class="fa-solid fa-star" style="color: #f9a410;"></i>
+                /5
+                <i class="fa-solid fa-star" style="color: #f9a410;"></i>
+              </h3>
+              {{else}}
+              {{! Nội dung khi điều kiện sai }}
+              {{/if}}
             </div>
           </div>
-          {{#if this.reply}}
-            <div class="reply-from-seller mb-4">
-              Seller:
-              {{this.reply}}
-            </div>
-          {{/if}}
+          <div class="comment-info">
+            {{this.content}}
+          </div>
+        </div>
+        {{#if this.reply}}
+        <div class="reply-from-seller mb-4">
+          Seller:
+          {{this.reply}}
+        </div>
+        {{/if}}
         {{/each}}
       </div>
     </div>
@@ -195,52 +158,75 @@
       <div class="rectangle col"></div>
     </div>
     <div class="trend-row row">
+      {{#if related.length}}
       {{#each related}}
-        <div class="col-2">
-          <figure class="trend-card card">
-            <a
-              href="/product/specific-product/{{this._id}}"
-              class="trend-card-img"
-            >
-              <img
-                src="{{this.image}}"
-                class="trend-prod-img"
-                alt="Something ..."
-              />
-            </a>
-            <p class="trend-card-title">{{this.name}}</p>
-            <p class="trend-card-price">{{formatCurrency this.price}}</p>
-            <a
-              href="/product/specific-product/{{this._id}}"
-              class="trend-card-btn"
-            >Buy now</a>
-          </figure>
-        </div>
+      <div class="col-2">
+        <figure class="trend-card card">
+          <a href="/product/specific-product/{{this._id}}" class="trend-card-img">
+            <img src="{{this.image}}" class="trend-prod-img" alt="Something ..." />
+          </a>
+          <p class="trend-card-title">{{this.name}}</p>
+          <p class="trend-card-price">{{formatCurrency this.price}}</p>
+          <a href="/product/specific-product/{{this._id}}" class="trend-card-btn">Buy now</a>
+        </figure>
+      </div>
       {{/each}}
+      {{else}}
+      <div class="col-12 text-center">
+        <img src="/img/no_product_found.png" alt="No related products found" style="width: 30%; height: auto;">
+      </div>
+      {{/if}}
     </div>
   </section>
+  {{!-- <section class="trend row">
+    <div class="row">
+      <div class="rectangle col"></div>
+      <h2 class="main-heading col-md-auto">RELATED PRODUCT</h2>
+      <div class="rectangle col"></div>
+    </div>
+    <div class="trend-row row">
+      {{#each related}}
+      <div class="col-2">
+        <figure class="trend-card card">
+          <a href="/product/specific-product/{{this._id}}" class="trend-card-img">
+            <img src="{{this.image}}" class="trend-prod-img" alt="Something ..." />
+          </a>
+          <p class="trend-card-title">{{this.name}}</p>
+          <p class="trend-card-price">{{formatCurrency this.price}}</p>
+          <a href="/product/specific-product/{{this._id}}" class="trend-card-btn">Buy now</a>
+        </figure>
+      </div>
+      {{/each}}
+    </div>
+  </section> --}}
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () { const buyNowBtn =
-  document.getElementById('buy-now-btn'); const quantitySpan =
-  document.querySelector('.quantity-number');
-  buyNowBtn.addEventListener('click', function (event) { event.preventDefault();
-  const productID = '{{product._id}}'; const quantity =
-  parseInt(quantitySpan.textContent); const newURL =
-  `/order/payment/${productID}?quantity=${quantity}`; window.location.href =
-  newURL; }); });
+  document.addEventListener('DOMContentLoaded', function () {
+    const buyNowBtn =
+      document.getElementById('buy-now-btn'); const quantitySpan =
+        document.querySelector('.quantity-number');
+    buyNowBtn.addEventListener('click', function (event) {
+      event.preventDefault();
+      const productID = '{{product._id}}'; const quantity =
+        parseInt(quantitySpan.textContent); const newURL =
+          `/order/payment/${productID}?quantity=${quantity}`; window.location.href =
+            newURL;
+    });
+  });
 
 </script>
 
-{{! <script src="/js/specific-product-getQuantity.js"></script> }}
+{{!
+<script src="/js/specific-product-getQuantity.js"></script> }}
 <script src="/js/specific-product.js"></script>
 
 
-{{!-- Socket.IO operates on a different layer, handling WebSocket connections independently from the HTTP routing logic of Express --}}
+{{!-- Socket.IO operates on a different layer, handling WebSocket connections independently from the HTTP routing logic
+of Express --}}
 <script src="/socket.io/socket.io.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function () {
     const socket = io();  // Make sure the socket.io client library is correctly included in your HTML
 
     // The client informs the server which product’s updates it wants to subscribe to
@@ -248,13 +234,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // As stock updates are pushed by the server, your client-side code should handle these updates to dynamically update the UI
     socket.on('stockUpdate', (data) => {
-        const stockInfo = document.querySelector('.available-product span');
-        // console.log('Stock updated', stockInfo, data.productId, '{{product._id}}');
-        // Ensure data.productId and '{{product._id}}' are both strings; you might need to ensure type consistency
-        if (stockInfo && data.productId === '{{product._id}}') {
-            stockInfo.textContent = `${data.newStock}`;
-            // console.log('UI updated with new stock:', stockInfo.textContent);
-        }
+      const stockInfo = document.querySelector('.available-product span');
+      // console.log('Stock updated', stockInfo, data.productId, '{{product._id}}');
+      // Ensure data.productId and '{{product._id}}' are both strings; you might need to ensure type consistency
+      if (stockInfo && data.productId === '{{product._id}}') {
+        stockInfo.textContent = `${data.newStock}`;
+        // console.log('UI updated with new stock:', stockInfo.textContent);
+      }
     });
-});
+  });
 </script>
