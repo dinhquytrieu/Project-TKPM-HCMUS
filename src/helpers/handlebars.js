@@ -31,12 +31,20 @@ module.exports = {
   calculateTotalPrice: (price, quantity) => {
     return price * quantity;
   },
+  
   formatCurrency: (number) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
+      currencyDisplay: "code",
     }).format(number);
   },
+  // formatCurrency: (number) => {
+  //   return new Intl.NumberFormat("vi-VN", {
+  //     style: "currency",
+  //     currency: "VND",
+  //   }).format(number);
+  // },
 
   booleanToString: function (value) {
     return value ? "isEvaluated" : "not";

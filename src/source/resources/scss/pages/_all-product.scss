@@ -1,10 +1,11 @@
 .all-product {
   margin-top: 17rem;
-  max-width: 108rem;
+  // max-width: 108rem;
+  max-width: 150rem;
 
   .sort-section {
     margin-top: 2.5rem;
-    margin-right: 0.75rem;
+    margin-right: 1.5rem;
     background-color: #fff;
 
 
@@ -17,6 +18,9 @@
         height: 4rem;
         width: 20rem;
         font-size: 1.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
     .dropdown-toggle{
@@ -106,7 +110,7 @@
       .filter-type-list {
         padding-left: 10px;
         padding-right: 10px;
-        height: 100%;
+        // height: 100%;
         .list-title {
           font-size: 2rem;
           font-weight: 700;
@@ -231,6 +235,7 @@
           text-align: center;
           color: #000;
           font-weight: 700;
+          font-size: 1.9rem;
         }
 
         .trend-card-btn {
