@@ -67,17 +67,25 @@ document.addEventListener('DOMContentLoaded', function () {
             products.forEach(product => {
                 const productDiv = document.createElement('div');
                 productDiv.className = 'product-item col align-self-stretch d-flex align-items-stretch';
+                productDiv.style.cursor = 'pointer'; // Add cursor style
+                productDiv.addEventListener('click', function () {
+                    window.location.href = `./specific-product/${product._id}`;
+                });
+                // console.log(product.idAccount.shopName);
                 productDiv.innerHTML = `
                     <div class="row box w-100">
+
                         <img class='product-img col-4 align-self-center' src='${product.image}' />
                         <div class='col-6 d-flex flex-column'>
                         <p class='list-inline-item'><strong>${product.name}</strong></p>
-                        <p class='list-inline-item-content'>Shop: ${product.idAccount.shopName}</p>
-                        <div class='list-inline-item-content'>Status: <div class='list-inline-item status'>${product.status}</div></div>
-                        <p class='list-inline-item-content'>Category: ${product.category}</p>
-                        <p class='list-inline-item-content'>Price: ${product.price}</p>
-                        <p class='list-inline-item-content flex-fill'>Stock: ${product.stock}</p>
+                        <p class='list-inline-item'>Shop: ${product.idAccount.shopName}</p>
+                        <div class='list-inline-item'>Status: <div class='list-inline-item status'>${product.status}</div>
                         </div>
+                        <p class='list-inline-item'>Category: ${product.category}</p>
+                        <p class='list-inline-item'>Price: ${formatCurrency(product.price)}</p>
+                        <p class='list-inline-item flex-fill'>Stock: ${product.stock}</p>
+                        </div>
+                        
                         <form class='dropdown col-2 text-center mt-1' action='./exec-product?type=ban&id=${product._id}' method="post">
                         <a class='dropdown text-center' href='#' role='button' id='dropdownMenuLink' data-bs-toggle='dropdown' aria-expanded='false'>
                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M5 10c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2Zm14 0c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2Zm-7 0c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2Z"/></svg>
@@ -93,6 +101,12 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             updateStatusStyles();
         }
+    }
+    function formatCurrency(number) {
+        return new Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
+        }).format(number);
     }
 
     // Function to update status colors based on their text

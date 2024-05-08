@@ -77,8 +77,7 @@
 
       <div class="d-flex justify-content-center">
         <form class="d-flex" style="margin-top: 1rem; width: 60%;">
-          <input class="form-control me-2" type="search" placeholder="Search"
-            aria-label="Search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
           <select class="form-control me-2" id="statusFilter" style="width: 20%;">
             <option value="">All Statuses</option>
             <option value="Available">Available</option>
@@ -95,27 +94,19 @@
         <div class='list-products row row-cols-2'>
 
           {{#each products}}
-          <div class='product-item col align-self-stretch d-flex align-items-stretch'>
+          <div class='product-item col align-self-stretch d-flex align-items-stretch' 
+            onclick="window.location.href='./specific-product/{{this._id}}';" style="cursor: pointer;">
             <div class="row box w-100">
 
-                  <div class='col-6 d-flex flex-column'>
-                    <p class='list-inline-item'><strong>{{this.name}}</strong></p>
-                    <p class='list-inline-item'>Shop: {{this.idAccount.shopName}}</p>
-                    <div class='list-inline-item'>Status: <div class='list-inline-item status'>{{this.status}}</div></div>
-                    <p class='list-inline-item'>Category: {{this.category}}</p>
-                    <p class='list-inline-item'>Price: {{formatCurrency this.price}}</p>
-                    <p class='list-inline-item flex-fill'>Stock: {{this.stock}}</p>
-                  
-                  </div>
-
+              <img class='product-img col-4 align-self-center' src='{{this.image}}' />
               <div class='col-6 d-flex flex-column'>
                 <p class='list-inline-item'><strong>{{this.name}}</strong></p>
-                <p class='list-inline-item-content'>Shop: {{this.idAccount.shopName}}</p>
-                <div class='list-inline-item-content'>Status: <div class='list-inline-item status'>{{this.status}}</div>
+                <p class='list-inline-item'>Shop: {{this.idAccount.shopName}}</p>
+                <div class='list-inline-item'>Status: <div class='list-inline-item status'>{{this.status}}</div>
                 </div>
-                <p class='list-inline-item-content'>Category: {{this.category}}</p>
-                <p class='list-inline-item-content'>Price: {{this.price}}</p>
-                <p class='list-inline-item-content flex-fill'>Stock: {{this.stock}}</p>
+                <p class='list-inline-item'>Category: {{this.category}}</p>
+                <p class='list-inline-item'>Price: {{formatCurrency this.price}}</p>
+                <p class='list-inline-item flex-fill'>Stock: {{this.stock}}</p>
               </div>
 
               <form class='dropdown col-2 text-center mt-1' action='./exec-product?type=ban&id={{this._id}}'
@@ -154,6 +145,7 @@
 </div>
 {{!--
 <script src='/js/status-account.js'></script> --}}
+{{!-- <script src='/helpers/handlebars.js'/> --}}
 <script src='/js/admin-product-all.js'></script>
 <script>
   let numberOfItems = {{ _numberOfItems }};

@@ -3,6 +3,8 @@ const cartBtn = document.querySelector(".header .cart-icon");
 const cartScreen = document.querySelector(".cart");
 const cartCloseBtn = document.querySelector(".cart .cart-close-btn");
 const cartSlider = document.querySelector(".cart .cart-slider");
+// const { formatCurrency } = require('../../../helpers/handlebars');
+
 // Turn on the cart screen
 const turnOnCartScreen = () => {
   cartScreen.classList.add("d-flex");
@@ -31,9 +33,9 @@ cartSlider.addEventListener("click", (e) => {
   e.stopPropagation();
 });
 
-const formatCurrency = (price) => {
-  return Number(price).toLocaleString("it-IT", { style: "currency", currency: "VND" });
-}
+// const formatCurrency = (price) => {
+//   return Number(price).toLocaleString("it-IT", { style: "currency", currency: "VND" });
+// }
 
 async function buildCartScreen(products) {
   // Tạo giao diện cho Cart screen
