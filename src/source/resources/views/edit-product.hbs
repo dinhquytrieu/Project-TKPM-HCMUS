@@ -13,12 +13,13 @@
         <form action="/product/edit/save/{{product._id}}" method="POST" class='edit-product-forms row gx-0' id="edit-form" enctype="multipart/form-data">
           <ul class='edit-product-form col-7'>
             <li class='edit-product-form-item'>
-              <label for='product-name'>Name</label>
-              <input id='product-name' type='text' value='{{product.name}}' name="name" required/>
+              <label for='product-name'>Name *</label>
+              <input style="border-radius: 8px;" id='product-name' type='text' value='{{product.name}}' name="name" required/>
             </li>
             <li class=' edit-product-form-item'>
               <label for='product-description'>Description</label>
               <textarea
+                style="border-radius: 8px;"
                 name="description"
                 id='product-description'
                 cols='30'
@@ -28,18 +29,18 @@
             </li>
             <li class='edit-product-form-item row'>
               <div class='col'>
-                <label for='product-price'>Price</label>
-                <input id='product-price' type="number" value='{{product.price}}' name="price" required/>
+                <label for='product-price'>Price *</label>
+                <input style="border-radius: 8px;" id='product-price' type="number" value='{{product.price}}' name="price" required/>
               </div>
               <div class='col'>
-                <label for='product-stock'>Stock</label>
-                <input id='product-stock' type="number" value='{{product.stock}}' name="stock" required/>
+                <label for='product-stock'>Stock *</label>
+                <input style="border-radius: 8px;" id='product-stock' type="number" value='{{product.stock}}' name="stock" required/>
               </div>
             </li>
             <li class='edit-product-form-item row'>
               <div class='col'>
-                <label for='product-keyword'>Keywords</label>
-                <input id='product-keyword' type='text' value='{{product.keyword}}' name="keyword" required/>
+                <label for='product-keyword'>Keywords *</label>
+                <input style="border-radius: 8px;" id='product-keyword' type='text' value='{{product.keyword}}' name="keyword" required/>
               </div>
             </li>
             <li class='edit-product-form-item row'>
@@ -59,7 +60,7 @@
           <div class='edit-product-form edit-product-form-upload col'>
             <div class='product-category'>
               <label class='product-category-label'>Category</label>
-              <select class='edit-product-select' name="category">
+              <select style="border-radius: 8px;" class='edit-product-select' name="category">
                 <option value='document' {{#if (isCategory product.category 'document')}}selected{{/if}}>Document</option>
                 <option value='uniform' {{#if (isCategory product.category 'uniform')}}selected{{/if}}>Uniform</option>
                 <option value='stationery' {{#if (isCategory product.category 'stationery')}}selected{{/if}}>Stationery</option>

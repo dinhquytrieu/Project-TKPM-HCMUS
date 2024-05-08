@@ -90,7 +90,15 @@
           <div class='product-item col align-self-stretch d-flex align-items-stretch'>
             <div class="row box w-100">
 
-              <img class='product-img col-4 align-self-center' src='{{this.image}}' />
+                  <div class='col-6 d-flex flex-column'>
+                    <p class='list-inline-item'><strong>{{this.name}}</strong></p>
+                    <p class='list-inline-item'>Shop: {{this.idAccount.shopName}}</p>
+                    <div class='list-inline-item'>Status: <div class='list-inline-item status'>{{this.status}}</div></div>
+                    <p class='list-inline-item'>Category: {{this.category}}</p>
+                    <p class='list-inline-item'>Price: {{formatCurrency this.price}}</p>
+                    <p class='list-inline-item flex-fill'>Stock: {{this.stock}}</p>
+                  
+                  </div>
 
               <div class='col-6 d-flex flex-column'>
                 <p class='list-inline-item'><strong>{{this.name}}</strong></p>

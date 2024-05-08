@@ -90,7 +90,7 @@
                           <td>{{this.idProduct.name}}</td>
                           <td>{{this.idProduct.category}}</td>
                           <td>{{this.quantity}}</td>
-                          <td>{{this.idProduct.price}}</td>
+                          <td>{{formatCurrency this.idProduct.price}}</td>
                         </tr>
                         {{else}}
                         <!-- Xử lý khi điều kiện sai -->
