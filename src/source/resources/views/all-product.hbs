@@ -1,6 +1,6 @@
 <div class='all-product container'>
   <div class='sort-section d-flex justify-content-between align-items-center'>
-    <h1 class='page-title' style="margin-left: -0.9rem; font-weight: 600;">
+    <h1 class='page-title col-3' style="font-weight: 600; text-align: center">
       ALL PRODUCTS
     </h1>
     <div class="dropdown">
@@ -18,7 +18,7 @@
   </div>
 
   <div class='row filter-vs-product'>
-    <div class='col-3 filter-section px-4 pt-4'>
+    <div class='col-3 filter-section px-4 pt-4' style="margin-bottom: 3rem;">
       <div class="form-search">
         <form class='search-bar pt-3 align-items-center' action="/product/all-product/search">
           <input type='text' class='search-input col p-4' placeholder='Search...' name="keyword" />
@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    <div class='col product-section'>
+    <div class='col product-section' style="padding-left: 2.5rem;">
       <section class='trend container'>
         <div class='trend-row row'>
           {{#each products}}
