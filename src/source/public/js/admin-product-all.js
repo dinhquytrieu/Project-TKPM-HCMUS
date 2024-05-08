@@ -62,10 +62,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Function to update status colors based on their text
-    function updateStatusStyles() {
+    window.updateStatusStyles = function() {
         const statuses = document.querySelectorAll(".status");
         statuses.forEach(e => {
             switch (e.innerText.trim()) {
+                case "Available":
+                    e.style.color = "#0e760e";
+                    break;
                 case "Banned":
                     e.style.color = "#e55039";
                     break;
@@ -77,8 +80,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     e.style.color = "#2980b9";
                     break;
                 default:
-                    e.innerText = "Active"; // Default status if none of the above
-                    e.style.color = "#0e760e";
+                    e.innerText = "No status";
+                    // e.style.color = "#0e760e";
             }
             e.style.fontStyle = "italic";
         });

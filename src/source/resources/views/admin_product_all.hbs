@@ -78,7 +78,23 @@
       <div class="d-flex justify-content-center">
         <form class="d-flex" style="margin-top: 2rem; width: 40%;">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          {{!-- <button class="btn btn-outline-success" type="submit">Search</button> --}}
+
+          <!-- Dropdown -->
+          {{!-- <form class="d-flex" style="margin-top: 2rem; width: 60%;">
+            <input class="form-control me-2" type="search" placeholder="Search by name, description..."
+              aria-label="Search">
+            <select class="form-control me-2" id="statusFilter">
+              <option value="">All Statuses</option>
+              <option value="Available">Available</option>
+              <option value="Pending">Pending</option>
+              <option value="Trending">Trending</option>
+              <option value="Reported">Reported</option>
+              <option value="Banned">Banned</option>
+            </select>
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form> --}}
+
+
         </form>
       </div>
 
@@ -136,7 +152,8 @@
     </div>
   </div>
 </div>
-<script src='/js/status-account.js'></script>
+{{!--
+<script src='/js/status-account.js'></script> --}}
 <script src='/js/admin-product-all.js'></script>
 <script>
   let numberOfItems = {{ _numberOfItems }};
@@ -146,5 +163,6 @@
 
   window.onload = function () {
     initPagination(currentPage, numberOfItems, limit);
+    updateStatusStyles();
   };
 </script>
