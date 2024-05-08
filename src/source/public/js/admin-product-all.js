@@ -55,34 +55,44 @@ document.addEventListener('DOMContentLoaded', function () {
     // Dynamically create and update product listings
     function updateProductList(products) {
         productList.innerHTML = ''; // Clear existing products
-        products.forEach(product => {
-            const productDiv = document.createElement('div');
-            productDiv.className = 'product-item col align-self-stretch d-flex align-items-stretch';
-            productDiv.innerHTML = `
-          <div class="row box w-100">
-            <img class='product-img col-4 align-self-center' src='${product.image}' />
-            <div class='col-6 d-flex flex-column'>
-              <p class='list-inline-item'><strong>${product.name}</strong></p>
-              <p class='list-inline-item-content'>Shop: ${product.idAccount.shopName}</p>
-              <div class='list-inline-item-content'>Status: <div class='list-inline-item status'>${product.status}</div></div>
-              <p class='list-inline-item-content'>Category: ${product.category}</p>
-              <p class='list-inline-item-content'>Price: ${product.price}</p>
-              <p class='list-inline-item-content flex-fill'>Stock: ${product.stock}</p>
-            </div>
-            <form class='dropdown col-2 text-center mt-1' action='./exec-product?type=ban&id=${product._id}' method="post">
-              <a class='dropdown text-center' href='#' role='button' id='dropdownMenuLink' data-bs-toggle='dropdown' aria-expanded='false'>
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M5 10c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2Zm14 0c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2Zm-7 0c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2Z"/></svg>
-              </a>
-              <ul class='dropdown-menu' aria-labelledby='dropdownMenuLink'>
-                <li><a class='dropdown-item' href='./specific-product/${product._id}'>View info</a></li>
-                <li><button type="submit" class='dropdown-item'>Ban</button></li>
-              </ul>
-            </form>
-          </div>
-        `;
-            productList.appendChild(productDiv);
-        });
-        updateStatusStyles();
+
+        if (products.length === 0) {
+            // If no products are returned, display an image
+            productList.innerHTML = `
+                <div class="col-12 d-flex justify-content-center">
+                    <img src="/img/no_product_found.png" alt="No available products" style="width: 50%; height: auto;">
+                </div>
+            `;
+        } else {
+            products.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product-item col align-self-stretch d-flex align-items-stretch';
+                productDiv.innerHTML = `
+                    <div class="row box w-100">
+                        <img class='product-img col-4 align-self-center' src='${product.image}' />
+                        <div class='col-6 d-flex flex-column'>
+                        <p class='list-inline-item'><strong>${product.name}</strong></p>
+                        <p class='list-inline-item-content'>Shop: ${product.idAccount.shopName}</p>
+                        <div class='list-inline-item-content'>Status: <div class='list-inline-item status'>${product.status}</div></div>
+                        <p class='list-inline-item-content'>Category: ${product.category}</p>
+                        <p class='list-inline-item-content'>Price: ${product.price}</p>
+                        <p class='list-inline-item-content flex-fill'>Stock: ${product.stock}</p>
+                        </div>
+                        <form class='dropdown col-2 text-center mt-1' action='./exec-product?type=ban&id=${product._id}' method="post">
+                        <a class='dropdown text-center' href='#' role='button' id='dropdownMenuLink' data-bs-toggle='dropdown' aria-expanded='false'>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M5 10c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2Zm14 0c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2Zm-7 0c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2Z"/></svg>
+                        </a>
+                        <ul class='dropdown-menu' aria-labelledby='dropdownMenuLink'>
+                            <li><a class='dropdown-item' href='./specific-product/${product._id}'>View info</a></li>
+                            <li><button type="submit" class='dropdown-item'>Ban</button></li>
+                        </ul>
+                        </form>
+                    </div>
+                    `;
+                productList.appendChild(productDiv);
+            });
+            updateStatusStyles();
+        }
     }
 
     // Function to update status colors based on their text

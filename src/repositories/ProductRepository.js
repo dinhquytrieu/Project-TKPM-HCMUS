@@ -86,50 +86,87 @@ class ProductRepository {
         return await Product.updateOne({ _id: productId }, { $set: { status: status } });
     }
 
-    async findAllProductsPaginated(page, limit, searchQuery) {
+    async findAllProductsPaginated(page, limit, searchQuery, statusFilter) {
         let productsQuery = Product.find().populate("idAccount").sort({ time: -1 });
-        
-        // Apply search query filter if provided
+    
+        let queryConditions = [];
         if (searchQuery) {
             const regex = new RegExp(searchQuery, 'i'); // Case-insensitive search
-            productsQuery = productsQuery.find({
-                $or: [
-                    { name: { $regex: regex } }, // Filter by name
-                    // { description: { $regex: regex } }, // Filter by description
-                    // { keyword: { $in: [searchQuery] } } // Filter by keyword
-                ]
-            });
+            queryConditions.push({ name: { $regex: regex } });
         }
-        
-        // Apply pagination
+        if (statusFilter) {
+            queryConditions.push({ status: statusFilter });
+        }
+    
+        if (queryConditions.length > 0) {
+            productsQuery = productsQuery.find({ $and: queryConditions });
+        }
+    
         productsQuery = productsQuery.skip((page - 1) * limit).limit(limit);
-        
-        // Execute the query
-        const products = await productsQuery.exec();
-        
-        return products;
-    }     
+        return await productsQuery.exec();
+    }
+    // async findAllProductsPaginated(page, limit, searchQuery) {
+    //     let productsQuery = Product.find().populate("idAccount").sort({ time: -1 });
 
-    async countAllProducts(searchQuery) {
-        let countQuery = Product.find();
+    //     // Apply search query filter if provided
+    //     if (searchQuery) {
+    //         const regex = new RegExp(searchQuery, 'i'); // Case-insensitive search
+    //         productsQuery = productsQuery.find({
+    //             $or: [
+    //                 { name: { $regex: regex } }, // Filter by name
+    //                 // { description: { $regex: regex } }, // Filter by description
+    //                 // { keyword: { $in: [searchQuery] } } // Filter by keyword
+    //             ]
+    //         });
+    //     }
         
-        // Apply search query filter if provided
+    //     // Apply pagination
+    //     productsQuery = productsQuery.skip((page - 1) * limit).limit(limit);
+        
+    //     // Execute the query
+    //     const products = await productsQuery.exec();
+        
+    //     return products;
+    // }     
+
+    async countAllProducts(searchQuery, statusFilter) {
+        let countQuery = Product.find();
+    
+        let queryConditions = [];
         if (searchQuery) {
             const regex = new RegExp(searchQuery, 'i'); // Case-insensitive search
-            countQuery = countQuery.find({
-                $or: [
-                    { name: { $regex: regex } }, // Filter by name
-                    // { description: { $regex: regex } }, // Filter by description
-                    // { keyword: { $in: [searchQuery] } } // Filter by keyword
-                ]
-            });
+            queryConditions.push({ name: { $regex: regex } });
         }
-        
-        // Execute the query and count the documents
-        const count = await countQuery.countDocuments();
-        
-        return count;
+        if (statusFilter) {
+            queryConditions.push({ status: statusFilter });
+        }
+    
+        if (queryConditions.length > 0) {
+            countQuery = countQuery.find({ $and: queryConditions });
+        }
+    
+        return await countQuery.countDocuments();
     }
+    // async countAllProducts(searchQuery) {
+    //     let countQuery = Product.find();
+        
+    //     // Apply search query filter if provided
+    //     if (searchQuery) {
+    //         const regex = new RegExp(searchQuery, 'i'); // Case-insensitive search
+    //         countQuery = countQuery.find({
+    //             $or: [
+    //                 { name: { $regex: regex } }, // Filter by name
+    //                 // { description: { $regex: regex } }, // Filter by description
+    //                 // { keyword: { $in: [searchQuery] } } // Filter by keyword
+    //             ]
+    //         });
+    //     }
+        
+    //     // Execute the query and count the documents
+    //     const count = await countQuery.countDocuments();
+        
+    //     return count;
+    // }
 
     async findBannedProductsPaginated(page, limit) {
         return await Product.find({ status: "Banned" })

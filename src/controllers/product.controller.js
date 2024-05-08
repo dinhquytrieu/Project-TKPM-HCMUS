@@ -553,13 +553,14 @@ class productController {
       const page = isNaN(req.query.page) ? 1 : Math.max(1, parseInt(req.query.page));
       const limit = 10;
       const searchQuery = req.query.search || '';
+      const statusFilter = req.query.status || '';
       // console.log('Search query:', searchQuery);
 
-      const products = await ProductRepository.findAllProductsPaginated(page, limit, searchQuery);
+      const products = await ProductRepository.findAllProductsPaginated(page, limit, searchQuery, statusFilter);
       // console.log('Products:', products);
       const allProducts = mutipleMongooseToObject(products);
 
-      const numberOfItems = await ProductRepository.countAllProducts(searchQuery);
+      const numberOfItems = await ProductRepository.countAllProducts(searchQuery, statusFilter);
 
       if (req.query.json) {
         // If a 'json' query parameter is present, respond with JSON
