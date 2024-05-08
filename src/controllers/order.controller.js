@@ -3,6 +3,10 @@ const Order = require("../models/order.model");
 const Account = require("../models/account.model");
 const Product = require("../models/product.model");
 const { getIo } = require('../source/public/js/socket');
+const ProductRepository = require('../repositories/ProductRepository');
+const AccountRepository = require('../repositories/AccountRepository');
+const OrderRepository = require('../repositories/OrderRepository');
+
 
 // const sequelize = require("sequelize");
 // const Op = sequelize.Op;
@@ -18,20 +22,13 @@ class orderController {
   // [GET] order/manage-order
   showAllOrder = async (req, res, next) => {
     try {
-      // const aOrder = await Account.findOne();
-      // const accountId = aOrder._id
       let page = isNaN(req.query.page)
         ? 1
         : Math.max(1, parseInt(req.query.page));
       const limit = 18;
       const accountId = req.user._id;
 
-      const orders = await Order.find({ idSeller: accountId })
-        .sort({ date: -1 })
-        .populate("idAccount")
-        .populate("detail.idProduct")
-        .skip((page - 1) * limit)
-        .limit(limit);
+      const orders = await OrderRepository.findOrdersBySeller(accountId, page, limit);
       const orderObject = mutipleMongooseToObject(orders);
 
       var products = [];
@@ -40,22 +37,18 @@ class orderController {
         messages.push({ idOrder: i._id, message: i.message });
         for (var j of i.detail) {
           Object.assign(j, { idOrder: i._id });
-          // var temp = [];
-          // temp.push(j);
           products.push(j);
         }
       }
-      res.locals._numberOfItems = await Order.find({ idSeller: accountId })
-        .populate("idAccount")
-        .populate("detail.idProduct")
-        .countDocuments();
+
+      const totalItems = await OrderRepository.countOrdersBySeller(accountId);
+
+      res.locals._numberOfItems = totalItems;
       res.locals._limit = limit;
       res.locals._currentPage = page;
-
       res.locals.orders = orderObject;
       res.locals.products = products;
       res.locals.messages = messages;
-      // res.json({products})
 
       res.render("manage-order");
     } catch (error) {
@@ -67,7 +60,7 @@ class orderController {
   getQuantity = async (req, res, next) => {
     try {
       const orderId = req.body.id;
-      const order = await Order.find({ _id: orderId });
+      const order = await OrderRepository.getOrderById(orderId);
       res.json(order);
     } catch (error) {
       next(error);
@@ -78,10 +71,7 @@ class orderController {
   rejectOrder = async (req, res, next) => {
     try {
       const orderId = req.params.id;
-      await Order.updateOne(
-        { _id: orderId },
-        { $set: { status: "cancelled" } }
-      );
+      await OrderRepository.updateOrderStatus(orderId, "cancelled");
       res.redirect("back");
     } catch (error) {
       next(error);
@@ -92,26 +82,21 @@ class orderController {
     try {
       const io = getIo();
       const orderId = req.params.id;
-      const order = await Order.findById(orderId);
-      // console.log(order);
-      await order.detail.forEach(async (product) => {
-        const productInfo = await Product.findById(product.idProduct);
-        productInfo.stock -= product.quantity;
-        await productInfo.save();
+      const order = await OrderRepository.findOrderById(orderId);
+
+      for (const product of order.detail) {
+        const newStock = await ProductRepository.updateProductStock(product.idProduct, product.quantity);
 
         // Emitting an event to all connected clients that the stock has been updated
-        // console.log('acceptOrder', productInfo.stock);
-        io.emit('stockUpdate', { productId: product.idProduct.toString(), newStock: productInfo.stock });
+        io.emit('stockUpdate', { productId: product.idProduct.toString(), newStock });
 
-        // console.log(productInfo);
-      });
-      await Order.updateOne(
-        { _id: orderId },
-        { $set: { status: "successful" } }
-      );
+        // Optional console log removed for cleanliness
+      }
+
+      await OrderRepository.updateOrderStatus(orderId, "successful");
 
       // Emit an event to update order status in the buyer's view
-      io.emit('orderStatusChange', { orderId: orderId, newStatus: "successful" });
+      io.emit('orderStatusChange', { orderId, newStatus: "successful" });
 
       res.redirect("back");
     } catch (error) {
@@ -121,11 +106,8 @@ class orderController {
 
   getPayment = async (req, res, next) => {
     try {
-      // const productId = req.params.id;
-      const accBuyer = await Account.findOne({ _id: req.user.id });
-      const product = await Product.findOne({ _id: req.params._id }).populate(
-        "idAccount"
-      );
+      const accBuyer = await AccountRepository.findAccountById(req.user.id);
+      const product = await ProductRepository.getProductWithAccount(req.params._id);
 
       res.locals.accBuyer = mongooseToObject(accBuyer);
       res.locals.product = mongooseToObject(product);
@@ -139,13 +121,7 @@ class orderController {
 
   getPayForCart = async (req, res, next) => {
     try {
-      // const productId = req.params.id;
-      const accBuyer = await Account.findOne({ _id: req.user.id }).populate({
-        path: "cart._id",
-        populate: {
-          path: "idAccount",
-        },
-      });
+      const accBuyer = await AccountRepository.findAccountWithPopulatedCart(req.user.id);
 
       res.locals.accBuyer = mongooseToObject(accBuyer);
 
@@ -157,16 +133,16 @@ class orderController {
 
   placeOrder = async (req, res, next) => {
     try {
-      const accBuyer = await Account.findOne({ _id: req.user.id });
-      const product = await Product.findOne({ _id: req.params._id }).populate("idAccount");
-  
+      const accBuyer = await AccountRepository.findAccountById(req.user.id);
+      const product = await ProductRepository.getProductWithAccount(req.params._id);
+
       const orderDetails = [{
         idSeller: product.idAccount,
         idProduct: product._id,
         quantity: req.query.quantity
       }];
-  
-      await this.createAndSaveOrder(accBuyer, orderDetails, req.body.message);
+
+      await OrderRepository.createOrder(accBuyer, orderDetails, req.body.message);
       res.redirect(`/account/my-order-pending/${req.user.id}`);
     } catch (error) {
       next(error);
@@ -175,32 +151,30 @@ class orderController {
 
   placeOrderForCart = async (req, res, next) => {
     try {
-      const accBuyer = await Account.findOne({ _id: req.user.id })
-        .populate("cart._id")
-        .populate("cart._id.idAccount");
-  
+      const accBuyer = await AccountRepository.findAccountWithPopulatedCart(req.user.id);
+
       const orderDetails = accBuyer.cart.map(cartItem => ({
         idSeller: cartItem._id.idAccount,
         idProduct: cartItem._id._id,
         quantity: cartItem.quantity
       }));
-  
-      const savedOrders = await this.createAndSaveOrder(accBuyer, orderDetails, req.body.message);
-  
-      // Filter out items that have been ordered
-      accBuyer.cart = accBuyer.cart.filter(
-        cartItem => !savedOrders.some(
-          savedOrder => savedOrder.detail[0].idProduct.equals(cartItem._id._id)
+
+      const savedOrders = await OrderRepository.createOrder(accBuyer, orderDetails, req.body.message);
+
+      // Update cart to remove items that have been ordered
+      const remainingCartItems = accBuyer.cart.filter(
+        cartItem => !savedOrders.detail.some(
+          orderDetail => orderDetail.idProduct.equals(cartItem._id._id)
         )
       );
+
+      await AccountRepository.updateAccountCart(req.user.id, remainingCartItems);
       req.session.cart = [];
-      await accBuyer.save();
-  
       res.redirect(`/account/my-order-pending/${req.user.id}`);
     } catch (error) {
       next(error);
     }
-  };  
+  };
 
   createAndSaveOrder = async (accBuyer, details, message) => {
     const io = getIo();
@@ -242,76 +216,6 @@ class orderController {
 
     return populatedOrders;
 };
-
-  // placeOrder = async (req, res, next) => {
-  //   try {
-  //     const accBuyer = await Account.findOne({ _id: req.user.id });
-  //     const product = await Product.findOne({ _id: req.params._id }).populate(
-  //       "idAccount"
-  //     );
-  //     const idSeller = product.idAccount;
-
-  //     const newOrder = new Order({
-  //       idAccount: accBuyer._id,
-  //       idSeller: idSeller,
-  //       detail: [
-  //         {
-  //           idProduct: product._id,
-  //           quantity: req.query.quantity,
-  //           isEvaluated: false,
-  //         },
-  //       ],
-  //       status: "pending",
-  //       message: req.body.message,
-  //     });
-
-  //     await newOrder.save(); // Lưu order mới vào MongoDB
-  //     res.redirect(`/account/my-order-pending/${req.user.id}`);
-  //   } catch (err) {
-  //     next(error);
-  //   }
-  // };
-
-  // placeOrderForCart = async (req, res, next) => {
-  //   try {
-  //     const accBuyer = await Account.findOne({ _id: req.user.id })
-  //       .populate("cart._id")
-  //       .populate("cart._id.idAccount");
-
-  //     const orders = accBuyer.cart.map((cartItem) => {
-  //       const idSeller = cartItem._id.idAccount;
-  //       const newOrder = new Order({
-  //         idAccount: accBuyer._id,
-  //         idSeller: idSeller,
-  //         detail: [
-  //           {
-  //             idProduct: cartItem._id._id,
-  //             quantity: cartItem.quantity,
-  //             isEvaluated: false,
-  //           },
-  //         ],
-  //         status: "pending",
-  //         message: req.body.message, // Cần lấy từ form đầu vào
-  //       });
-  //       return newOrder;
-  //     });
-
-  //     const savedOrders = await Order.insertMany(orders);
-  //     // Xóa các sản phẩm đã được đặt hàng khỏi giỏ hàng
-  //     accBuyer.cart = accBuyer.cart.filter(
-  //       (cartItem) =>
-  //         !savedOrders.some((savedOrder) =>
-  //           savedOrder.detail[0].idProduct.equals(cartItem._id._id)
-  //         )
-  //     );
-  //     req.session.cart = []; // Remove trong session
-  //     await accBuyer.save();
-
-  //     res.redirect(`/account/my-order-pending/${req.user.id}`);
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
 }
 
 module.exports = new orderController();
