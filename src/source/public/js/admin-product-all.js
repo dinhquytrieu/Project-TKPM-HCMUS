@@ -2,17 +2,41 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.querySelector('input[type="search"]');
     const productList = document.querySelector('.list-products');
     const pagination = document.querySelector(".pagination");
+    const statusFilter = document.getElementById('statusFilter');
 
-    // Handle search input for dynamic searching
-    searchInput.addEventListener('input', function () {
-        // console.log('Search:', searchInput.value);
+    // Handle input change for dynamic searching
+    // searchInput.addEventListener('input', function () {
+    //     // console.log('Search:', searchInput.value);
+    //     fetchAndUpdateProducts(1); // Always revert to page 1 for new searches
+    // });
+    searchInput.addEventListener('input', debounce(function () {
         fetchAndUpdateProducts(1); // Always revert to page 1 for new searches
+    }, 250)); // Debounce to limit requests
+    // Debounce function to limit the rate of invoking the search
+    function debounce(func, wait, immediate) {
+        var timeout;
+        return function () {
+            var context = this, args = arguments;
+            var later = function () {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+        };
+    }
+
+    statusFilter.addEventListener('change', function () {
+        fetchAndUpdateProducts(1);
     });
 
     // Function to fetch data and update UI
     function fetchAndUpdateProducts(page) {
         const searchValue = encodeURIComponent(searchInput.value);
-        fetch(`/product/full?page=${page}&search=${searchValue}&json=true`) // Assuming json=true triggers JSON response
+        const statusValue = statusFilter.value;
+        fetch(`/product/full?page=${page}&search=${searchValue}&status=${statusValue}&json=true`) // Assuming json=true triggers JSON response
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -62,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Function to update status colors based on their text
-    window.updateStatusStyles = function() {
+    window.updateStatusStyles = function () {
         const statuses = document.querySelectorAll(".status");
         statuses.forEach(e => {
             switch (e.innerText.trim()) {
@@ -81,15 +105,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     break;
                 default:
                     e.innerText = "No status";
-                    // e.style.color = "#0e760e";
+                // e.style.color = "#0e760e";
             }
             e.style.fontStyle = "italic";
         });
     }
 
     // Initialize or update pagination dynamically
-    window.initPagination = function(currentPage, numberOfItems, limit) {
-        console.log('Pagination:', currentPage, numberOfItems, limit);
+    window.initPagination = function (currentPage, numberOfItems, limit) {
+        // console.log('Pagination:', currentPage, numberOfItems, limit);
         const numPages = Math.ceil(numberOfItems / limit);
         const leftMost = currentPage - ((currentPage - 1) % 3);
         pagination.innerHTML = ''; // Clear existing pagination
