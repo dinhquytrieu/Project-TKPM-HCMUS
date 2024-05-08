@@ -1276,6 +1276,11 @@ section article.skills {
 .specific-product {
   margin-top: 17rem;
   max-width: 108rem; }
+  .specific-product .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    /* This line ensures that all children columns are of equal height */ }
   .specific-product hr {
     width: calc(100% - 1.5rem);
     margin-left: 0.75rem;
@@ -1291,7 +1296,10 @@ section article.skills {
         justify-content: center; }
         .specific-product .payment-section .img-item a .img-product {
           border-radius: 20px;
-          width: 35rem;
+          max-height: 100%;
+          /* Ensures the image does not overflow its container */
+          width: auto;
+          /* Maintain aspect ratio */
           box-shadow: 0 0.5em 0.5em -0.4em #0d263c; }
         .specific-product .payment-section .img-item a .img-product:hover {
           transform: scale(1.1);
@@ -1300,6 +1308,8 @@ section article.skills {
           /* Add smooth transition */ }
     .specific-product .payment-section .details-item {
       font-family: "Inter", sans-serif; }
+      .specific-product .payment-section .details-item > :not(:last-child) {
+        margin-bottom: 2.5rem; }
       .specific-product .payment-section .details-item .intro {
         position: relative; }
         .specific-product .payment-section .details-item .intro .report-section {
@@ -1359,7 +1369,6 @@ section article.skills {
       .specific-product .payment-section .details-item .details-product {
         border-radius: 20px;
         width: 100%;
-        margin-top: 2rem;
         background-color: transparent;
         border: 1px solid #000; }
         .specific-product .payment-section .details-item .details-product .title_detail {
@@ -1380,34 +1389,36 @@ section article.skills {
           margin-top: 10px !important; }
           .specific-product .payment-section .details-item .details-product .details-list li {
             margin-bottom: 0.2rem; }
-      .specific-product .payment-section .details-item .adjust-quantity {
-        margin-top: 4.8rem; }
-        .specific-product .payment-section .details-item .adjust-quantity .quantity {
-          line-height: 2.5rem; }
-        .specific-product .payment-section .details-item .adjust-quantity .adjust-icon .btn:nth-child(2) {
-          margin-left: 0.5rem; }
-        .specific-product .payment-section .details-item .adjust-quantity .available-product {
-          line-height: 2.5rem; }
-      .specific-product .payment-section .details-item .payment-btn-section {
-        margin-top: 2.4rem; }
-        .specific-product .payment-section .details-item .payment-btn-section .add-cart-btn {
-          width: 16rem;
-          padding: 1rem 0;
-          text-transform: uppercase;
-          background: #d2e6ef;
-          color: #000;
-          font-family: "Ubuntu", sans-serif; }
-          .specific-product .payment-section .details-item .payment-btn-section .add-cart-btn:hover {
-            border-radius: 0.5rem;
-            box-shadow: 0 0 0 0.2rem #337ab7 inset;
-            transition: all 0.3s; }
-        .specific-product .payment-section .details-item .payment-btn-section .payment-btn {
-          width: 22rem;
-          margin-left: 2rem;
-          padding: 1rem 0;
-          background: #337ab7;
-          color: #fff;
-          font-family: "Ubuntu", sans-serif; }
+      .specific-product .payment-section .details-item .adjust-quantity .quantity-text-size {
+        font-size: 1.8rem; }
+      .specific-product .payment-section .details-item .adjust-quantity .quantity {
+        line-height: 2.5rem; }
+      .specific-product .payment-section .details-item .adjust-quantity .adjust-icon .btn:nth-child(1) {
+        background-color: #f6f6f6; }
+        .specific-product .payment-section .details-item .adjust-quantity .adjust-icon .btn:nth-child(1):hover {
+          background-color: #337ab7; }
+      .specific-product .payment-section .details-item .adjust-quantity .adjust-icon .btn:nth-child(2) {
+        margin-left: 0.5rem;
+        background-color: #d9edf7; }
+        .specific-product .payment-section .details-item .adjust-quantity .adjust-icon .btn:nth-child(2):hover {
+          background-color: #337ab7; }
+      .specific-product .payment-section .details-item .adjust-quantity .available-product {
+        line-height: 2.5rem; }
+      .specific-product .payment-section .details-item .payment-btn-section .add-cart-btn {
+        padding: 1rem 1rem;
+        text-transform: uppercase;
+        background: #d2e6ef;
+        color: #000;
+        font-family: "Ubuntu", sans-serif; }
+        .specific-product .payment-section .details-item .payment-btn-section .add-cart-btn:hover {
+          border-radius: 0.5rem;
+          box-shadow: 0 0 0 0.2rem #337ab7 inset;
+          transition: all 0.3s; }
+      .specific-product .payment-section .details-item .payment-btn-section .payment-btn {
+        padding: 1rem 1rem;
+        background: #337ab7;
+        color: #fff;
+        font-family: "Ubuntu", sans-serif; }
   .specific-product .comment-section .comment-item .trend {
     margin-top: 2rem;
     margin-bottom: 3rem; }
