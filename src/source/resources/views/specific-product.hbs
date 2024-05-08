@@ -64,7 +64,8 @@
       <div class="payment-btn-section d-flex justify-content-between">
         <a href="#" class="add-cart-btn btn" id="js-add-cart-btn" style="width: 48%;"
           onclick="addCart('{{product._id}}', document.querySelector('.quantity-number').textContent);">Add to cart</a>
-        <a href="/order/payment/{{product._id}}" class="payment-btn btn" id="buy-now-btn" style="width: 48%;">BUY NOW</a>
+        <a href="/order/payment/{{product._id}}" class="payment-btn btn" id="buy-now-btn" style="width: 48%;">BUY
+          NOW</a>
       </div>
     </div>
   </div>
@@ -157,6 +158,33 @@
       <div class="rectangle col"></div>
     </div>
     <div class="trend-row row">
+      {{#if related.length}}
+      {{#each related}}
+      <div class="col-2">
+        <figure class="trend-card card">
+          <a href="/product/specific-product/{{this._id}}" class="trend-card-img">
+            <img src="{{this.image}}" class="trend-prod-img" alt="Something ..." />
+          </a>
+          <p class="trend-card-title">{{this.name}}</p>
+          <p class="trend-card-price">{{formatCurrency this.price}}</p>
+          <a href="/product/specific-product/{{this._id}}" class="trend-card-btn">Buy now</a>
+        </figure>
+      </div>
+      {{/each}}
+      {{else}}
+      <div class="col-12 text-center">
+        <img src="/img/no_product_found.png" alt="No related products found" style="width: 30%; height: auto;">
+      </div>
+      {{/if}}
+    </div>
+  </section>
+  {{!-- <section class="trend row">
+    <div class="row">
+      <div class="rectangle col"></div>
+      <h2 class="main-heading col-md-auto">RELATED PRODUCT</h2>
+      <div class="rectangle col"></div>
+    </div>
+    <div class="trend-row row">
       {{#each related}}
       <div class="col-2">
         <figure class="trend-card card">
@@ -170,7 +198,7 @@
       </div>
       {{/each}}
     </div>
-  </section>
+  </section> --}}
 </div>
 
 <script>

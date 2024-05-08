@@ -530,7 +530,7 @@ class productController {
       const evaluates = await ProductRepository.findEvaluationsByProductId(productId);
       const evaNumber = await ProductRepository.countEvaluationsByProductId(productId);
       const avgRating = await ProductRepository.calculateAverageRating(productId);
-      const related = await ProductRepository.findRelatedProducts(product.keyword);
+      const related = await ProductRepository.findRelatedProducts(product.keyword, productId);
 
       res.locals.evaNumber = evaNumber;
       res.locals.details = details;
