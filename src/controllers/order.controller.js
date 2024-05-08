@@ -149,32 +149,61 @@ class orderController {
     }
   };
 
+  // placeOrderForCart = async (req, res, next) => {
+  //   try {
+  //     const accBuyer = await AccountRepository.findAccountWithPopulatedCart(req.user.id);
+
+  //     const orderDetails = accBuyer.cart.map(cartItem => ({
+  //       idSeller: cartItem._id.idAccount,
+  //       idProduct: cartItem._id._id,
+  //       quantity: cartItem.quantity
+  //     }));
+
+  //     const savedOrders = await OrderRepository.createOrder(accBuyer, orderDetails, req.body.message);
+
+  //     // Update cart to remove items that have been ordered
+  //     const remainingCartItems = accBuyer.cart.filter(
+  //       cartItem => !savedOrders.detail.some(
+  //         orderDetail => orderDetail.idProduct.equals(cartItem._id._id)
+  //       )
+  //     );
+
+  //     await AccountRepository.updateAccountCart(req.user.id, remainingCartItems);
+  //     req.session.cart = [];
+  //     res.redirect(`/account/my-order-pending/${req.user.id}`);
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // };
+
   placeOrderForCart = async (req, res, next) => {
     try {
-      const accBuyer = await AccountRepository.findAccountWithPopulatedCart(req.user.id);
-
+      const accBuyer = await Account.findOne({ _id: req.user.id })
+        .populate("cart._id")
+        .populate("cart._id.idAccount");
+  
       const orderDetails = accBuyer.cart.map(cartItem => ({
         idSeller: cartItem._id.idAccount,
         idProduct: cartItem._id._id,
         quantity: cartItem.quantity
       }));
-
-      const savedOrders = await OrderRepository.createOrder(accBuyer, orderDetails, req.body.message);
-
-      // Update cart to remove items that have been ordered
-      const remainingCartItems = accBuyer.cart.filter(
-        cartItem => !savedOrders.detail.some(
-          orderDetail => orderDetail.idProduct.equals(cartItem._id._id)
+  
+      const savedOrders = await this.createAndSaveOrder(accBuyer, orderDetails, req.body.message);
+  
+      // Filter out items that have been ordered
+      accBuyer.cart = accBuyer.cart.filter(
+        cartItem => !savedOrders.some(
+          savedOrder => savedOrder.detail[0].idProduct.equals(cartItem._id._id)
         )
       );
-
-      await AccountRepository.updateAccountCart(req.user.id, remainingCartItems);
       req.session.cart = [];
+      await accBuyer.save();
+  
       res.redirect(`/account/my-order-pending/${req.user.id}`);
     } catch (error) {
       next(error);
     }
-  };
+  };  
 
   createAndSaveOrder = async (accBuyer, details, message) => {
     const io = getIo();
