@@ -875,7 +875,8 @@ a.btn:hover, a.btn:active, a.btn:first-child:active,
   .trend .trend-card-price {
     text-align: center;
     color: #000;
-    font-weight: 700; }
+    font-weight: 700;
+    font-size: 1.9rem; }
   .trend .trend-card-btn {
     border: 1px solid transparent;
     text-transform: uppercase;
@@ -1566,10 +1567,10 @@ section article.skills {
 
 .all-product {
   margin-top: 17rem;
-  max-width: 108rem; }
+  max-width: 150rem; }
   .all-product .sort-section {
     margin-top: 2.5rem;
-    margin-right: 0.75rem;
+    margin-right: 1.5rem;
     background-color: #fff; }
     .all-product .sort-section .dropdown {
       background-color: #fff;
@@ -1579,7 +1580,10 @@ section article.skills {
       .all-product .sort-section .dropdown ul li {
         height: 4rem;
         width: 20rem;
-        font-size: 1.6rem; }
+        font-size: 1.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center; }
     .all-product .sort-section .dropdown-toggle {
       border-radius: 10px;
       background-color: #044985;
@@ -1639,8 +1643,7 @@ section article.skills {
           background-color: #337ab7; }
       .all-product .filter-vs-product .filter-section .filter-type-list {
         padding-left: 10px;
-        padding-right: 10px;
-        height: 100%; }
+        padding-right: 10px; }
         .all-product .filter-vs-product .filter-section .filter-type-list .list-title {
           font-size: 2rem;
           font-weight: 700;
@@ -1730,7 +1733,8 @@ section article.skills {
         .all-product .filter-vs-product .product-section .trend .trend-card-price {
           text-align: center;
           color: #000;
-          font-weight: 700; }
+          font-weight: 700;
+          font-size: 1.9rem; }
         .all-product .filter-vs-product .product-section .trend .trend-card-btn {
           border: 1px solid transparent;
           text-transform: uppercase;
