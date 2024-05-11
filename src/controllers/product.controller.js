@@ -1,7 +1,8 @@
+// product.controller.js
 const Product = require("../models/product.model");
 const fs = require("fs");
 const Evaluate = require("../models/evaluate.model");
-const Account = require("../models/account.model");
+// const Account = require("../models/account.model");
 const Order = require("../models/order.model");
 const ProductRepository = require('../repositories/ProductRepository');
 
@@ -99,105 +100,105 @@ class productController {
   };
 
   // [GET] product/manage
-//   getManage = async (req, res, next) => {
-//     try {
-//         const { id } = req.user;
-//         const keyword = (req.query.keyword || "").trim();
-//         const category = req.query.category || "";
-//         const sortBy = req.query.sortBy || "-updatedAt";
-//         const page = isNaN(req.query.page) ? 1 : Math.max(1, parseInt(req.query.page));
-//         const limit = 5;
+  //   getManage = async (req, res, next) => {
+  //     try {
+  //         const { id } = req.user;
+  //         const keyword = (req.query.keyword || "").trim();
+  //         const category = req.query.category || "";
+  //         const sortBy = req.query.sortBy || "-updatedAt";
+  //         const page = isNaN(req.query.page) ? 1 : Math.max(1, parseInt(req.query.page));
+  //         const limit = 5;
 
-//         const { products, numberOfItems } = await ProductRepository.findProductsByAccountAndFilters(
-//             id, keyword, category, sortBy, page, limit
-//         );
+  //         const { products, numberOfItems } = await ProductRepository.findProductsByAccountAndFilters(
+  //             id, keyword, category, sortBy, page, limit
+  //         );
 
-//         res.locals = {
-//             _keyword: keyword,
-//             _category: category,
-//             _sortBy: sortBy,
-//             _numberOfItems: numberOfItems,
-//             _limit: limit,
-//             _currentPage: page,
-//             _originalUrl: req.url,
-//         };
+  //         res.locals = {
+  //             _keyword: keyword,
+  //             _category: category,
+  //             _sortBy: sortBy,
+  //             _numberOfItems: numberOfItems,
+  //             _limit: limit,
+  //             _currentPage: page,
+  //             _originalUrl: req.url,
+  //         };
 
-//         res.render("manage-product", {
-//             products: mutipleMongooseToObject(products),
-//             helpers: {
-//                 isEqual(c1, c2) {
-//                     return c1 == c2;
-//                 },
-//                 convertMoney: (str) => {
-//                     return Number(str).toLocaleString("it-IT", {
-//                         style: "currency",
-//                         currency: "VND",
-//                     });
-//                 },
-//             },
-//         });
-//     } catch (err) {
-//         next(err);
-//     }
-// };
+  //         res.render("manage-product", {
+  //             products: mutipleMongooseToObject(products),
+  //             helpers: {
+  //                 isEqual(c1, c2) {
+  //                     return c1 == c2;
+  //                 },
+  //                 convertMoney: (str) => {
+  //                     return Number(str).toLocaleString("it-IT", {
+  //                         style: "currency",
+  //                         currency: "VND",
+  //                     });
+  //                 },
+  //             },
+  //         });
+  //     } catch (err) {
+  //         next(err);
+  //     }
+  // };
 
-getManage = async (req, res, next) => {
-  try {
-    let options = {
-      idAccount: req.user.id,
-      $or: [{ status: "Available" }, { status: "Reported" }],
-    };
-    // let options = { idAccount: req.user.id, status: "Available" };
-    // Tìm kiếm
-    let keyword = req.query.keyword || "";
-    // Lọc theo loại
-    let category = req.query.category || "";
-    // Sắp xếp
-    let sortBy = req.query.sortBy || "-updatedAt";
-    keyword = keyword.trim();
-    let originalUrl = req.originalUrl;
-    if (keyword != "") {
-      const regex = new RegExp(keyword, "i");
-      options.name = regex;
-    }
-    if (category != "") {
-      options.category = category;
-    }
-    // Phân trang
-    let page = isNaN(req.query.page)
-      ? 1
-      : Math.max(1, parseInt(req.query.page));
-    const limit = 5;
-    // Thực hiện truy vấn
-    let products = await Product.find(options)
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .sort(sortBy);
-    res.locals._keyword = keyword;
-    res.locals._category = category;
-    res.locals._sortBy = sortBy;
-    res.locals._numberOfItems = await Product.find(options).countDocuments();
-    res.locals._limit = limit;
-    res.locals._currentPage = page;
-    res.locals._originalUrl = req.url;
-    res.render("manage-product", {
-      products: mutipleMongooseToObject(products),
-      helpers: {
-        isEqual(c1, c2) {
-          return c1 == c2;
+  getManage = async (req, res, next) => {
+    try {
+      let options = {
+        idAccount: req.user.id,
+        $or: [{ status: "Available" }, { status: "Reported" }],
+      };
+      // let options = { idAccount: req.user.id, status: "Available" };
+      // Tìm kiếm
+      let keyword = req.query.keyword || "";
+      // Lọc theo loại
+      let category = req.query.category || "";
+      // Sắp xếp
+      let sortBy = req.query.sortBy || "-updatedAt";
+      keyword = keyword.trim();
+      let originalUrl = req.originalUrl;
+      if (keyword != "") {
+        const regex = new RegExp(keyword, "i");
+        options.name = regex;
+      }
+      if (category != "") {
+        options.category = category;
+      }
+      // Phân trang
+      let page = isNaN(req.query.page)
+        ? 1
+        : Math.max(1, parseInt(req.query.page));
+      const limit = 5;
+      // Thực hiện truy vấn
+      let products = await Product.find(options)
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .sort(sortBy);
+      res.locals._keyword = keyword;
+      res.locals._category = category;
+      res.locals._sortBy = sortBy;
+      res.locals._numberOfItems = await Product.find(options).countDocuments();
+      res.locals._limit = limit;
+      res.locals._currentPage = page;
+      res.locals._originalUrl = req.url;
+      res.render("manage-product", {
+        products: mutipleMongooseToObject(products),
+        helpers: {
+          isEqual(c1, c2) {
+            return c1 == c2;
+          },
+          convertMoney: (str) => {
+            return Number(str).toLocaleString("it-IT", {
+              style: "currency",
+              currency: "VND",
+            });
+          },
         },
-        convertMoney: (str) => {
-          return Number(str).toLocaleString("it-IT", {
-            style: "currency",
-            currency: "VND",
-          });
-        },
-      },
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+      });
+    } catch (err) {
+      next(err);
+    }
+  };
 
 
   // [GET] product/edit/
@@ -214,28 +215,28 @@ getManage = async (req, res, next) => {
   // [POST] product/edit/save
   createNewProduct = async (req, res, next) => {
     try {
-        // Prepare the form data
-        const formData = {
-            ...req.body,
-            idAccount: req.user.id,
-            price: Number(req.body.price),
-            stock: Number(req.body.stock),
-            isTrend: Number(req.body.isTrend),
-            keyword: req.body.keyword.split(",").map(str => str.trim())
-        };
+      // Prepare the form data
+      const formData = {
+        ...req.body,
+        idAccount: req.user.id,
+        price: Number(req.body.price),
+        stock: Number(req.body.stock),
+        isTrend: Number(req.body.isTrend),
+        keyword: req.body.keyword.split(",").map(str => str.trim())
+      };
 
-        // Determine if the product is trending
-        if (formData.isTrend) {
-            formData.status = "Trending";
-            formData.isTrend = false; // Reset isTrend to false if needed after setting status
-        }
+      // Determine if the product is trending
+      if (formData.isTrend) {
+        formData.status = "Trending";
+        formData.isTrend = false; // Reset isTrend to false if needed after setting status
+      }
 
-        // // Handle product image
-        // if (req.file && !req.fileValidationError) {
-        //     formData.image = req.file.path.replace("source/public", "");
-        // } else {
-        //     formData.image = "/img/products/default.png";
-        // }
+      // // Handle product image
+      // if (req.file && !req.fileValidationError) {
+      //     formData.image = req.file.path.replace("source/public", "");
+      // } else {
+      //     formData.image = "/img/products/default.png";
+      // }
 
       // Handling image upload
       if (req.file && !req.fileValidationError) {
@@ -252,73 +253,73 @@ getManage = async (req, res, next) => {
         formData.image = "/img/products/default.png";
       }
 
-        // Create the product using the repository
-        await ProductRepository.createProduct(formData);
+      // Create the product using the repository
+      await ProductRepository.createProduct(formData);
 
-        // Render a success or processing message
-        res.render("message/processing-request");
+      // Render a success or processing message
+      res.render("message/processing-request");
     } catch (err) {
-        next(err);
+      next(err);
     }
-};
+  };
 
 
   // [GET] product/edit/:id
   getEditForUpdate = async (req, res, next) => {
     try {
-        // Fetch the product using the repository
-        const product = await ProductRepository.findProductById(req.params.id);
+      // Fetch the product using the repository
+      const product = await ProductRepository.findProductById(req.params.id);
 
-        // Render the edit product page with the product data
-        res.render("edit-product", {
-            product: mongooseToObject(product), // Convert the Mongoose model to a plain JavaScript object for the view
-            helpers: {
-                isCategory(c1, c2) {
-                    return c1 == c2;
-                },
-            },
-            getEditForUpdate: true,
-        });
+      // Render the edit product page with the product data
+      res.render("edit-product", {
+        product: mongooseToObject(product), // Convert the Mongoose model to a plain JavaScript object for the view
+        helpers: {
+          isCategory(c1, c2) {
+            return c1 == c2;
+          },
+        },
+        getEditForUpdate: true,
+      });
     } catch (err) {
-        // Handle errors such as product not found or database errors
-        next(err);
+      // Handle errors such as product not found or database errors
+      next(err);
     }
-};
+  };
 
   // [POST] product/edit/save/:id
   updateProduct = async (req, res, next) => {
     try {
-        const formData = req.body;
-        const hasNewFile = Boolean(req.file);
+      const formData = req.body;
+      const hasNewFile = Boolean(req.file);
 
-        // Pass the full file path if a new file is uploaded, otherwise pass the existing path
-        const imagePath = hasNewFile ? req.file.path : '';
+      // Pass the full file path if a new file is uploaded, otherwise pass the existing path
+      const imagePath = hasNewFile ? req.file.path : '';
 
-        // Call the repository function to update the product
-        await ProductRepository.updateProduct(req.params.id, formData, imagePath, hasNewFile);
+      // Call the repository function to update the product
+      await ProductRepository.updateProduct(req.params.id, formData, imagePath, hasNewFile);
 
-        // Render a processing request message
-        res.render("message/processing-request");
+      // Render a processing request message
+      res.render("message/processing-request");
     } catch (err) {
-        console.error('Error during product update:', err);
-        next(err);
+      console.error('Error during product update:', err);
+      next(err);
     }
-};
+  };
 
 
   // [POST] product/delete/:id
   deleteProduct = async (req, res, next) => {
     try {
-        // Call the repository function to delete the product
-        await ProductRepository.deleteProduct(req.params.id);
+      // Call the repository function to delete the product
+      await ProductRepository.deleteProduct(req.params.id);
 
-        // Redirect to the product management page, maintaining the current pagination state
-        res.redirect(`/product/manage?page=${req.query.page ? req.query.page : ""}`);
+      // Redirect to the product management page, maintaining the current pagination state
+      res.redirect(`/product/manage?page=${req.query.page ? req.query.page : ""}`);
     } catch (err) {
-        console.error('Error during product deletion:', err);
-        next(err);
+      console.error('Error during product deletion:', err);
+      next(err);
     }
-};
+  };
 
 
   // [GET] product/cart
@@ -384,79 +385,79 @@ getManage = async (req, res, next) => {
   // [GET] product/all-product
   showAllProduct = async (req, res, next) => {
     try {
-        const page = isNaN(req.query.page)
-            ? 1
-            : Math.max(1, parseInt(req.query.page));
-        const limit = 8;
-        const productOptions = {
-            $or: [{ status: "Available" }, { status: "Reported" }]
-        };
+      const page = isNaN(req.query.page)
+        ? 1
+        : Math.max(1, parseInt(req.query.page));
+      const limit = 8;
+      const productOptions = {
+        $or: [{ status: "Available" }, { status: "Reported" }]
+      };
 
-        // Use repository methods to handle data fetching
-        const products = await ProductRepository.findPaginatedProducts(productOptions, page, limit);
-        const categories = await ProductRepository.aggregateProductCategories(["Available", "Reported"]);
-        const numberOfItems = await ProductRepository.countProducts(productOptions);
+      // Use repository methods to handle data fetching
+      const products = await ProductRepository.findPaginatedProducts(productOptions, page, limit);
+      const categories = await ProductRepository.aggregateProductCategories(["Available", "Reported"]);
+      const numberOfItems = await ProductRepository.countProducts(productOptions);
 
-        // Setting up local variables for the view
-        res.locals._numberOfItems = numberOfItems;
-        res.locals._limit = limit;
-        res.locals._currentPage = page;
-        res.locals.categories = categories;
-        res.locals.products = mutipleMongooseToObject(products);
+      // Setting up local variables for the view
+      res.locals._numberOfItems = numberOfItems;
+      res.locals._limit = limit;
+      res.locals._currentPage = page;
+      res.locals.categories = categories;
+      res.locals.products = mutipleMongooseToObject(products);
 
-        // res.render("all-product");
-        res.render("all-product", {
-          convertMoney: (str) => {
-            return Number(str).toLocaleString("it-IT", {
-              style: "currency",
-              currency: "VND",
-            });
-          },
-        });
+      // res.render("all-product");
+      res.render("all-product", {
+        convertMoney: (str) => {
+          return Number(str).toLocaleString("it-IT", {
+            style: "currency",
+            currency: "VND",
+          });
+        },
+      });
     } catch (error) {
-        next(error);
+      next(error);
     }
-};
+  };
 
 
   // [GET] product/all-product/category
   filterProduct = async (req, res, next) => {
     try {
-        const page = isNaN(req.query.page) ? 1 : Math.max(1, parseInt(req.query.page));
-        const limit = 8;
-        const type = req.query.category;
+      const page = isNaN(req.query.page) ? 1 : Math.max(1, parseInt(req.query.page));
+      const limit = 8;
+      const type = req.query.category;
 
-        const filterOptions = {
-            category: type,
-            $or: [{ status: "Available" }, { status: "Reported" }]
-        };
+      const filterOptions = {
+        category: type,
+        $or: [{ status: "Available" }, { status: "Reported" }]
+      };
 
-        // Use repository methods to handle data fetching
-        const products = await ProductRepository.findFilteredProducts(filterOptions, page, limit);
-        const categories = await ProductRepository.aggregateCategoriesByStatus(["Available", "Reported"]);
-        const numberOfItems = await ProductRepository.countFilteredProducts(filterOptions);
+      // Use repository methods to handle data fetching
+      const products = await ProductRepository.findFilteredProducts(filterOptions, page, limit);
+      const categories = await ProductRepository.aggregateCategoriesByStatus(["Available", "Reported"]);
+      const numberOfItems = await ProductRepository.countFilteredProducts(filterOptions);
 
-        // Setting up local variables for the view
-        res.locals._numberOfItems = numberOfItems;
-        res.locals._limit = limit;
-        res.locals._currentPage = page;
-        res.locals.categories = categories;
-        res.locals.products = mutipleMongooseToObject(products);
+      // Setting up local variables for the view
+      res.locals._numberOfItems = numberOfItems;
+      res.locals._limit = limit;
+      res.locals._currentPage = page;
+      res.locals.categories = categories;
+      res.locals.products = mutipleMongooseToObject(products);
 
-        // res.render("all-product");
-        res.render("all-product", {
-          convertMoney: (str) => {
-            return Number(str).toLocaleString("it-IT", {
-              style: "currency",
-              currency: "VND",
-            });
-          },
-          formatCurrency: formatCurrency,
-        });
+      // res.render("all-product");
+      res.render("all-product", {
+        convertMoney: (str) => {
+          return Number(str).toLocaleString("it-IT", {
+            style: "currency",
+            currency: "VND",
+          });
+        },
+        formatCurrency: formatCurrency,
+      });
     } catch (error) {
-        next(error);
+      next(error);
     }
-};
+  };
 
 
   // [GET] product/all-product/sort
@@ -466,7 +467,7 @@ getManage = async (req, res, next) => {
       const limit = 8;
       const offset = (page - 1) * limit;
       const sort = { [req.query.sort]: req.query.order };
-      
+
       let options = { $or: [{ status: "Available" }, { status: "Reported" }] };
       if (req.query.category) {
         options.category = req.query.category;

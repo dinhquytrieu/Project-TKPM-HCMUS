@@ -20,9 +20,8 @@
             </div>
             <div class='signup-btn'>
               <button type='button' class='btn btn-outline-secondary'
-                onclick="window.location.href='/account/sign-out';"
-                style="border-radius: 6px; margin-top: 6px;"
-                >SIGN OUT</button>
+                onclick="window.location.href='/account/sign-out';" style="border-radius: 6px; margin-top: 6px;">SIGN
+                OUT</button>
             </div>
           </div>
         </div>
@@ -64,49 +63,49 @@
 
             <label class='form-label fw-bold mb-3'>Last name*</label>
             <input id='lastName' type='text' class='form-control input-size shadow' name="lastName"
-              value="{{user.lastName}}" style="border-radius: 10px; padding-left: 16px;"/>
+              value="{{user.lastName}}" style="border-radius: 10px; padding-left: 16px;" />
           </div>
           <div class='col-12'>
             <label class='form-label fw-bold mb-3'>Address</label>
             <input id='address' type='text' class='form-control input-size shadow' placeholder='' name="address"
-              value="{{user.address}}" style="border-radius: 10px; padding-left: 16px;"/>
+              value="{{user.address}}" style="border-radius: 10px; padding-left: 16px;" />
           </div>
           <div class='col-12'>
             <label class='form-label fw-bold mb-3'>Email*</label>
             <input id='email' type='text' class='form-control input-size shadow' placeholder='' name="email"
-              value="{{user.email}}" style="border-radius: 10px; padding-left: 16px;"/>
+              value="{{user.email}}" style="border-radius: 10px; padding-left: 16px;" />
           </div>
-          <input type='hidden' id='avatarPath' name='avatarPath' value='{{user.avatar}}' style="border-radius: 10px; padding-left: 16px;">
+          <input type='hidden' id='avatarPath' name='avatarPath' value='{{user.avatar}}'
+            style="border-radius: 10px; padding-left: 16px;">
           {{!-- <img id='avatar-image' src='{{user.avatar}}' alt='Avatar' /> --}}
           <div class='col-md-6'>
             <label class='form-label fw-bold mb-3'>Phone number*</label>
-            <input id='phone' type='text' class='form-control input-size shadow' name="phone" value="{{user.phone}}" style="border-radius: 10px; padding-left: 16px;"
-             />
+            <input id='phone' type='text' class='form-control input-size shadow' name="phone" value="{{user.phone}}"
+              style="border-radius: 10px; padding-left: 16px;" />
           </div>
           <div class='col-md-6'>
             <label class='form-label fw-bold mb-3'>Job</label>
-            <input id='job' type='text' class='form-control input-size shadow' name="job" value="{{user.job}}" style="border-radius: 10px; padding-left: 16px;"
-             />
+            <input id='job' type='text' class='form-control input-size shadow' name="job" value="{{user.job}}"
+              style="border-radius: 10px; padding-left: 16px;" />
           </div>
           <div class='col-12 change-password fw-bold'>
             CHANGE PASSWORD
           </div>
           <div class='col-12'>
             <label class='form-label fw-bold mb-3'>Present password*</label>
-            <input id='present-password' type='password' class='form-control input-size shadow' placeholder='' style="border-radius: 10px; padding-left: 16px;"
-            name="presentPassword" />
+            <input id='present-password' type='password' class='form-control input-size shadow' placeholder=''
+              style="border-radius: 10px; padding-left: 16px;" name="presentPassword" />
           </div>
 
           <div class='col-12'>
             <label class='form-label fw-bold mb-3'>New password*</label>
-            <input id='new-password' type='password' class='form-control input-size shadow' placeholder='' style="border-radius: 10px; padding-left: 16px;" 
-            name="newPassword"/>
+            <input id='new-password' type='password' class='form-control input-size shadow' placeholder=''
+              style="border-radius: 10px; padding-left: 16px;" name="newPassword" />
           </div>
 
           <div class='col-12 save-changes'>
-            <button type="submit" class='form-submit btn btn-outline-secondary shadow' 
-              style="border-radius: 10px; margin-top: 16px; border: none;"
-            >
+            <button type="submit" class='form-submit btn btn-outline-secondary shadow'
+              style="border-radius: 10px; margin-top: 16px; border: none;">
               SAVE CHANGES</button>
           </div>
         </form>
@@ -115,37 +114,74 @@
   </div>
 </div>
 
-{{!-- <script src='/js/profile.js'></script>
+{{!--
+<script src='/js/profile.js'></script>
 <script src='/js/validation.js'></script> --}}
 <script src='/js/testValidation.js'></script>
 <!-- Your existing HTML code -->
 
 {{!-- Include the changePassword.js script --}}
-{{!-- <script src="/js/changePassword.js"></script> --}}
+{{!--
+<script src="/js/changePassword.js"></script> --}}
 
 <script>
   const avatarInput = document.getElementById('avatar-input');
   const avatarImage = document.getElementById('avatar-image');
   const avatarLeft = document.querySelector('.avatar-left');
 
-  avatarInput.addEventListener('change', (event) => {
-  const selectedFile = event.target.files[0];
-  if (selectedFile) {
-    const reader = new FileReader();
-    reader.onload = function() {
-      // Lưu đường dẫn ảnh vào trường ẩn
-      avatarImage.src = reader.result;
-      const avatarPathInput = document.getElementById('avatarPath');
-      //const localImagePath = URL.createObjectURL(selectedFile);
-      avatarPathInput.value = '/img/avatar/' + selectedFile.name;
-    };
-    reader.readAsDataURL(selectedFile);
-  }
-});
+  // Listen for changes to the input element with id 'avatarInput'
+  {{!-- avatarInput.addEventListener('change', (event) => {
+    const selectedFile = event.target.files[0];
 
+    if (selectedFile) {
+      // Display a preview of the image using FileReader
+      const reader = new FileReader();
+      reader.onload = function () {
+        avatarImage.src = reader.result;  // Set image source to the loaded file
+      };
+      reader.readAsDataURL(selectedFile);
+
+      // Prepare FormData to send the file to the server
+      const formData = new FormData();
+      formData.append('avatar', selectedFile);
+
+      // Use fetch to send the file to a server endpoint that handles file uploads
+      fetch('/upload-avatar', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => response.json())  // Assuming the server responds with JSON
+        .then(data => {
+          if (data.success) {
+            // Update the input element with the path of the uploaded file
+            // The server should return the path where the file is saved
+            const avatarPathInput = document.getElementById('avatarPath');
+            avatarPathInput.value = data.filePath;  // Path returned from the server
+          } else {
+            console.error('Failed to upload image:', data.error);
+          }
+        })
+        .catch(error => {
+          console.error('Error uploading file:', error);
+        });
+    }
+  }); --}}
+  avatarInput.addEventListener('change', (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        // Lưu đường dẫn ảnh vào trường ẩn
+        avatarImage.src = reader.result;
+        const avatarPathInput = document.getElementById('avatarPath');
+        //const localImagePath = URL.createObjectURL(selectedFile);
+        avatarPathInput.value = '/img/avatar/' + selectedFile.name;
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  });
 
   avatarLeft.addEventListener('click', () => {
     avatarInput.click();
   });
 </script>
-

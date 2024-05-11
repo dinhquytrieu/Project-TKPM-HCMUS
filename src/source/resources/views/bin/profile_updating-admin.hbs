@@ -77,13 +77,11 @@
           {{!-- <img id='avatar-image' src='{{user.avatar}}' alt='Avatar' /> --}}
           <div class='col-md-6'>
             <label class='form-label fw-bold'>Phone number*</label>
-            <input id='phone' type='text' class='form-control input-size shadow' name="phone" value="{{user.phone}}"
-             />
+            <input id='phone' type='text' class='form-control input-size shadow' name="phone" value="{{user.phone}}" />
           </div>
           <div class='col-md-6'>
             <label class='form-label fw-bold'>Job</label>
-            <input id='job' type='text' class='form-control input-size shadow' name="job" value="{{user.job}}"
-             />
+            <input id='job' type='text' class='form-control input-size shadow' name="job" value="{{user.job}}" />
           </div>
           <div class='col-12 change-password fw-bold'>
             CHANGE PASSWORD
@@ -91,18 +89,17 @@
           <div class='col-12'>
             <label class='form-label fw-bold'>Present password*</label>
             <input id='present-password' type='password' class='form-control input-size shadow' placeholder=''
-            name="presentPassword" />
+              name="presentPassword" />
           </div>
 
           <div class='col-12'>
             <label class='form-label fw-bold'>New password*</label>
-            <input id='new-password' type='password' class='form-control input-size shadow' placeholder='' 
-            name="newPassword"/>
+            <input id='new-password' type='password' class='form-control input-size shadow' placeholder=''
+              name="newPassword" />
           </div>
 
           <div class='col-12 save-changes'>
-            <button type="submit" class='form-submit btn btn-outline-secondary shadow'
-            >SAVE CHANGES</button>
+            <button type="submit" class='form-submit btn btn-outline-secondary shadow'>SAVE CHANGES</button>
           </div>
         </form>
       </div>
@@ -110,13 +107,15 @@
   </div>
 </div>
 
-{{!-- <script src='/js/profile.js'></script>
+{{!--
+<script src='/js/profile.js'></script>
 <script src='/js/validation.js'></script> --}}
 <script src='/js/testValidation.js'></script>
 <!-- Your existing HTML code -->
 
 {{!-- Include the changePassword.js script --}}
-{{!-- <script src="/js/changePassword.js"></script> --}}
+{{!--
+<script src="/js/changePassword.js"></script> --}}
 
 <script>
   const avatarInput = document.getElementById('avatar-input');
@@ -124,23 +123,22 @@
   const avatarLeft = document.querySelector('.avatar-left');
 
   avatarInput.addEventListener('change', (event) => {
-  const selectedFile = event.target.files[0];
-  if (selectedFile) {
-    const reader = new FileReader();
-    reader.onload = function() {
-      // Lưu đường dẫn ảnh vào trường ẩn
-      avatarImage.src = reader.result;
-      const avatarPathInput = document.getElementById('avatarPath');
-      //const localImagePath = URL.createObjectURL(selectedFile);
-      avatarPathInput.value = '/img/avatar/' + selectedFile.name;
-    };
-    reader.readAsDataURL(selectedFile);
-  }
-});
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        // Lưu đường dẫn ảnh vào trường ẩn
+        avatarImage.src = reader.result;
+        const avatarPathInput = document.getElementById('avatarPath');
+        //const localImagePath = URL.createObjectURL(selectedFile);
+        avatarPathInput.value = '/img/avatar/' + selectedFile.name;
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  });
 
 
   avatarLeft.addEventListener('click', () => {
     avatarInput.click();
   });
 </script>
-

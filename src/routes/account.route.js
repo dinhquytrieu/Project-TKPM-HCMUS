@@ -1,3 +1,4 @@
+// account.route.js
 const express = require("express");
 const accountController = require("../controllers/account.controller");
 const { body, getErrorMessage } = require("../middleware/validation");
@@ -43,7 +44,6 @@ router.post(
 );
 router.get("/become-seller/:_id", accountController.getBecomeSeller);
 router.get("/page/report/:idUser", accountController.reportUser);
-
 // ######################################################
 router.use(accountController.isAdmin);
 // ######################### ADMIN ########################
