@@ -1,5 +1,4 @@
 const { convertDate } = require("../helpers/handlebars");
-const Account = require("../models/account.model");
 const Announcement = require("../models/announcement.model");
 const AnnouncementRepository = require('../repositories/AnnouncementRepository');
 

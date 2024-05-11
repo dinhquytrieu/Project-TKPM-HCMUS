@@ -1,4 +1,5 @@
 const Announcement = require('../models/announcement.model');
+const Account = require("../models/account.model");
 
 class AnnouncementRepository {
     async create({ title, recipient, content }) {
