@@ -2,118 +2,82 @@
   <h2 class="su-header">SIGN UP</h2>
   <div class="horizontal-line"></div>
 
-  <form method="POST" class="su-form" action="/account/sign-up">
+  <div class="d-flex justify-content-center">
+    <form method="POST" class="su-form" action="/account/sign-up" style="width: 70%;">
 
-    <div style="display:flex; justify-content: space-between">
-      <div class="su-info-input" style="width: 50%; padding-right:20px">
-        <label class="su-info" for="firstName">First Name</label><br />
-        <input
-          class="su-input"
-          type="text"
-          id="firstName"
-          name="firstName"
-          required
-        />
-        <br />
+      <div style="display:flex; justify-content: space-between">
+        <div class="su-info-input" style="width: 50%; padding-right:25px;">
+          <label class="su-info" for="email">Email</label>
+          <input class="su-input" type="email" id="email" name="email" required />
+          <p id="email-error-msg" class="error-message"></p>
+        </div>
+        <div class="su-info-input" style="width: 25%; padding-right:25px">
+          <label class="su-info" for="firstName">First Name</label>
+          <input class="su-input" type="text" id="firstName" name="firstName" required />
+          <p class="error-message"></p>
+        </div>
+        <div class="su-info-input" style="width: 25%">
+          <label class="su-info" for="lastName">Last Name</label>
+          <input class="su-input" type="text" id="lastName" name="lastName" required />
+          <p class="error-message"></p>
+        </div>
       </div>
-      <div class="su-info-input" style="width: 50%">
-        <label class="su-info" for="lastName">Last Name</label><br />
-        <input
-          class="su-input"
-          type="text"
-          id="lastName"
-          name="lastName"
-          required
-        /><br />
+
+      <div style="display:flex; justify-content: space-between">
+        <div class="su-info-input" style="width: 50%; padding-right:25px">
+          <label class="su-info" for="password">Password</label><br />
+          <input class="su-input" type="password" id="password" name="password" required />
+          <p class="error-message"></p>
+          <p id="password-valid"></p>
+        </div>
+        <div class="su-info-input" style="width: 50%">
+          <label class="su-info" for="confirm-pwd">Confirm Password</label>
+          <input class="su-input" type="password" id="confirm-pwd" name="confirm-pwd" required />
+          <p class="error-message"></p>
+          <p id="password-match-msg"></p>
+        </div>
       </div>
-    </div>
 
-
-    <div style="display:flex; justify-content: space-between">
-      <div class="su-info-input" style="width: 30%; padding-right:20px">
-        <label class="su-info" for="dob">Date of Birth</label><br />
-        <input class="su-input" type="date" id="dob" name="dob" required /><br
-        />
-        <p id="dob-error-msg" class="error-message"></p>
+      <div style="display:flex; justify-content: space-between">
+        <div class="su-info-input" style="width: 50%; padding-right:25px;">
+          <label class="su-info" for="phone">Phone Number</label>
+          <input class="su-input" type="text" id="phone" name="phone" required />
+          <p class="error-message"></p>
+        </div>
+        <div class="su-info-input" style="width: 50%; ">
+          <label class="su-info" for="dob">Date of Birth</label>
+          <input class="su-input" type="date" id="dob" name="dob" required />
+          <p id="dob-error-msg" class="error-message"></p>
+        </div>
       </div>
-      <div class="su-info-input" style="width: 30%; padding-right:20px">
-        <label class="su-info" for="phone">Phone Number</label><br />
-        <input
-          class="su-input"
-          type="text"
-          id="phone"
-          name="phone"
-          required
-        /><br /></div>
-      <div class="su-info-input" style="width: 40%;">
-        <label class="su-info" for="email">Email</label><br />
-        <input
-          class="su-input"
-          type="email"
-          id="email"
-          name="email"
-          required
-        /><br />
-        <p id="email-error-msg" class="error-message"></p>
+
+      <div style="display:flex; justify-content: space-between">
+        <div class="su-info-input" style="width: 50%; padding-right:25px"><label class="su-info"
+            for="address">Address</label>
+          <input class="su-input" type="text" id="address" name="address" />
+        </div>
+
+        <div class="su-info-input" style="width: 50%"><label class="su-info" for="job">Job</label>
+          <input class="su-input" type="text" id="job" name="job" />
+        </div>
       </div>
-    </div>
 
+      <input class="su-checkbox" type="checkbox" id="accept-sign-up-form" name="accept-sign-up-form"
+        value="Accept with sign up form" />
+      <label class="su-text" for="accept-sign-up-form">I have read and agreed to
+        Terms and Conditions</label>
+      <p id="accept-error-msg" class="error-message"></p>
 
-    <div style="display:flex; justify-content: space-between">
-      <div class="su-info-input" style = "width: 50%; padding-right:20px"><label
-          class="su-info"
-          for="address"
-        >Address</label><br />
-        <input class="su-input" type="text" id="address" name="address" /><br
-        /></div>
-
-      <div class="su-info-input" style = "width: 50%"><label class="su-info" for="job">Job</label><br
-        />
-        <input class="su-input" type="text" id="job" name="job" /><br /></div>
-    </div>
-
-
-    <div style="display:flex; justify-content: space-between">
-      <div class="su-info-input" style="width: 50%; padding-right:20px">
-        <label class="su-info" for="password">Password</label><br />
-        <input
-          class="su-input"
-          type="password"
-          id="password"
-          name="password"
-          required
-        /><br />
-        <p id="password-valid"></p>
+      <div class="d-flex justify-content-center">
+        <input class="su-button m-0 mt-4" type="submit" style="width: 35%;" />
       </div>
-      <div class="su-info-input" style="width: 50%">
-        <label class="su-info" for="confirm-pwd">Confirm Password</label><br />
-        <input
-          class="su-input"
-          type="password"
-          id="confirm-pwd"
-          name="confirm-pwd"
-          required
-        /><br />
-        <p id="password-match-msg"></p>
-      </div>
-    </div>
+    </form>
+  </div>
 
-    <input
-      class="su-checkbox"
-      type="checkbox"
-      id="accept-sign-up-form"
-      name="accept-sign-up-form"
-      value="Accept with sign up form"
-    />
-    <label class="su-text" for="accept-sign-up-form">I have read and agreed to
-      Terms and Conditions</label><br />
-    <input class="su-button" type="submit" />
-    <p id="accept-error-msg" class="error-message"></p>
-  </form>
   {{#if registerMessage}}
-    <p class="alert alert-warning mt-5 text-center">
-      {{{registerMessage}}}
-    </p>
+  <p class="alert alert-warning mt-5 text-center">
+    {{{registerMessage}}}
+  </p>
   {{/if}}
 </div>
 

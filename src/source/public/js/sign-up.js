@@ -23,22 +23,51 @@ function removeRequiredMessage() {
   });
 }
 
+function checkAcceptCheckbox(event) {
+  event.preventDefault();
+  if (validateRequiredForm() && checkPassword() && checkPasswordMatch()) {
+    if (!acceptCheckbox.checked) {
+      acceptErrorMsg.textContent =
+        "Please read and agree to the Terms and Conditions.";
+    } else {
+      acceptErrorMsg.textContent = "";
+      signUpForm.submit();
+    }
+  }
+}
+
 function validateRequiredForm() {
   let flag = true;
   for (const field of requiredFields) {
-    if (field.value === "") {
-      if (field.nextElementSibling.textContent != "This field is required !") {
-        field.insertAdjacentHTML(
-          "afterend",
-          '<p style="color:red;">This field is required !</p>'
-        );
+      let wrapper = field.closest('.su-info-input');
+      let errorMessage = wrapper.querySelector('.error-message');
+      if (field.value === "") {
+          if (!errorMessage.textContent) {
+              errorMessage.innerHTML = '<p style="color:red;">This field is required !</p>';
+          }
+          flag = false;
+      } else {
+          errorMessage.textContent = '';
       }
-      flag = false;
-    }
   }
-
   return flag;
 }
+// function validateRequiredForm() {
+//   let flag = true;
+//   for (const field of requiredFields) {
+//     if (field.value === "") {
+//       if (field.nextElementSibling.textContent != "This field is required !") {
+//         field.insertAdjacentHTML(
+//           "afterend",
+//           '<p style="color:red;">This field is required !</p>'
+//         );
+//       }
+//       flag = false;
+//     }
+//   }
+
+//   return flag;
+// }
 
 function checkEmailValidity() {
   const emailValue = emailInput.value;
@@ -83,26 +112,14 @@ function checkPasswordMatch() {
   const confirmPwdValue = confirmPwdInput.value;
 
   if (passwordValue === confirmPwdValue) {
-    passwordMatchMsg.textContent = "Passwords match.";
-    passwordMatchMsg.style.color = "green";
+    passwordMatchMsg.textContent = "";
+    // passwordMatchMsg.textContent = "Passwords match.";
+    // passwordMatchMsg.style.color = "green";
     return true;
   } else {
     passwordMatchMsg.textContent = "Passwords do not match.";
     passwordMatchMsg.style.color = "red";
     return false;
-  }
-}
-
-function checkAcceptCheckbox(event) {
-  event.preventDefault();
-  if (validateRequiredForm() && checkPassword() && checkPasswordMatch()) {
-    if (!acceptCheckbox.checked) {
-      acceptErrorMsg.textContent =
-        "Please read and agree to the Terms and Conditions.";
-    } else {
-      acceptErrorMsg.textContent = "";
-      signUpForm.submit();
-    }
   }
 }
 

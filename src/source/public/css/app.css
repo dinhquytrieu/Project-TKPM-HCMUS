@@ -2593,7 +2593,8 @@ section article.skills {
   --light-blue: #d9edf7; }
 
 .error-message {
-  color: red; }
+  color: red;
+  margin-top: 0.7rem; }
 
 .sign-up {
   margin-left: auto;
