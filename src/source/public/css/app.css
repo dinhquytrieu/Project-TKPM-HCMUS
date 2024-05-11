@@ -251,14 +251,50 @@ a.btn:hover, a.btn:active, a.btn:first-child:active,
       color: #fff; }
 
 .header.light {
-  background-color: #3b99d7; }
+  background-image: url("/img/bg1.png"); }
   .header.light .search-input {
     background-color: #fff;
-    color: #31383e; }
+    border: 1px solid transparent;
+    color: #31383e;
+    box-shadow: 0 0.5em 0.5em -0.4em #014580;
+    /* Add transparent box shadow */ }
     .header.light .search-input::placeholder {
       color: #31383e; }
+  .header.light .search-input:hover {
+    border: 1px solid #014580; }
   .header.light .search-icon::before {
     color: #31383e !important; }
+  .header.light .search-icon:hover {
+    transform: scale(1.1);
+    /* Zoom in to 110% on hover */
+    transition: transform 0.3s ease;
+    /* Add smooth transition */ }
+
+.btn-log-in {
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+  background: #0a4f8b;
+  color: #fff;
+  font-weight: 700;
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+  /* Add smooth transition */ }
+
+.btn-log-in:hover,
+.btn-log-in:focus {
+  border: 1px solid #044985;
+  box-shadow: 0 0.5em 0.5em -0.4em #0d74cf;
+  /* Add transparent box shadow */
+  color: #0a4f8b;
+  font-weight: 700;
+  background-color: #fff;
+  border-color: #0a4f8b;
+  transform: translateY(-0.25em);
+  transition: transform 0.3s ease;
+  /* Add smooth transition */ }
 
 .cart {
   height: 100vh;
@@ -1028,6 +1064,32 @@ a.btn:hover, a.btn:active, a.btn:first-child:active,
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis; }
+
+.manage-product .btn-add-product {
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+  background: #0a4f8b;
+  color: #fff;
+  font-weight: 700;
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+  /* Add smooth transition */ }
+
+.manage-product .btn-add-product:hover,
+.manage-product .btn-add-product:focus {
+  border: 1px solid #044985;
+  box-shadow: 0 0.5em 0.5em -0.4em #0d74cf;
+  /* Add transparent box shadow */
+  color: #0a4f8b;
+  font-weight: 700;
+  background-color: #fff;
+  border-color: #0a4f8b;
+  transform: translateY(-0.25em);
+  transition: transform 0.3s ease;
+  /* Add smooth transition */ }
 
 .edit-product .edit-product-form + .edit-product-form {
   margin-left: 2rem;
@@ -1909,22 +1971,27 @@ section article.skills {
   justify-content: end;
   margin-top: 5rem; }
   .register button {
-    width: 15rem;
-    font-size: 1.5rem;
-    font-weight: 500;
-    border-radius: 0.5rem;
-    padding: 1rem 0rem;
-    transition: all 0.3s;
+    width: 15vw;
+    border-radius: 15px;
+    border: 1px solid transparent;
+    text-transform: uppercase;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
     text-align: center;
-    margin-top: 2rem;
-    margin-right: 1rem;
-    background-color: var(--dark-blue);
-    color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    border: 0.1rem solid black; }
-    .register button:hover {
-      background-color: var(--light-blue);
-      color: black; }
+    background: #0a4f8b;
+    color: #fff;
+    font-weight: 700;
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease; }
+  .register button:hover,
+  .register button:focus {
+    border: 1px solid #044985;
+    color: #0a4f8b;
+    font-weight: 700;
+    background-color: #fff;
+    border-color: #0a4f8b;
+    animation: pulse 1s;
+    box-shadow: 0 0 0 2em transparent; }
 
 .contract-container {
   margin-left: 0.5rem;
