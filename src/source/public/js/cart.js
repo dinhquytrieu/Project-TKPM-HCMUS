@@ -37,11 +37,17 @@ cartSlider.addEventListener("click", (e) => {
 //   return Number(price).toLocaleString("it-IT", { style: "currency", currency: "VND" });
 // }
 
+function formatCurrency(value) {
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+}
+
+
 async function buildCartScreen(products) {
   // Tạo giao diện cho Cart screen
   cartList.innerHTML = "";
   let totalPay = 0;
   products.forEach((product) => {
+    let formattedPrice = formatCurrency(product.price);
     cartList.insertAdjacentHTML(
       "beforeend",
       `<li>
@@ -56,7 +62,7 @@ async function buildCartScreen(products) {
           <p class="product-quantity-price">
             <span class="product-quantity">${product.quantity}</span>x
             <span class="product-price">
-              ${product.price} ₫
+              ${formattedPrice}
             </span>
           </p>
         </div>
@@ -73,12 +79,13 @@ async function buildCartScreen(products) {
       cartList.nextElementSibling.remove();
       cartList.nextElementSibling.remove();
     }
+    let formattedTotalPrice = formatCurrency(totalPay);
     cartList.parentElement.insertAdjacentHTML(
       "beforeend",
       `
       <p class="cart-price text-capitalize text-center">
         Total payment:
-        <span>${totalPay} ₫</span>
+        <span>${formattedTotalPrice}</span>
       </p>
       <a class="btn text-uppercase" href="/order/payment-for-cart" role="button">Pay for cart</a>
     `
