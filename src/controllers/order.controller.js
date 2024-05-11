@@ -125,7 +125,12 @@ class orderController {
 
       res.locals.accBuyer = mongooseToObject(accBuyer);
 
-      res.render("payment-for-cart");
+      // Calculate the total value of the cart
+      const totalCartValue = accBuyer.cart.reduce((total, item) => {
+        return total + (item._id.price * item.quantity);
+      }, 0);
+
+      res.render("payment-for-cart", { totalCartValue: totalCartValue });
     } catch (error) {
       next(error);
     }
@@ -210,15 +215,15 @@ class orderController {
       const accBuyer = await Account.findOne({ _id: req.user.id })
         .populate("cart._id")
         .populate("cart._id.idAccount");
-  
+
       const orderDetails = accBuyer.cart.map(cartItem => ({
         idSeller: cartItem._id.idAccount,
         idProduct: cartItem._id._id,
         quantity: cartItem.quantity
       }));
-  
+
       const savedOrders = await this.createAndSaveOrder(accBuyer, orderDetails, req.body.message);
-  
+
       // Filter out items that have been ordered
       accBuyer.cart = accBuyer.cart.filter(
         cartItem => !savedOrders.some(
@@ -227,53 +232,53 @@ class orderController {
       );
       req.session.cart = [];
       await accBuyer.save();
-  
+
       res.redirect(`/account/my-order-pending/${req.user.id}`);
     } catch (error) {
       next(error);
     }
-  };  
+  };
 
   createAndSaveOrder = async (accBuyer, details, message) => {
     const io = getIo();
     const orders = details.map(detail => {
-        return new Order({
-            idAccount: accBuyer._id,
-            idSeller: detail.idSeller,
-            detail: [{
-                idProduct: detail.idProduct,
-                quantity: detail.quantity,
-                isEvaluated: false
-            }],
-            status: "pending",
-            message: message
-        });
+      return new Order({
+        idAccount: accBuyer._id,
+        idSeller: detail.idSeller,
+        detail: [{
+          idProduct: detail.idProduct,
+          quantity: detail.quantity,
+          isEvaluated: false
+        }],
+        status: "pending",
+        message: message
+      });
     });
 
     const savedOrders = await Order.insertMany(orders);
 
     // Fetch orders again with populated fields, including product details
     const populatedOrders = await Promise.all(savedOrders.map(async order => {
-        return await Order.findById(order._id)
-                           .populate({
-                               path: 'idAccount'
-                           })
-                           .populate({
-                               path: 'detail.idProduct',
-                               select: 'name image category price'  // Specify the fields you need from the product
-                           });
+      return await Order.findById(order._id)
+        .populate({
+          path: 'idAccount'
+        })
+        .populate({
+          path: 'detail.idProduct',
+          select: 'name image category price'  // Specify the fields you need from the product
+        });
     }));
 
     // Emit an event after saving and populating orders successfully
     populatedOrders.forEach(order => {
-        io.emit('orderUpdate', {
-            order: order,
-            message: 'New pending order created'
-        });
+      io.emit('orderUpdate', {
+        order: order,
+        message: 'New pending order created'
+      });
     });
 
     return populatedOrders;
-};
+  };
 }
 
 module.exports = new orderController();
