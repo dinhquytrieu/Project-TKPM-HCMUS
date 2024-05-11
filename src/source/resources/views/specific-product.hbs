@@ -1,29 +1,33 @@
 <div class="specific-product container">
-  <div class="row payment-section d-flex align-items-center">
-    <div class="col-6 img-item d-flex align-items-center justify-content-center">
-      <a href="#">
+  <div class="row payment-section d-flex align-items-center justify-content-between">
+    <div class="col-5 img-item d-flex align-items-center justify-content-center">
+      <a href="#" style="height: 100%;">
         <img class="img-product" src="{{product.image}}" alt="error" style />
       </a>
     </div>
 
-    <div class="col-6 details-item d-flex flex-column">
+    <div class="col-7 details-item d-flex flex-column" style="padding-left: 5rem;">
       <div class="intro">
-        <form class="report-section" method="POST"
-          action="/product/specific-product/{{product._id}}/report?_method=PUT">
-          <i class="fa-solid fa-ellipsis"></i>
-          {{!-- <button>Report</button> --}}
-          {{#if (isEqual product.status 'Reported')}}
-          <button disabled style="color: white;">Reported</button>
-          {{else}}
-          <button style="color: white">Report</button>
-          {{/if}}
-          <div class="view-shop">
-            <a href="../../account/page/{{product.idAccount}}">View Shop</a>
-          </div>
-        </form>
 
         <h1 class="product-name">{{product.name}}</h1>
-        <h2 class="product-price">{{formatCurrency product.price}}</h2>
+
+        <div class="d-flex justify-content-between">
+          <h2 class="product-price">{{formatCurrency product.price}}</h2>
+          <form class="report-section" method="POST"
+            action="/product/specific-product/{{product._id}}/report?_method=PUT">
+            <i class="fa-solid fa-ellipsis"></i>
+            {{!-- <button>Report</button> --}}
+            {{#if (isEqual product.status 'Reported')}}
+            <button disabled style="color: white;">Reported</button>
+            {{else}}
+            <button style="color: white">Report</button>
+            {{/if}}
+            <div class="view-shop">
+              <a href="../../account/page/{{product.idAccount}}">View Shop</a>
+            </div>
+          </form>
+        </div>
+
         <div class="rating d-flex align-items-center mt-4">
           <h3 class="score m-0" style="font-family: 'Inter', sans-serif;">{{showStar stars}}
             <i class="fa-solid fa-star" style="color: #f9a410;"></i>
@@ -35,6 +39,7 @@
           </h3>
         </div>
       </div>
+
       <div class="details-product">
         <div class="title_detail">Product Description</div>
         <ul class="details-list mt-3">
@@ -163,7 +168,7 @@
       <div class="col-2">
         <figure class="trend-card card">
           <a href="/product/specific-product/{{this._id}}" class="trend-card-img">
-            <img src="{{this.image}}" class="trend-prod-img" alt="Something ..." />
+            <img src="{{this.image}}" class="trend-prod-img" alt="Product image" />
           </a>
           <p class="trend-card-title">{{this.name}}</p>
           <p class="trend-card-price">{{formatCurrency this.price}}</p>

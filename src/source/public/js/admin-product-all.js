@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <p class='list-inline-item flex-fill'>Stock: ${product.stock}</p>
                         </div>
                         
-                        <form class='dropdown col-2 text-center mt-1' action='./exec-product?type=ban&id=${product._id}' method="post">
+                        <form class='dropdown col-2 text-center mt-1' action='./exec-product?type=ban&id=${product._id}' method="post" onclick="event.stopPropagation();">
                         <a class='dropdown text-center' href='#' role='button' id='dropdownMenuLink' data-bs-toggle='dropdown' aria-expanded='false'>
                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M5 10c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2Zm14 0c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2Zm-7 0c-1.1 0-2 .9-2 2s.9 2 2 2s2-.9 2-2s-.9-2-2-2Z"/></svg>
                         </a>
