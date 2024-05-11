@@ -2141,28 +2141,30 @@ section article.skills {
   font-size: 2rem; }
   .shop-info .trend {
     margin-bottom: 5rem; }
-  .shop-info .column {
+  .shop-info .column1 {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: calc(2%) 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
     box-sizing: border-box;
-    background-color: var(--grey); }
-    .shop-info .column .logo-section {
+    background-image: url("/img/bg_shop_infor.png"); }
+    .shop-info .column1 .logo-section {
       display: flex; }
-      .shop-info .column .logo-section .shop-logo {
+      .shop-info .column1 .logo-section .shop-logo {
         width: 9rem;
         height: 9rem;
         border-radius: 50%;
         margin-right: 4.5rem;
         display: inline-block; }
-      .shop-info .column .logo-section .name-report {
+      .shop-info .column1 .logo-section .name-report {
         display: inline-block; }
-        .shop-info .column .logo-section .name-report .shop-name {
+        .shop-info .column1 .logo-section .name-report .shop-name {
           font-size: 2.7rem;
           font-weight: bold; }
-        .shop-info .column .logo-section .name-report .button {
+        .shop-info .column1 .logo-section .name-report .button {
           font-size: 2rem;
           font-weight: 500;
           border-radius: 0.5rem;
@@ -2171,25 +2173,37 @@ section article.skills {
           text-align: center;
           width: calc(100%);
           min-width: 10.5rem;
-          background-color: var(--light-blue);
+          background-color: white;
           color: black;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
           margin-top: 1.7rem;
           margin-right: 3rem; }
-          .shop-info .column .logo-section .name-report .button:hover {
+          .shop-info .column1 .logo-section .name-report .button:hover {
             background-color: var(--dark-blue);
             color: white; }
-        .shop-info .column .logo-section .name-report .button:last-child {
+        .shop-info .column1 .logo-section .name-report .button:last-child {
           margin-right: 0; }
-        .shop-info .column .logo-section .name-report .button.clicked {
+        .shop-info .column1 .logo-section .name-report .button.clicked {
           background-color: var(--dark-blue);
           color: white; }
-          .shop-info .column .logo-section .name-report .button.clicked:hover {
+          .shop-info .column1 .logo-section .name-report .button.clicked:hover {
             background-color: var(--light-blue);
             color: black; }
-        .shop-info .column .logo-section .name-report .follow-button.followed {
+        .shop-info .column1 .logo-section .name-report .follow-button.followed {
           background-color: #337ab7;
           color: white; }
+  .shop-info .column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: calc(2%) 0;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 0 0.5em 0.5em -0.4em #0d74cf;
+    /* Add transparent box shadow */
+    box-sizing: border-box;
+    background-image: url("/img/bg_shop_infor.png"); }
     .shop-info .column .info-section {
       font-size: 2rem; }
       .shop-info .column .info-section .info-row {
