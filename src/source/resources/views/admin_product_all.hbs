@@ -110,7 +110,8 @@
               </div>
 
               <form class='dropdown col-2 text-center mt-1' action='./exec-product?type=ban&id={{this._id}}'
-                method="post">
+                method="post" onclick="event.stopPropagation();">
+
                 <a class='dropdown text-center' href='#' role='button' id='dropdownMenuLink' data-bs-toggle='dropdown'
                   aria-expanded='false'>
                   <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
@@ -123,6 +124,7 @@
                   <li><a class='dropdown-item' href='./specific-product/{{this._id}}'>View info</a></li>
                   <li><button type="submit" class='dropdown-item'>Ban</button></li>
                 </ul>
+
               </form>
             </div>
           </div>
