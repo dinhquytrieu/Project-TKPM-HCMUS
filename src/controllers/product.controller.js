@@ -769,20 +769,49 @@ getManage = async (req, res, next) => {
   };
 
   // [GET] product/trending
+  // getTrendProduct = async (req, res, next) => {
+  //   try {
+  //     const page = isNaN(req.query.page) ? 1 : Math.max(1, parseInt(req.query.page));
+  //     const limit = 10;
+
+  //     const product1 = await ProductRepository.findTrendingProductsPaginated(page, limit);
+  //     const allProducts = mutipleMongooseToObject(product1);
+
+  //     const numberOfItems = await ProductRepository.countTrendingProducts();
+
+  //     res.locals._numberOfItems = numberOfItems;
+  //     res.locals._limit = limit;
+  //     res.locals._currentPage = page;
+
+  //     res.render("admin_product_trending", {
+  //       products: allProducts,
+  //       numOfProducts: allProducts.length,
+  //     });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // };
+
   getTrendProduct = async (req, res, next) => {
     try {
-      const page = isNaN(req.query.page) ? 1 : Math.max(1, parseInt(req.query.page));
+      let page = isNaN(req.query.page)
+        ? 1
+        : Math.max(1, parseInt(req.query.page));
+
       const limit = 10;
-
-      const product1 = await ProductRepository.findTrendingProductsPaginated(page, limit);
+      const product1 = await Product.find({
+        $or: [{ status: "Available", isTrend: true }, { status: "Trending" }],
+      })
+        .populate("idAccount")
+        .sort({ time: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit);
       const allProducts = mutipleMongooseToObject(product1);
-
-      const numberOfItems = await ProductRepository.countTrendingProducts();
-
-      res.locals._numberOfItems = numberOfItems;
+      res.locals._numberOfItems = await Product.find({
+        $or: [{ status: "Available", isTrend: true }, { status: "Trending" }],
+      }).countDocuments();
       res.locals._limit = limit;
       res.locals._currentPage = page;
-
       res.render("admin_product_trending", {
         products: allProducts,
         numOfProducts: allProducts.length,
