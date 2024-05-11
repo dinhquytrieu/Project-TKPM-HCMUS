@@ -1300,8 +1300,7 @@ section article.skills {
           max-height: 100%;
           /* Ensures the image does not overflow its container */
           width: auto;
-          /* Maintain aspect ratio */
-          box-shadow: 0 0.5em 0.5em -0.4em #0d263c; }
+          /* Maintain aspect ratio */ }
         .specific-product .payment-section .img-item a .img-product:hover {
           transform: scale(1.1);
           /* Zoom in to 110% on hover */
@@ -1318,8 +1317,8 @@ section article.skills {
           font-size: 2.6rem;
           font-weight: 400;
           padding: 1rem;
-          top: -4%;
-          right: 2%;
+          top: 20%;
+          right: 0%;
           display: flex;
           flex-direction: column;
           align-items: flex-end;
@@ -1356,7 +1355,7 @@ section article.skills {
           max-height: 7.2rem;
           overflow: hidden;
           text-overflow: ellipsis;
-          max-width: 40rem; }
+          width: 100%; }
         .specific-product .payment-section .details-item .intro .product-price {
           font-size: 2.5rem; }
         .specific-product .payment-section .details-item .intro .rating .score {

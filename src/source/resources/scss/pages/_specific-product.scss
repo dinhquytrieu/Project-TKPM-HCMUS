@@ -41,7 +41,7 @@
           /* Ensures the image does not overflow its container */
           width: auto;
           /* Maintain aspect ratio */
-          box-shadow: 0 0.5em 0.5em -0.4em #0d263c;
+          // box-shadow: 0 0.5em 0.5em -0.4em #0d263c;
         }
 
         .img-product:hover {
@@ -68,8 +68,8 @@
           font-size: 2.6rem;
           font-weight: 400;
           padding: 1rem;
-          top: -4%;
-          right: 2%;
+          top: 20%;
+          right: 0%;
           display: flex;
           flex-direction: column;
           align-items: flex-end;
@@ -116,7 +116,7 @@
           max-height: 7.2rem;
           overflow: hidden;
           text-overflow: ellipsis;
-          max-width: 40rem;
+          width: 100%;
         }
 
         .product-price {
