@@ -131,20 +131,49 @@ class orderController {
     }
   };
 
+  // placeOrder = async (req, res, next) => {
+  //   try {
+  //     const accBuyer = await AccountRepository.findAccountById(req.user.id);
+  //     const product = await ProductRepository.getProductWithAccount(req.params._id);
+
+  //     const orderDetails = [{
+  //       idSeller: product.idAccount,
+  //       idProduct: product._id,
+  //       quantity: req.query.quantity
+  //     }];
+
+  //     await OrderRepository.createOrder(accBuyer, orderDetails, req.body.message);
+  //     res.redirect(`/account/my-order-pending/${req.user.id}`);
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // };
+
   placeOrder = async (req, res, next) => {
     try {
-      const accBuyer = await AccountRepository.findAccountById(req.user.id);
-      const product = await ProductRepository.getProductWithAccount(req.params._id);
+      const accBuyer = await Account.findOne({ _id: req.user.id });
+      const product = await Product.findOne({ _id: req.params._id }).populate(
+        "idAccount"
+      );
+      const idSeller = product.idAccount;
 
-      const orderDetails = [{
-        idSeller: product.idAccount,
-        idProduct: product._id,
-        quantity: req.query.quantity
-      }];
+      const newOrder = new Order({
+        idAccount: accBuyer._id,
+        idSeller: idSeller,
+        detail: [
+          {
+            idProduct: product._id,
+            quantity: req.query.quantity,
+            isEvaluated: false,
+          },
+        ],
+        status: "pending",
+        message: req.body.message,
+      });
 
-      await OrderRepository.createOrder(accBuyer, orderDetails, req.body.message);
+      await newOrder.save(); // Lưu order mới vào MongoDB
       res.redirect(`/account/my-order-pending/${req.user.id}`);
-    } catch (error) {
+    } catch (err) {
       next(error);
     }
   };

@@ -99,46 +99,104 @@ class productController {
   };
 
   // [GET] product/manage
-  getManage = async (req, res, next) => {
-    try {
-        const { id } = req.user;
-        const keyword = (req.query.keyword || "").trim();
-        const category = req.query.category || "";
-        const sortBy = req.query.sortBy || "-updatedAt";
-        const page = isNaN(req.query.page) ? 1 : Math.max(1, parseInt(req.query.page));
-        const limit = 5;
+//   getManage = async (req, res, next) => {
+//     try {
+//         const { id } = req.user;
+//         const keyword = (req.query.keyword || "").trim();
+//         const category = req.query.category || "";
+//         const sortBy = req.query.sortBy || "-updatedAt";
+//         const page = isNaN(req.query.page) ? 1 : Math.max(1, parseInt(req.query.page));
+//         const limit = 5;
 
-        const { products, numberOfItems } = await ProductRepository.findProductsByAccountAndFilters(
-            id, keyword, category, sortBy, page, limit
-        );
+//         const { products, numberOfItems } = await ProductRepository.findProductsByAccountAndFilters(
+//             id, keyword, category, sortBy, page, limit
+//         );
 
-        res.locals = {
-            _keyword: keyword,
-            _category: category,
-            _sortBy: sortBy,
-            _numberOfItems: numberOfItems,
-            _limit: limit,
-            _currentPage: page,
-            _originalUrl: req.url,
-        };
+//         res.locals = {
+//             _keyword: keyword,
+//             _category: category,
+//             _sortBy: sortBy,
+//             _numberOfItems: numberOfItems,
+//             _limit: limit,
+//             _currentPage: page,
+//             _originalUrl: req.url,
+//         };
 
-        res.render("manage-product", {
-            products: mutipleMongooseToObject(products),
-            helpers: {
-                isEqual(c1, c2) {
-                    return c1 == c2;
-                },
-                convertMoney: (str) => {
-                    return Number(str).toLocaleString("it-IT", {
-                        style: "currency",
-                        currency: "VND",
-                    });
-                },
-            },
-        });
-    } catch (err) {
-        next(err);
+//         res.render("manage-product", {
+//             products: mutipleMongooseToObject(products),
+//             helpers: {
+//                 isEqual(c1, c2) {
+//                     return c1 == c2;
+//                 },
+//                 convertMoney: (str) => {
+//                     return Number(str).toLocaleString("it-IT", {
+//                         style: "currency",
+//                         currency: "VND",
+//                     });
+//                 },
+//             },
+//         });
+//     } catch (err) {
+//         next(err);
+//     }
+// };
+
+getManage = async (req, res, next) => {
+  try {
+    let options = {
+      idAccount: req.user.id,
+      $or: [{ status: "Available" }, { status: "Reported" }],
+    };
+    // let options = { idAccount: req.user.id, status: "Available" };
+    // Tìm kiếm
+    let keyword = req.query.keyword || "";
+    // Lọc theo loại
+    let category = req.query.category || "";
+    // Sắp xếp
+    let sortBy = req.query.sortBy || "-updatedAt";
+    keyword = keyword.trim();
+    let originalUrl = req.originalUrl;
+    if (keyword != "") {
+      const regex = new RegExp(keyword, "i");
+      options.name = regex;
     }
+    if (category != "") {
+      options.category = category;
+    }
+    // Phân trang
+    let page = isNaN(req.query.page)
+      ? 1
+      : Math.max(1, parseInt(req.query.page));
+    const limit = 5;
+    // Thực hiện truy vấn
+    let products = await Product.find(options)
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .sort(sortBy);
+    res.locals._keyword = keyword;
+    res.locals._category = category;
+    res.locals._sortBy = sortBy;
+    res.locals._numberOfItems = await Product.find(options).countDocuments();
+    res.locals._limit = limit;
+    res.locals._currentPage = page;
+    res.locals._originalUrl = req.url;
+    res.render("manage-product", {
+      products: mutipleMongooseToObject(products),
+      helpers: {
+        isEqual(c1, c2) {
+          return c1 == c2;
+        },
+        convertMoney: (str) => {
+          return Number(str).toLocaleString("it-IT", {
+            style: "currency",
+            currency: "VND",
+          });
+        },
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 
@@ -474,16 +532,83 @@ class productController {
   };
 
   // [GET] product/specific-product
+  // showSpecificProduct = async (req, res, next) => {
+  //   try {
+  //     const productId = req.params.id;
+
+  //     const product = await ProductRepository.findProductById(productId);
+  //     const details = product.description.split("\n");
+  //     const evaluates = await ProductRepository.findEvaluationsByProductId(productId);
+  //     const evaNumber = await ProductRepository.countEvaluationsByProductId(productId);
+  //     const avgRating = await ProductRepository.calculateAverageRating(productId);
+  //     const related = await ProductRepository.findRelatedProducts(product.keyword, productId);
+
+  //     res.locals.evaNumber = evaNumber;
+  //     res.locals.details = details;
+  //     res.locals.product = mongooseToObject(product);
+  //     res.locals.stars = avgRating;
+  //     res.locals.related = related;
+  //     res.locals.evaluates = mutipleMongooseToObject(evaluates);
+
+  //     res.render("specific-product", {
+  //       helpers: {
+  //         isEqual(c1, c2) {
+  //           return c1 == c2;
+  //         },
+  //         convertMoney: (str) => {
+  //           return Number(str).toLocaleString("it-IT", {
+  //             style: "currency",
+  //             currency: "VND",
+  //           });
+  //         },
+  //       },
+  //       stock: product.stock,
+  //       formatCurrency: formatCurrency,
+  //     });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // };
+
   showSpecificProduct = async (req, res, next) => {
     try {
       const productId = req.params.id;
 
-      const product = await ProductRepository.findProductById(productId);
+      const product = await Product.findOne({ _id: productId });
       const details = product.description.split("\n");
-      const evaluates = await ProductRepository.findEvaluationsByProductId(productId);
-      const evaNumber = await ProductRepository.countEvaluationsByProductId(productId);
-      const avgRating = await ProductRepository.calculateAverageRating(productId);
-      const related = await ProductRepository.findRelatedProducts(product.keyword, productId);
+      const evaluates = await Evaluate.find({ idProduct: productId })
+        .populate({
+          path: "idAccount",
+          select: "firstName lastName avatar",
+        })
+        .sort({ date: -1 });
+
+      const evaNumber = await Evaluate.find({ idProduct: productId })
+        .populate({
+          path: "idAccount",
+          select: "firstName lastName avatar",
+        })
+        .sort({ date: -1 })
+        .countDocuments();
+      const ratings = await Evaluate.find({
+        idProduct: productId,
+        rating: { $ne: 0 },
+      }).select("rating");
+      const totalRatings = ratings.length;
+      const sumRatings = ratings.reduce(
+        (sum, rating) => sum + rating.rating,
+        0
+      );
+      const avgRating = sumRatings / totalRatings;
+
+      const related = await Product.aggregate([
+        {
+          $match: {
+            keyword: product.keyword,
+          },
+        },
+        { $limit: 6 },
+      ]);
 
       res.locals.evaNumber = evaNumber;
       res.locals.details = details;
@@ -492,6 +617,9 @@ class productController {
       res.locals.related = related;
       res.locals.evaluates = mutipleMongooseToObject(evaluates);
 
+      // res.render("specific-product", {
+      //   formatCurrency: formatCurrency,
+      // });
       res.render("specific-product", {
         helpers: {
           isEqual(c1, c2) {
