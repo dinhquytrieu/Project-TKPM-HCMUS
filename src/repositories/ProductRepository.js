@@ -75,16 +75,25 @@ class ProductRepository {
 
     findRelatedProducts = async (keyword, currentProductId) => {
         try {
-          const relatedProducts = await Product.find({
-            keyword: { $in: keyword },
-            _id: { $ne: currentProductId } // Exclude the current product by its ID
-          }).limit(6); // Limit the number of related products, if necessary
-      
-          return relatedProducts;
+            const relatedProducts = await Product.aggregate([
+                {
+                  $match: {
+                    keyword: keyword,
+                    _id: { $ne: currentProductId } // Exclude the current product from related products
+                  },
+                },
+                { $limit: 6 },
+              ]);
+            // Product.find({
+            //     keyword: { $in: keyword },
+            //     _id: { $ne: currentProductId } // Exclude the current product by its ID
+            // }).limit(6); // Limit the number of related products, if necessary
+
+            return relatedProducts;
         } catch (error) {
-          throw error;
+            throw error;
         }
-      };
+    };
     // async findRelatedProducts(keyword) {
     //     return await Product.aggregate([
     //         {
@@ -103,7 +112,7 @@ class ProductRepository {
         if (!product) {
             throw new Error('Product not found');
         }
-    
+
         // Handle image update or replacement
         if (hasNewFile) {
             const currentImagePath = `./source/public${product.image}`; // Full path for server operations
@@ -114,7 +123,7 @@ class ProductRepository {
         } else if (product.image === "\\img\\products\\default.png") {
             formData.image = "/img/products/default.png";
         }
-    
+
         formData.status = "Pending"; // Default to 'Pending' for all updates
         await Product.updateOne({ _id: productId }, formData);
     }
@@ -132,10 +141,10 @@ class ProductRepository {
         }
         await Product.deleteOne({ _id: productId });
     }
-    
+
     async findAllProductsPaginated(page, limit, searchQuery, statusFilter) {
         let productsQuery = Product.find().populate("idAccount").sort({ time: -1 });
-    
+
         let queryConditions = [];
         if (searchQuery) {
             const regex = new RegExp(searchQuery, 'i'); // Case-insensitive search
@@ -144,11 +153,11 @@ class ProductRepository {
         if (statusFilter) {
             queryConditions.push({ status: statusFilter });
         }
-    
+
         if (queryConditions.length > 0) {
             productsQuery = productsQuery.find({ $and: queryConditions });
         }
-    
+
         productsQuery = productsQuery.skip((page - 1) * limit).limit(limit);
         return await productsQuery.exec();
     }
@@ -174,19 +183,19 @@ class ProductRepository {
     //             ]
     //         });
     //     }
-        
+
     //     // Apply pagination
     //     productsQuery = productsQuery.skip((page - 1) * limit).limit(limit);
-        
+
     //     // Execute the query
     //     const products = await productsQuery.exec();
-        
+
     //     return products;
     // }     
 
     async countAllProducts(searchQuery, statusFilter) {
         let countQuery = Product.find();
-    
+
         let queryConditions = [];
         if (searchQuery) {
             const regex = new RegExp(searchQuery, 'i'); // Case-insensitive search
@@ -195,16 +204,16 @@ class ProductRepository {
         if (statusFilter) {
             queryConditions.push({ status: statusFilter });
         }
-    
+
         if (queryConditions.length > 0) {
             countQuery = countQuery.find({ $and: queryConditions });
         }
-    
+
         return await countQuery.countDocuments();
     }
     // async countAllProducts(searchQuery) {
     //     let countQuery = Product.find();
-        
+
     //     // Apply search query filter if provided
     //     if (searchQuery) {
     //         const regex = new RegExp(searchQuery, 'i'); // Case-insensitive search
@@ -216,10 +225,10 @@ class ProductRepository {
     //             ]
     //         });
     //     }
-        
+
     //     // Execute the query and count the documents
     //     const count = await countQuery.countDocuments();
-        
+
     //     return count;
     // }
 
@@ -309,23 +318,23 @@ class ProductRepository {
             idAccount: idAccount,
             $or: [{ status: "Available" }, { status: "Reported" }]
         };
-    
+
         if (keyword) {
             const regex = new RegExp(keyword, 'i');
             options.name = regex;
         }
-    
+
         if (category) {
             options.category = category;
         }
-    
+
         const products = await Product.find(options)
             .skip((page - 1) * limit)
             .limit(limit)
             .sort(sortBy);
-    
+
         const numberOfItems = await Product.countDocuments(options);
-    
+
         return { products, numberOfItems };
     }
 
@@ -341,7 +350,7 @@ class ProductRepository {
             .limit(limit);
         return products;
     }
-    
+
     async aggregateProductCategories(statuses) {
         return await Product.aggregate([
             { $match: { status: { $in: statuses } } },
@@ -349,7 +358,7 @@ class ProductRepository {
             { $sort: { _id: 1 } }
         ]);
     }
-    
+
     async countProducts(options) {
         return await Product.find(options).countDocuments();
     }
@@ -359,11 +368,11 @@ class ProductRepository {
             .skip((page - 1) * limit)
             .limit(limit);
     }
-    
+
     async countFilteredProducts(options) {
         return await Product.find(options).countDocuments();
     }
-    
+
     async aggregateCategoriesByStatus(statuses) {
         return await Product.aggregate([
             { $match: { status: { $in: statuses } } },
@@ -386,18 +395,18 @@ class ProductRepository {
 
     async findTrendingProducts(limit = 6) {
         return await Product.find({
-          isTrend: true,
-          $or: [{ status: "Available" }, { status: "Reported" }],
+            isTrend: true,
+            $or: [{ status: "Available" }, { status: "Reported" }],
         })
-        .limit(limit)
-        .sort("timestamps: -1");
-      }
+            .limit(limit)
+            .sort("timestamps: -1");
+    }
 
     async getProductWithAccount(productId) {
         const product = await Product.findOne({ _id: productId }).populate("idAccount");
         return product;
-      }
-    
+    }
+
 }
 
 module.exports = new ProductRepository();

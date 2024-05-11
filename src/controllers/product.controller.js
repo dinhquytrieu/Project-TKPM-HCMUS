@@ -608,14 +608,25 @@ class productController {
       );
       const avgRating = sumRatings / totalRatings;
 
+      // Query to find related products excluding the current product
       const related = await Product.aggregate([
         {
           $match: {
             keyword: product.keyword,
+            _id: { $ne: product._id } // Exclude the current product from related products
           },
         },
         { $limit: 6 },
       ]);
+      // const related = await ProductRepository.findRelatedProducts(product.keyword, productId);
+      // const related = await Product.aggregate([
+      //   {
+      //     $match: {
+      //       keyword: product.keyword,
+      //     },
+      //   },
+      //   { $limit: 6 },
+      // ]);
 
       res.locals.evaNumber = evaNumber;
       res.locals.details = details;
