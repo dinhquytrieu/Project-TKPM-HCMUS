@@ -89,7 +89,8 @@ class evaluateController {
     
           const filteredPopulatedData = evaluates.filter((item) => {
             // Kiểm tra điều kiện ở đây, ví dụ:
-            return item.idProduct.idAccount !== null;
+            // return item.idProduct.idAccount !== null;
+            return item.idProduct && item.idProduct.idAccount !== null;
           });
     
           // evaluates = await evaluates.find({idProduct: {idAccount: {_id: _idAccount}}})

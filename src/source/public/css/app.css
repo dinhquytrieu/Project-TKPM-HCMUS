@@ -1558,7 +1558,8 @@ section article.skills {
         .specific-product .trend .trend-row .trend-card .trend-card-title {
           height: 4.5rem;
           overflow: hidden;
-          text-overflow: ellipsis; }
+          text-overflow: ellipsis;
+          text-align: center; }
         .specific-product .trend .trend-row .trend-card .trend-prod-img {
           height: 22rem !important; }
         .specific-product .trend .trend-row .trend-card .trend-card-price {
@@ -2217,7 +2218,8 @@ section article.skills {
       overflow: hidden;
       text-overflow: ellipsis;
       line-height: 1.8rem;
-      font-size: 1.6rem; }
+      font-size: 1.6rem;
+      text-align: center; }
     .shop-info .card .trend-card-price {
       padding-bottom: 1rem; }
 
