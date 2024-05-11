@@ -479,13 +479,19 @@ getManage = async (req, res, next) => {
       const categories = await ProductRepository.aggregateCategories(["Available", "Reported"]);
       const numberOfItems = await ProductRepository.countProducts(options);
 
-      res.locals = {
-        _numberOfItems: numberOfItems,
-        _limit: limit,
-        _currentPage: page,
-        categories: categories,
-        products: mutipleMongooseToObject(products)
-      };
+      // res.locals = {
+      //   _numberOfItems: numberOfItems,
+      //   _limit: limit,
+      //   _currentPage: page,
+      //   categories: categories,
+      //   products: mutipleMongooseToObject(products)
+      // };
+
+      res.locals._numberOfItems = await Product.find(options).countDocuments();
+      res.locals._limit = limit;
+      res.locals._currentPage = page;
+      res.locals.categories = categories;
+      res.locals.products = mutipleMongooseToObject(products);
 
       res.render("all-product", {
         convertMoney: (str) => {

@@ -48,27 +48,69 @@ class evaluateController {
     };
 
     // [GET] /sales-page/review
+    // showEvaluate = async (req, res, next) => {
+    //     try {
+    //         let page = isNaN(req.query.page)
+    //             ? 1
+    //             : Math.max(1, parseInt(req.query.page));
+    //         const limit = 4;
+    //         const userId = req.user._id;
+
+    //         const evaluations = await evaluateRepository.getFilteredEvaluates(userId, page, limit);
+    //         const numberOfItems = await evaluateRepository.countProducts();
+
+    //         res.locals._numberOfItems = numberOfItems;
+    //         res.locals._limit = limit;
+    //         res.locals._currentPage = page;
+    //         res.locals.evaluates = mutipleMongooseToObject(evaluations);
+
+    //         res.render("review-shop");
+    //     } catch (error) {
+    //         next(error);
+    //     }
+    // };
+
     showEvaluate = async (req, res, next) => {
         try {
-            let page = isNaN(req.query.page)
-                ? 1
-                : Math.max(1, parseInt(req.query.page));
-            const limit = 4;
-            const userId = req.user._id;
-
-            const evaluations = await evaluateRepository.getFilteredEvaluates(userId, page, limit);
-            const numberOfItems = await evaluateRepository.countProducts();
-
-            res.locals._numberOfItems = numberOfItems;
-            res.locals._limit = limit;
-            res.locals._currentPage = page;
-            res.locals.evaluates = mutipleMongooseToObject(evaluations);
-
-            res.render("review-shop");
+          // const idAccount = await Account.findOne({}); //***
+          let page = isNaN(req.query.page)
+            ? 1
+            : Math.max(1, parseInt(req.query.page));
+          const limit = 4;
+    
+          const _idAccount = req.user._id; //***
+          const evaluates = await Evaluate.find({ reply: "" })
+            .populate({
+              path: "idProduct",
+              // match: { idAccount: _idAccount }, // Điều kiện kiểm tra trên idProduct
+              populate: { path: "idAccount", match: { _id: _idAccount } },
+            })
+            .populate("idAccount");
+    
+          const filteredPopulatedData = evaluates.filter((item) => {
+            // Kiểm tra điều kiện ở đây, ví dụ:
+            return item.idProduct.idAccount !== null;
+          });
+    
+          // evaluates = await evaluates.find({idProduct: {idAccount: {_id: _idAccount}}})
+          // filteredPopulatedData.sort({ date: -1 })
+          // .skip((page - 1) * limit)
+          // .limit(limit);
+          const sortedAndLimitedData = filteredPopulatedData
+            .sort((a, b) => b.date - a.date) // Sắp xếp theo ngày giảm dần
+            .slice((page - 1) * limit, page * limit); // Lấy phần giới hạn theo trang
+    
+          res.locals._numberOfItems = await Product.find().countDocuments();
+          res.locals._limit = limit;
+          res.locals._currentPage = page;
+    
+          res.locals.evaluates = mutipleMongooseToObject(sortedAndLimitedData);
+          res.render("review-shop");
+          // res.json(sortedAndLimitedData)
         } catch (error) {
-            next(error);
+          next(error);
         }
-    };
+      };
 
     // [POST] /evaluate/review/:id/reply
     replyEvaluate = async (req, res, next) => {
