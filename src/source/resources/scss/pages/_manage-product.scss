@@ -68,6 +68,7 @@
   .search-input,
   .manage-product-select {
     @extend .select-ext;
+
   }
 
   .manage-product-select {
@@ -124,5 +125,30 @@
     .manage-product-info {
       @include truncate;
     }
+  }
+
+  .btn-add-product {
+    border: 1px solid transparent;
+    text-transform: uppercase;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+    background: #0a4f8b;
+    color: #fff;
+    font-weight: 700;
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease; /* Add smooth transition */
+  }
+  
+  .btn-add-product:hover,
+  .btn-add-product:focus {
+    border: 1px solid #044985;
+    box-shadow: 0 0.5em 0.5em -0.4em #0d74cf; /* Add transparent box shadow */
+    color: #0a4f8b;
+    font-weight: 700;
+    background-color: #fff;
+    border-color: #0a4f8b;
+    transform: translateY(-0.25em);
+    transition: transform 0.3s ease; /* Add smooth transition */
   }
 }
