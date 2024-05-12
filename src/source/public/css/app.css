@@ -2132,7 +2132,7 @@ section article.skills {
     height: 90%;
     padding-top: 2rem;
     padding-right: 5rem;
-    padding-left: 7rem; }
+    padding-left: 5rem; }
     .account-profile-main .row .col-9 .col-md-6 {
       height: 8%; }
     .account-profile-main .row .col-9 .col-12 {
@@ -2503,6 +2503,7 @@ section article.skills {
     .admin .admin-article .form-check-input {
       border: 1px solid #000; }
     .admin .admin-article .title {
+      padding: 20px;
       margin-right: 2rem;
       font-weight: 700;
       text-align: left; }
@@ -2525,10 +2526,17 @@ section article.skills {
   .admin .admin-announce {
     margin-bottom: 2rem; }
   .admin .admin-announce-box {
-    margin-bottom: 2rem; }
+    margin-bottom: 2rem;
+    border-radius: 10px;
+    border: none;
+    background-color: #eff6fc;
+    padding: 0 0;
+    box-shadow: 0 0.5em 0.5em -0.4em #064174; }
     .admin .admin-announce-box .content {
+      padding: 20px;
       max-width: 80rem; }
     .admin .admin-announce-box .view-more-announcement {
+      padding: 20px;
       text-decoration-line: underline; }
   .admin .list-accounts {
     margin-bottom: 2rem; }
@@ -2646,8 +2654,7 @@ section article.skills {
     background: #0a4f8b;
     color: #fff;
     font-weight: 700;
-    transition: color 0.3s ease, background-color 0.3s ease,
- border-color 0.3s ease; }
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease; }
     .sign-up .su-button:hover {
       border: 1px solid #044985;
       box-shadow: 0 0.5em 0.5em -0.4em #0d74cf;
@@ -2673,8 +2680,7 @@ section article.skills {
   background: #0a4f8b;
   color: #fff;
   font-weight: 700;
-  transition: color 0.3s ease, background-color 0.3s ease,
- border-color 0.3s ease; }
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease; }
   .si-button:hover {
     border: 1px solid #044985;
     box-shadow: 0 0.5em 0.5em -0.4em #0d74cf;

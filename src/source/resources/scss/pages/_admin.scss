@@ -71,6 +71,7 @@
       border: 1px solid #000;
     }
     .title {
+      padding: 20px;
       margin-right: 2rem;
       font-weight: 700;
       text-align: left;
@@ -100,11 +101,18 @@
     margin-bottom: 2rem;
   }
   .admin-announce-box {
-    margin-bottom: 2rem;
+    margin-bottom:2rem;
+    border-radius: 10px;
+    border: none;
+    background-color: #eff6fc;
+    padding: 0 0;
+    box-shadow: 0 0.5em 0.5em -0.4em #064174;
     .content {
+      padding: 20px;
       max-width: 80rem;
     }
     .view-more-announcement {
+      padding: 20px;
       text-decoration-line: underline;
     }
   }
