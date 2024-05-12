@@ -553,6 +553,7 @@ a.btn:hover, a.btn:active, a.btn:first-child:active,
   display: none;
   overflow: hidden;
   z-index: 999;
+  margin-top: -3rem;
   min-width: 20rem; }
   .subnav .subnav-link:link, .subnav .subnav-link:visited {
     white-space: nowrap;
