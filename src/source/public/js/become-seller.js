@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
       Validator.isRequired("#address", "Please enter address"),
       Validator.isRequired(
         "#flexCheckDefault",
-        "Must commit before becoming a seller of 2HandBook"
+        "Must commit before becoming a seller of StudentShop"
       ),
 
       /*Validator.isEmail('#email'),

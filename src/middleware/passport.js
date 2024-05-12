@@ -69,7 +69,7 @@ passport.use(
               false,
               req.flash(
                 "loginMessage",
-                "You have been banned by Admin of 2HandBook. Please contact to twohandbookse@gmail.com for further information."
+                "You have been banned by Admin of StudentShop. Please contact to twohandbookse@gmail.com for further information."
               )
             );
           }
