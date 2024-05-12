@@ -9,11 +9,11 @@
                 <div class="col-12 review-section">
                     {{#each evaluates}}
                     <div class="card mb-4 shadow-sm border-0 rounded-4 mx-4">
-                        <div class="card-header d-flex justify-content-between align-items-center bg-light rounded-top-4">
+                        <div class="card-header d-flex justify-content-between align-items-center rounded-top-4" style="background-color: #d9edf7;">
                             <strong>ORDER CODE: {{this._id}}</strong>
                             <span class="badge bg-info text-dark">Product Review</span>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" style="background-color: #f6fcff;">
                             <div class='information d-flex align-items-center'>
                                 <div class='avatar me-3'>
                                     <a href='#'>
@@ -31,9 +31,9 @@
                             </div>
                         </div>
 
-                        <div class="card-footer d-flex justify-content-between align-items-center reply-cmt bg-light rounded-bottom-4">
-                            <button type="button" class="btn btn-secondary text-uppercase" data-bs-toggle="modal"
-                                data-bs-target="#replyModal-{{this._id}}">REPLY</button>
+                        <div class="card-footer d-flex justify-content-between align-items-center reply-cmt rounded-bottom-4" style="background-color: #d9edf7;">
+                            <button type="button" class="btn btn-secondary text-uppercase bg-info" data-bs-toggle="modal"
+                                data-bs-target="#replyModal-{{this._id}}" style="color: black;">REPLY</button>
                         </div>
 
                         <div class="modal fade" id="replyModal-{{this._id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
