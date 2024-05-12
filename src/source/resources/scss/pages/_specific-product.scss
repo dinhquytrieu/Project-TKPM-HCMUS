@@ -256,8 +256,11 @@
 
         textarea {
           outline: none;
-          border: solid 0.2rem $color-primary-shade;
-          background-color: $color-primary-tint;
+          // border: solid 0.2rem $color-primary-shade;
+          border: solid 0.1rem $color-text-grey;
+          // box-shadow: 0 0.5em 0.5em -0.4em #064174;
+          // background-color: $color-primary-tint;
+          background-color: $color-text-light;
           border-radius: 1rem;
           padding: 1rem;
           width: 100%;

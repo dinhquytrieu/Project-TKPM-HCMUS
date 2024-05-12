@@ -1496,8 +1496,8 @@ section article.skills {
     position: relative; }
     .specific-product .comment-section .comment-item .write-cmt textarea {
       outline: none;
-      border: solid 0.2rem #337ab7;
-      background-color: #d9edf7;
+      border: solid 0.1rem #757575;
+      background-color: #f6f6f6;
       border-radius: 1rem;
       padding: 1rem;
       width: 100%;
