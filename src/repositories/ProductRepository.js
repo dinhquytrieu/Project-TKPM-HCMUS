@@ -89,6 +89,8 @@ class ProductRepository {
             //     _id: { $ne: currentProductId } // Exclude the current product by its ID
             // }).limit(6); // Limit the number of related products, if necessary
 
+            // console.log(relatedProducts);
+
             return relatedProducts;
         } catch (error) {
             throw error;

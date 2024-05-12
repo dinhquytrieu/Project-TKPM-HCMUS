@@ -290,6 +290,7 @@ class productController {
   updateProduct = async (req, res, next) => {
     try {
       const formData = req.body;
+      // TODO: Update product chưa có tách nhiều keywords
       const hasNewFile = Boolean(req.file);
 
       // Pass the full file path if a new file is uploaded, otherwise pass the existing path
@@ -538,45 +539,6 @@ class productController {
     }
   };
 
-  // [GET] product/specific-product
-  // showSpecificProduct = async (req, res, next) => {
-  //   try {
-  //     const productId = req.params.id;
-
-  //     const product = await ProductRepository.findProductById(productId);
-  //     const details = product.description.split("\n");
-  //     const evaluates = await ProductRepository.findEvaluationsByProductId(productId);
-  //     const evaNumber = await ProductRepository.countEvaluationsByProductId(productId);
-  //     const avgRating = await ProductRepository.calculateAverageRating(productId);
-  //     const related = await ProductRepository.findRelatedProducts(product.keyword, productId);
-
-  //     res.locals.evaNumber = evaNumber;
-  //     res.locals.details = details;
-  //     res.locals.product = mongooseToObject(product);
-  //     res.locals.stars = avgRating;
-  //     res.locals.related = related;
-  //     res.locals.evaluates = mutipleMongooseToObject(evaluates);
-
-  //     res.render("specific-product", {
-  //       helpers: {
-  //         isEqual(c1, c2) {
-  //           return c1 == c2;
-  //         },
-  //         convertMoney: (str) => {
-  //           return Number(str).toLocaleString("it-IT", {
-  //             style: "currency",
-  //             currency: "VND",
-  //           });
-  //         },
-  //       },
-  //       stock: product.stock,
-  //       formatCurrency: formatCurrency,
-  //     });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
-
   showSpecificProduct = async (req, res, next) => {
     try {
       const productId = req.params.id;
@@ -608,16 +570,30 @@ class productController {
       );
       const avgRating = sumRatings / totalRatings;
 
-      // Query to find related products excluding the current product
+      // Query to find related products (based on keyword array) excluding the current product
+      // const related = await Product.aggregate([
+      //   {
+      //     $match: {
+      //       keyword: product.keyword,
+      //       _id: { $ne: product._id }, // Exclude the current product from related products
+      //       status: { $nin: ["Pending", "Banned"] } // Exclude products with statuses "Pending" or "Banned"
+      //     },
+      //   },
+      //   { $limit: 6 },
+      // ]);
       const related = await Product.aggregate([
         {
           $match: {
+            // Check for the same keyword, exclude the current product, ensure the status is not "Pending" or "Banned", and match the category
             keyword: product.keyword,
-            _id: { $ne: product._id } // Exclude the current product from related products
+            _id: { $ne: product._id },
+            status: { $nin: ["Pending", "Banned"] },
+            // category: product.category // TODO: Related includes the same category
           },
         },
         { $limit: 6 },
       ]);
+      // console.log('Related products:', related);
       // const related = await ProductRepository.findRelatedProducts(product.keyword, productId);
       // const related = await Product.aggregate([
       //   {
@@ -657,6 +633,44 @@ class productController {
       next(error);
     }
   };
+  // [GET] product/specific-product
+  // showSpecificProduct = async (req, res, next) => {
+  //   try {
+  //     const productId = req.params.id;
+
+  //     const product = await ProductRepository.findProductById(productId);
+  //     const details = product.description.split("\n");
+  //     const evaluates = await ProductRepository.findEvaluationsByProductId(productId);
+  //     const evaNumber = await ProductRepository.countEvaluationsByProductId(productId);
+  //     const avgRating = await ProductRepository.calculateAverageRating(productId);
+  //     const related = await ProductRepository.findRelatedProducts(product.keyword, productId);
+
+  //     res.locals.evaNumber = evaNumber;
+  //     res.locals.details = details;
+  //     res.locals.product = mongooseToObject(product);
+  //     res.locals.stars = avgRating;
+  //     res.locals.related = related;
+  //     res.locals.evaluates = mutipleMongooseToObject(evaluates);
+
+  //     res.render("specific-product", {
+  //       helpers: {
+  //         isEqual(c1, c2) {
+  //           return c1 == c2;
+  //         },
+  //         convertMoney: (str) => {
+  //           return Number(str).toLocaleString("it-IT", {
+  //             style: "currency",
+  //             currency: "VND",
+  //           });
+  //         },
+  //       },
+  //       stock: product.stock,
+  //       formatCurrency: formatCurrency,
+  //     });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // };
 
   // [PUT] product/specific-product/:id/report
   reportProduct = async (req, res, next) => {
