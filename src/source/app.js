@@ -1,18 +1,26 @@
 // app.js
+// A web application framework for Node.js, designed for building web applications and APIs.
 const express = require("express");
 const http = require('http');
-// const socketIo = require('socket.io');
 const hbs = require("express-handlebars");
 const path = require("path");
+// Lets you use HTTP verbs such as PUT or DELETE in places where the client doesn't support it.
 const methodOverride = require("method-override");
+// Automatically refreshes the page when files change.
 const livereload = require("livereload");
+// Middleware to enable live reloading in the browser.
 const connectLiveReload = require("connect-livereload");
+// Middleware for parsing incoming request bodies in a middleware before your handlers, available under the req.body property.
 const bodyParser = require("body-parser");
 const route = require("../routes/index.route");
+// Setup to store session data. It uses Redis as a session store to save session data on the server side.
 const session = require("express-session");
+// Used to store messages during a session, typically used to inform users about success or error events.
 const flash = require("connect-flash");
+// Middleware for handling user authentication.
 const passport = require("../middleware/passport");
 const redisStore = require("connect-redis").default;
+// A fast, open-source, in-memory key-value data store for use as a database, cache, message broker, and queue.
 const { createClient } = require("redis");
 const redisClient = createClient({
   url: "redis://redis-16889.c299.asia-northeast1-1.gce.redns.redis-cloud.com:16889",
@@ -109,4 +117,4 @@ app.use((req, res, next) => {
 // ROUTES INIT
 route(app);
 
-module.exports = { app, server};
+module.exports = { app, server };
