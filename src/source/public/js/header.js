@@ -22,9 +22,8 @@ convertDate = (str) => {
   const year = originalDate.getFullYear();
   const hours = originalDate.getHours();
   const minutes = originalDate.getMinutes();
-  return `${hours}:${
-    minutes == 0 ? "0" + String(minutes) : minutes
-  } ${day}/${month}/${year}`;
+  return `${hours}:${minutes == 0 ? "0" + String(minutes) : minutes
+    } ${day}/${month}/${year}`;
 };
 
 // API
@@ -52,8 +51,7 @@ async function getListAnnouncement() {
         "beforeend",
         `
       <li class="announce-item">
-        <a href="#" class="announce-link ${
-          readArr[idx] ? "unread" : ""
+        <a href="#" class="announce-link ${readArr[idx] ? "unread" : ""
         }" onclick="updateListAnnouncement(event, ${idx})">
           <p class="announce-title text-capitalize">${annouce.title}</p>
           <p class="announce-description">${annouce.content}</p>
@@ -69,20 +67,50 @@ async function getListAnnouncement() {
   }
 }
 
+// async function updateListAnnouncement(event, idx) {
+//   // console.log(idx);
+//   event.preventDefault();
+//   const res = await fetch(`/announcement/list/${idx}`, {
+//     method: "POST",
+//   });
+//   annouceItems = document.querySelectorAll(".announce-link");
+//   annouceItems[idx].classList.remove("unread");  // Visually mark as read
+//   const readArr = await res.json();  // Receive the updated read array from the server
+
+//   // Update notification icon based on read statuses
+//   if (readArr.reduce((partialSum, a) => partialSum + a, 0) > 0) {
+//     announceBtn.classList.add("has-noti");
+//   } else {
+//     announceBtn.classList.remove("has-noti");
+//   }
+// }
 async function updateListAnnouncement(event, idx) {
+  // console.log(idx);
   event.preventDefault();
-  const res = await fetch(`/announcement/list/${idx}`, {
-    method: "POST",
-  });
-  annouceItems = document.querySelectorAll(".announce-link");
-  annouceItems[idx].classList.remove("unread");
-  const readArr = await res.json();
-  if (readArr.reduce((partialSum, a) => partialSum + a, 0) > 0) {
-    // User has some new notifications
-    announceBtn.classList.add("has-noti");
-  } else {
-    announceBtn.classList.remove("has-noti");
+  try {
+    const res = await fetch(`/announcement/list/${idx}`, {
+      method: "POST",
+    });
+    if (!res.ok) {
+      throw new Error('Failed to update announcement list');
+    }
+    // Existing handling code...
+    annouceItems = document.querySelectorAll(".announce-link");
+    annouceItems[idx].classList.remove("unread");
+    const readArr = await res.json();
+    if (readArr.reduce((partialSum, a) => partialSum + a, 0) > 0) {
+      // User has some new notifications
+      announceBtn.classList.add("has-noti");
+    } else {
+      announceBtn.classList.remove("has-noti");
+    }
+  } catch (error) {
+    console.error("Error in updateListAnnouncement:", error);
   }
+
+  // const res = await fetch(`/announcement/list/${idx}`, {
+  //   method: "POST",
+  // });
 }
 
 // Check coi admin có đăng thông báo mới không

@@ -1,3 +1,4 @@
+// account.model.js
 const mongoose = require("mongoose");
 // const product = require("./product.model");
 

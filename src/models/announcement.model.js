@@ -1,3 +1,4 @@
+// announcement.model.js
 const mongoose = require('mongoose');
 
 const announceSchema = new mongoose.Schema(

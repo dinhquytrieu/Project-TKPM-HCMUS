@@ -1,3 +1,4 @@
+// announcement.route.js
 const express = require("express");
 const announceController = require("../controllers/announcement.controller");
 const accountController = require("../controllers/account.controller");
