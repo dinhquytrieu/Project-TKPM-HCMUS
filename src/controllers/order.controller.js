@@ -96,6 +96,7 @@ class orderController {
       await OrderRepository.updateOrderStatus(orderId, "successful");
 
       // Emit an event to update order status in the buyer's view
+      console.log('io.emit: orderStatusChange');
       io.emit('orderStatusChange', { orderId, newStatus: "successful" });
 
       res.redirect("back");
@@ -154,8 +155,10 @@ class orderController {
   //   }
   // };
 
+  // buy now
   placeOrder = async (req, res, next) => {
     try {
+      const io = getIo();
       const accBuyer = await Account.findOne({ _id: req.user.id });
       const product = await Product.findOne({ _id: req.params._id }).populate(
         "idAccount"
@@ -177,39 +180,31 @@ class orderController {
       });
 
       await newOrder.save(); // Lưu order mới vào MongoDB
+
+      // Fetch the newly saved order with populated fields
+      const populatedOrder = await Order.findById(newOrder._id)
+        .populate({
+          path: 'idAccount',
+          select: 'firstName lastName email phone' // Adjust fields according to what you need
+        })
+        .populate({
+          path: 'detail.idProduct',
+          select: 'name image category price' // Specify the fields you need from the product
+        });
+
+      console.log('io.emit: orderUpdate');
+      io.emit('orderUpdate', {
+        order: populatedOrder,
+        message: 'New order placed'
+      });
+
       res.redirect(`/account/my-order-pending/${req.user.id}`);
     } catch (err) {
-      next(error);
+      next(err);
     }
   };
 
-  // placeOrderForCart = async (req, res, next) => {
-  //   try {
-  //     const accBuyer = await AccountRepository.findAccountWithPopulatedCart(req.user.id);
-
-  //     const orderDetails = accBuyer.cart.map(cartItem => ({
-  //       idSeller: cartItem._id.idAccount,
-  //       idProduct: cartItem._id._id,
-  //       quantity: cartItem.quantity
-  //     }));
-
-  //     const savedOrders = await OrderRepository.createOrder(accBuyer, orderDetails, req.body.message);
-
-  //     // Update cart to remove items that have been ordered
-  //     const remainingCartItems = accBuyer.cart.filter(
-  //       cartItem => !savedOrders.detail.some(
-  //         orderDetail => orderDetail.idProduct.equals(cartItem._id._id)
-  //       )
-  //     );
-
-  //     await AccountRepository.updateAccountCart(req.user.id, remainingCartItems);
-  //     req.session.cart = [];
-  //     res.redirect(`/account/my-order-pending/${req.user.id}`);
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
-
+  // cart checkout
   placeOrderForCart = async (req, res, next) => {
     try {
       const accBuyer = await Account.findOne({ _id: req.user.id })
@@ -268,6 +263,8 @@ class orderController {
           select: 'name image category price'  // Specify the fields you need from the product
         });
     }));
+
+    console.log('io.emit: orderUpdate');
 
     // Emit an event after saving and populating orders successfully
     populatedOrders.forEach(order => {

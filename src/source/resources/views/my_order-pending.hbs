@@ -17,7 +17,8 @@
                             <button type="button" class="btn btn-outline-secondary">SIGN OUT</button>
                         </div> --}}
                         <div class='signup-btn'>
-                            <button type='button' class='btn btn-outline-secondary' onclick="window.location.href='/account/sign-out';">SIGN
+                            <button type='button' class='btn btn-outline-secondary'
+                                onclick="window.location.href='/account/sign-out';">SIGN
                                 OUT</button>
                         </div>
                     </div>
@@ -64,7 +65,7 @@
                 </nav>
 
                 {{#each orders}}
-                    {{#each this.detail}}
+                {{#each this.detail}}
                 <div class="card" data-order-id="{{this._id}}">
                     <div class="card-header alert alert-primary" role="alert">
                         <i class="fa-solid fa-bag-shopping"></i>
@@ -79,14 +80,19 @@
                                 <div class="middle position-relative">
                                     <div class="card-body">
                                         <h2 class="card-title fw-bold">{{this.idProduct.name}}</h2>
-                                        <p class="card-text"><small class="text-muted fw-bolder">Price: {{formatCurrency this.idProduct.price}}</small></p>
-                                        <p class="card-text"><small class="text-muted fw-bolder">Quantity:  x{{this.quantity}}</small></p>
+                                        <p class="card-text"><small class="text-muted fw-bolder">Price: {{formatCurrency
+                                                this.idProduct.price}}</small></p>
+                                        <p class="card-text"><small class="text-muted fw-bolder">Quantity:
+                                                x{{this.quantity}}</small></p>
                                         <p class="card-text position-absolute bottom-0 end-0">
-                                            <small class="text-muted fs-2 fw-bold">TOTAL: {{formatCurrency (calculateTotalPrice this.idProduct.price this.quantity)}}</small></p>
+                                            <small class="text-muted fs-2 fw-bold">TOTAL: {{formatCurrency
+                                                (calculateTotalPrice this.idProduct.price this.quantity)}}</small>
+                                        </p>
                                         <p class="card-text position-absolute bottom-0 start-0">
                                             <small class="text-muted order-date">Date:
                                                 {{dateOfOrder ../this.date}}
-                                            </small></p>
+                                            </small>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -94,7 +100,7 @@
                     </a>
 
                 </div>
-                    {{/each}}
+                {{/each}}
                 {{/each}}
 
             </div>
@@ -104,24 +110,29 @@
     </div>
 </div>
 
-{{!-- <script src='js/my-order.js'></script> --}}
+{{!--
+<script src='js/my-order.js'></script> --}}
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const socket = io();
+    document.addEventListener('DOMContentLoaded', function () {
+        const socket = io();
 
-    // Listen for order status changes
-    socket.on('orderStatusChange', function (data) {
-        console.log('Order status updated:', data);
-        // Assume each order card has an ID attribute `data-order-id`
-        console.log(data.orderId);
-        const orderCard = document.querySelector(`.card[data-order-id="${data.orderId}"]`);
-        console.log(orderCard);
-        if (orderCard) {
-            // Update the UI to reflect the order is now successful
-            orderCard.remove(); // or update its status visually instead of removing
-        }
+        // Listen for order status changes
+        socket.on('orderStatusChange', function (data) {
+            window.location.reload();
+
+            // console.log('Order status updated:', data);
+            // Assume each order card has an ID attribute `data-order-id`
+            // console.log(data.orderId);
+            if (0 == 1) {
+                const orderCard = document.querySelector(`.card[data-order-id="${data.orderId}"]`);
+                // console.log(orderCard);
+                if (orderCard) {
+                    // Update the UI to reflect the order is now successful
+                    orderCard.remove(); // or update its status visually instead of removing
+                }
+            }
+        });
     });
-});
 </script>
