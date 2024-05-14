@@ -20,7 +20,8 @@ async function addCart(id, quantity) {
       const cartNumber = products.length; // This now counts the number of unique product entries
 
       document.getElementById("lblCartCount").innerText = `${cartNumber}`;
-      getCart();
+      // open cart
+      getCart(); // TODO
     }
   } catch (err) {
     console.log(err);

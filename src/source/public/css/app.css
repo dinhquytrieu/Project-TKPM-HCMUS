@@ -2069,10 +2069,6 @@ section article.skills {
     padding-left: 2rem; }
     .col-9 .card .card-body .contain {
       display: flex; }
-      .col-9 .card .card-body .contain .left {
-        min-width: 16.9rem; }
-      .col-9 .card .card-body .contain .middle {
-        min-width: 66rem; }
   .col-9 .card .card-footer {
     display: flex;
     justify-content: right; }
@@ -2114,9 +2110,6 @@ section article.skills {
   .btn-related-evaluation:hover {
     background-color: var(--light-blue);
     color: black; }
-
-.order-date {
-  padding-left: 2.2rem; }
 
 .isEvaluated {
   pointer-events: none;
