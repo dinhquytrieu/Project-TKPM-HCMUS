@@ -17,7 +17,8 @@
                             <button type="button" class="btn btn-outline-secondary">SIGN OUT</button>
                         </div> --}}
                         <div class='signup-btn'>
-                            <button type='button' class='btn btn-outline-secondary' onclick="window.location.href='/account/sign-out';">SIGN
+                            <button type='button' class='btn btn-outline-secondary'
+                                onclick="window.location.href='/account/sign-out';">SIGN
                                 OUT</button>
                         </div>
                     </div>
@@ -66,11 +67,15 @@
                 </nav>
 
                 {{#each orders}}
-                    {{#each this.detail}}
+                {{#each this.detail}}
                 <div class="card">
-                    <div class="card-header alert alert-danger" role="alert">
+                    {{!-- <div class="card-header alert alert-danger" role="alert">
                         <i class="fa-solid fa-bag-shopping"></i>
                         {{../this.idSeller.shopName}}
+                    </div> --}}
+                    <div class="card-header alert alert-success d-flex flex-row align-items-center" role="alert">
+                        <i class="fa-solid fa-bag-shopping" style="margin-right: 1rem;"></i>
+                        <p style="font-size: 1.8rem;">{{../this.idSeller.shopName}} - {{../this.idSeller.phone}}</p>
                     </div>
                     <a href="http://localhost:3000/product/specific-product/{{this.idProduct._id}}">
                         <div class="card-body">
@@ -81,14 +86,19 @@
                                 <div class="middle position-relative">
                                     <div class="card-body">
                                         <h2 class="card-title fw-bold">{{this.idProduct.name}}</h2>
-                                        <p class="card-text"><small class="text-muted fw-bolder">Price: {{formatCurrency this.idProduct.price}}</small></p>
-                                        <p class="card-text"><small class="text-muted fw-bolder">Quantity:  x{{this.quantity}}</small></p>
+                                        <p class="card-text"><small class="text-muted fw-bolder">Price: {{formatCurrency
+                                                this.idProduct.price}}</small></p>
+                                        <p class="card-text"><small class="text-muted fw-bolder">Quantity:
+                                                x{{this.quantity}}</small></p>
                                         <p class="card-text position-absolute bottom-0 end-0">
-                                            <small class="text-muted fs-2 fw-bold">TOTAL: {{formatCurrency (calculateTotalPrice this.idProduct.price this.quantity)}}</small></p>
+                                            <small class="text-muted fs-2 fw-bold">TOTAL: {{formatCurrency
+                                                (calculateTotalPrice this.idProduct.price this.quantity)}}</small>
+                                        </p>
                                         <p class="card-text position-absolute bottom-0 start-0">
                                             <small class="text-muted order-date">Date:
                                                 {{dateOfOrder ../this.date}}
-                                            </small></p>
+                                            </small>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -96,7 +106,7 @@
                     </a>
 
                 </div>
-                    {{/each}}
+                {{/each}}
                 {{/each}}
 
             </div>

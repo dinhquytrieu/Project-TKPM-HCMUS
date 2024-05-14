@@ -67,9 +67,13 @@
                 {{#each orders}}
                 {{#each this.detail}}
                 <div class="card" data-order-id="{{this._id}}">
-                    <div class="card-header alert alert-primary" role="alert">
+                    {{!-- <div class="card-header alert alert-primary" role="alert">
                         <i class="fa-solid fa-bag-shopping"></i>
                         {{../this.idSeller.shopName}}
+                    </div> --}}
+                    <div class="card-header alert alert-success d-flex flex-row align-items-center" role="alert">
+                        <i class="fa-solid fa-bag-shopping" style="margin-right: 1rem;"></i>
+                        <p style="font-size: 1.8rem;">{{../this.idSeller.shopName}} - {{../this.idSeller.phone}}</p>
                     </div>
                     <a href="http://localhost:3000/product/specific-product/{{this.idProduct._id}}">
                         <div class="card-body">
