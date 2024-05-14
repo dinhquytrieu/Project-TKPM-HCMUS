@@ -37,8 +37,9 @@
             {{else}}
             <tr class="item-order">
               <th scope='row' colspan="6" style="padding: 1rem;">
-                <p class="text-center alert alert-warning" style="font-size: 2rem; margin-top: 2rem; font-weight: normal">
-                You don't have any orders !
+                <p class="text-center alert alert-warning"
+                  style="font-size: 2rem; margin-top: 2rem; font-weight: normal">
+                  You don't have any orders !
                 </p>
               </th>
             </tr>
@@ -71,8 +72,9 @@
                           <th scope='col' class='image' width='10%'>Image</th>
                           <th scope='col' class='name'>Name</th>
                           <th scope='col' class='category' width='15%'>Category</th>
-                          <th scope='col' class='quantity' width='15%'>Quantity</th>
+                          <th scope='col' class='quantity' width='5%'>No.</th>
                           <th scope='col' class='price' width='15%'>Price</th>
+                          <th scope='col' class="total" width="18%">Total</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -87,10 +89,11 @@
                               </a>
                             </div>
                           </td>
-                          <td>{{this.idProduct.name}}</td>
-                          <td>{{this.idProduct.category}}</td>
-                          <td>{{this.quantity}}</td>
-                          <td>{{formatCurrency this.idProduct.price}}</td>
+                          <td style="text-align: center;">{{this.idProduct.name}}</td>
+                          <td style="text-align: center;">{{this.idProduct.category}}</td>
+                          <td style="text-align: center;">{{this.quantity}}</td>
+                          <td style="text-align: center;">{{formatCurrency this.idProduct.price}}</td>
+                          <td style="text-align: center;">{{formatCurrency (multiply this.idProduct.price this.quantity)}}</td>
                         </tr>
                         {{else}}
                         <!-- Xử lý khi điều kiện sai -->
@@ -98,6 +101,7 @@
                         {{/each}}
                       </tbody>
                     </table>
+
                     {{#each messages}}
                     <div class="message" style="padding: 0 0.5rem;" data-id="{{this.idOrder}}">
                       <strong>Message:</strong>

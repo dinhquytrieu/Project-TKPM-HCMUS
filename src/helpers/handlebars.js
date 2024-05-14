@@ -28,6 +28,10 @@ module.exports = {
     return `${day}/${month}/${year}`;
   },
 
+  multiply: (num1, num2) => {
+    return num1 * num2;
+  },
+
   calculateTotalPrice: (price, quantity) => {
     return price * quantity;
   },
