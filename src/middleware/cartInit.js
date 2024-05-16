@@ -59,6 +59,9 @@ async function initCart(req, res, next) {
       // Update the cart number to reflect the count of unique items
       res.locals._cartNumber = reqSessionCart.length;
     }
+    else {
+      console.log("User is not logged in");
+    }
   } catch (err) {
     next(err);
   }

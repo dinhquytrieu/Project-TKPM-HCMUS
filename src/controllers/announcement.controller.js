@@ -102,7 +102,7 @@ class announceController {
         // console.log("Sending announcements and read status to client.");
         res.json({ announcements, readArr });
       } else {
-        console.log("User is not authenticated. Returning empty response.");
+        // console.log("User is not authenticated. Returning empty response.");
         res.json({});
       }
     } catch (err) {
