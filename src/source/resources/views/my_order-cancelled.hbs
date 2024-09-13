@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div class='my-account'>
-                    <a href='http://localhost:3000/account/my-profile/{{user._id}}'>
+                    <a href='/account/my-profile/{{user._id}}'>
                         <button type='button' class='btn btn-outline-secondary'>
                             <i class='fa-solid fa-pen-to-square'></i>
                             <span class='page-link'>My account</span>
@@ -32,7 +32,7 @@
                     </a>
                 </div>
                 <div class='my-order'>
-                    <a href='http://localhost:3000/account/my-order/{{user._id}}'>
+                    <a href='/account/my-order/{{user._id}}'>
                         <button type='button' class='btn btn-outline-secondary bg-blue'>
                             <i class='fa-solid fa-cart-shopping color-white'></i>
                             <span class='page-link color-white'>My order</span>
@@ -40,7 +40,7 @@
                     </a>
                 </div>
                 <div class='become-seller'>
-                    <a href='http://localhost:3000/{{switchLink}}'>
+                    <a href='/{{switchLink}}'>
                         <button type='button' class='btn btn-outline-secondary'>
                             <i class='fa-solid fa-user'></i>
                             <span class='page-link'>{{switchRole}}</span>
@@ -54,14 +54,14 @@
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
                         <li class="page-item"><a class="page-link text_black"
-                                href="http://localhost:3000/account/my-order/{{user._id}}">Success</a>
+                                href="/account/my-order/{{user._id}}">Success</a>
                         </li>
                         {{!-- <li class="page-item"><a class="page-link text_black"
-                                href="http://localhost:3000/myorderdelivery">Delivering</a></li> --}}
+                                href="/myorderdelivery">Delivering</a></li> --}}
                         <li class="page-item"><a class="page-link text_black"
-                                href="http://localhost:3000/account/my-order-pending/{{user._id}}">Pending</a></li>
+                                href="/account/my-order-pending/{{user._id}}">Pending</a></li>
                         <li class="page-item"><a class="page-link background_emphasis text-white"
-                                href="http://localhost:3000/account/my-order-cancelled/{{user._id}}">Cancelled</a>
+                                href="/account/my-order-cancelled/{{user._id}}">Cancelled</a>
                         </li>
                     </ul>
                 </nav>
@@ -77,7 +77,7 @@
                         <i class="fa-solid fa-bag-shopping" style="margin-right: 1rem;"></i>
                         <p style="font-size: 1.8rem;">{{../this.idSeller.shopName}} - {{../this.idSeller.phone}}</p>
                     </div>
-                    <a href="http://localhost:3000/product/specific-product/{{this.idProduct._id}}">
+                    <a href="/product/specific-product/{{this.idProduct._id}}">
                         <div class="card-body">
                             <div class="contain position-relative">
                                 <div class="left">
