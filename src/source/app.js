@@ -22,10 +22,16 @@ const passport = require("../middleware/passport");
 const redisStore = require("connect-redis").default;
 // A fast, open-source, in-memory key-value data store for use as a database, cache, message broker, and queue.
 const { createClient } = require("redis");
+// const redisClient = createClient({
+//   url: "redis://redis-16889.c299.asia-northeast1-1.gce.redns.redis-cloud.com:16889",
+//   username: 'default',
+//   password: 'qexkipbn3hm1Ef12PSfuOaFUU2cirJyy'
+// });
+
 const redisClient = createClient({
-  url: "redis://redis-16889.c299.asia-northeast1-1.gce.redns.redis-cloud.com:16889",
+  url: "redis://redis-12075.c74.us-east-1-4.ec2.redns.redis-cloud.com:12075",
   username: 'default',
-  password: 'qexkipbn3hm1Ef12PSfuOaFUU2cirJyy'
+  password: 'NMuHy582tCV5OgHvjTZDOq1t19VeiTsf'
 });
 
 redisClient.connect().catch(console.error);
